@@ -1,0 +1,305 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{BC3540FC-4C95-448C-9A91-B1F9F597FA51}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>System</RootNamespace>
+    <AssemblyName>System.CoreEx</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;EXPERIMENTAL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug.4|AnyCPU'">
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;EXPERIMENTAL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Release\System.CoreEx.XML</DocumentationFile>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release.4|AnyCPU'">
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE;CLR4</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Release\System.CoreEx.XML</DocumentationFile>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFrameworkVersion)' == 'v3.5'">
+    <Reference Include="System.Abstract, Version=1.0.0.0, Culture=neutral, PublicKeyToken=725aceb8081535f0, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\BclEx-Abstract.1.0.0\lib\net35\System.Abstract.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkVersion)' == 'v4.0'">
+    <Reference Include="System.Abstract, Version=1.0.0.0, Culture=neutral, PublicKeyToken=725aceb8081535f0, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\BclEx-Abstract.1.0.0\lib\net40\System.Abstract.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="+Kludge\Collections\HashHelpers.cs" />
+    <Compile Include="+Kludge\Action.cs" />
+    <Compile Include="+Kludge\Func.cs" />
+    <Compile Include="+Kludge\Internal.cs" />
+    <Compile Include="+Kludge\Runtime\CompilerServices\ConditionalWeakTable.cs" />
+    <Compile Include="+Kludge\Runtime\CompilerServices\DependentHandle.cs" />
+    <Compile Include="+Kludge\+Trash\Version.cs" />
+    <Compile Include="+Kludge\IStructuralComparable.cs" />
+    <Compile Include="+Kludge\IStructuralEquatable.cs" />
+    <Compile Include="+Kludge\Tuple.cs" />
+    <Compile Include="ComponentModel\DataAnnotations\DataAnnotationsResources.cs" />
+    <Compile Include="ComponentModel\DataAnnotations\DataTypeExAttribute.cs" />
+    <Compile Include="ComponentModel\DataAnnotations\RequiredNullIfAttribute.cs" />
+    <Compile Include="ComponentModel\TypeDescriptorEvaluator.cs" />
+    <Compile Include="CoreExtensions+TryFunc.cs" />
+    <Compile Include="CoreExtensions+Action.cs" />
+    <Compile Include="Collections\DictionaryIndexer.cs" />
+    <Compile Include="Collections\DisposeableDictionaryIndexer.cs" />
+    <Compile Include="Collections\Generic\WeakKeyedDictionary.cs" />
+    <Compile Include="Configuration\ConfigurationElementCollectionEx.cs" />
+    <Compile Include="Configuration\AssemblyNameConverter.cs" />
+    <Compile Include="Data\DataReaderExtensions.cs" />
+    <Compile Include="Data\DataRowExtensions.cs" />
+    <Compile Include="Data\SqlClient\SqlConvert.cs" />
+    <Compile Include="Data\SqlClient\SqlEncoder.cs" />
+    <Compile Include="Data\SqlClient\SqlExtensions.cs" />
+    <Compile Include="Data\SqlClient\SqlParseEx.cs" />
+    <Compile Include="ExtensionThisBase.cs" />
+    <Compile Include="CoreExtensions+Lazy.cs" />
+    <Compile Include="CoreExtensions+Func.cs" />
+    <Compile Include="IO\WrapTextReader.cs" />
+    <Compile Include="Patterns\UI\Forms\FormBinderVectorMask.cs" />
+    <Compile Include="Patterns\UI\Forms\FormClientCommand.cs" />
+    <Compile Include="Patterns\UI\Forms\FormCommand.cs" />
+    <Compile Include="Patterns\UI\Forms\FormFieldBinderMode.cs" />
+    <Compile Include="Patterns\UI\Forms\FormFieldFetchMode.cs" />
+    <Compile Include="Patterns\UI\Forms\FormFieldViewMode.cs" />
+    <Compile Include="Patterns\UI\Forms\IFormContext.cs" />
+    <Compile Include="Patterns\UI\Forms\IFormControl.cs" />
+    <Compile Include="Reflection+DynamicProxy\DynamicProxyBuilder.cs" />
+    <Compile Include="Reflection+DynamicProxy\DynamicProxyImplementor.cs" />
+    <Compile Include="Reflection+DynamicProxy\DynamicProxyMethodEmitter.cs" />
+    <Compile Include="Reflection+DynamicProxy\DynamicProxyTypeEmitter.cs" />
+    <Compile Include="Reflection+DynamicProxy\IDynamicProxy.cs" />
+    <Compile Include="Reflection+DynamicProxy\MethodInterceptor.cs" />
+    <Compile Include="Reflection+DynamicProxy\MethodInterceptorHandler.cs" />
+    <Compile Include="Reflection+DynamicProxy\MethodInvocationInfo.cs" />
+    <Compile Include="+Kludge\Collections\AbstractObserver.cs" />
+    <Compile Include="+Kludge\Collections\AnonymousEnumerable.cs" />
+    <Compile Include="+Kludge\Collections\AnonymousObserver.cs" />
+    <Compile Include="ExceptionEx.cs" />
+    <Compile Include="+Kludge\IObservable.cs" />
+    <Compile Include="+Kludge\IObserver.cs" />
+    <Compile Include="+Kludge\ObservableExtensions.cs" />
+    <Compile Include="ActivatorEx.cs" />
+    <Compile Include="Math3D.cs" />
+    <Compile Include="Math3D+Matrix.cs" />
+    <Compile Include="Plane3.cs" />
+    <Compile Include="_Unsorted_\Collections\IIndexerValue.cs" />
+    <Compile Include="Collections\IIndexer.cs" />
+    <Compile Include="Collections\IIndexer2.cs" />
+    <Compile Include="Collections\ExtentSet.cs" />
+    <Compile Include="Collections\Generic\DictionaryExtensions.cs" />
+    <Compile Include="Collections\Generic\IPagedMetadata.cs" />
+    <Compile Include="Collections\Generic\KeyEqualityComparer.cs" />
+    <Compile Include="Collections\Generic\PagedList.cs" />
+    <Compile Include="_Unsorted_\Collections\ICollectionKey.cs" />
+    <Compile Include="Collections\IValue.cs" />
+    <Compile Include="Collections\SortDirection.cs" />
+    <Compile Include="Configuration\ConfigurationElementEx.cs" />
+    <Compile Include="Configuration\ConfigurationElementSynHelper.cs" />
+    <Compile Include="Configuration\ConfigurationElementSyn.cs" />
+    <Compile Include="Configuration\ConfigurationManagerEx.cs" />
+    <Compile Include="Configuration\ConfigurationSectionEx.cs" />
+    <Compile Include="Configuration\ConfigurationElementCollectionEx2.cs" />
+    <Compile Include="ConvertEx.cs" />
+    <Compile Include="CoreExtensions.cs" />
+    <Compile Include="DateTimeEx.cs" />
+    <Compile Include="CoreExtensions+DateTime.cs" />
+    <Compile Include="EnumEx.cs" />
+    <Compile Include="EnumNameAttribute.cs" />
+    <Compile Include="EnvironmentEx2.cs" />
+    <Compile Include="Globalization\CultureInfoEx.cs" />
+    <Compile Include="Globalization\CultureInfoExtensions.cs" />
+    <Compile Include="HashCodeCombiner.cs" />
+    <Compile Include="IO\DirectoryEx.cs" />
+    <Compile Include="IO\FileActor.cs" />
+    <Compile Include="IO\FileActorArguments.cs" />
+    <Compile Include="IO\FileArchiver.cs" />
+    <Compile Include="IO\FileEx.cs" />
+    <Compile Include="IO\IOExtensions.cs" />
+    <Compile Include="IO\Native_.cs" />
+    <Compile Include="IO\PathEx.cs" />
+    <Compile Include="Linq+Paging\DefaultModelMetadataProvider.cs" />
+    <Compile Include="Linq+Paging\EmptyLinqPagedMetadataProvider.cs" />
+    <Compile Include="Linq+Paging\EnumerableExtensions.cs" />
+    <Compile Include="Linq+Paging\LinqPagedCriteria.cs" />
+    <Compile Include="Linq+Paging\LinqPagedMetadata.cs" />
+    <Compile Include="Linq+Paging\LinqPagedMetadataProvider.cs" />
+    <Compile Include="Linq+Paging\LinqPagedMetadataProviders.cs" />
+    <Compile Include="Linq+Paging\QueryableExtensions.cs" />
+    <Compile Include="_Unsorted_\Linq\+zEnumerableExtensions\Iterator.cs" />
+    <Compile Include="_Unsorted_\Linq\+zEnumerableExtensions\WhereEnumerableIterator.cs" />
+    <Compile Include="_Unsorted_\Linq\+zEnumerableExtensions\WhereSelectArrayIterator.cs" />
+    <Compile Include="_Unsorted_\Linq\+zEnumerableExtensions\WhereSelectEnumerableIterator.cs" />
+    <Compile Include="_Unsorted_\Linq\+zEnumerableExtensions\WhereSelectListIterator.cs" />
+    <Compile Include="_Unsorted_\Linq\+zEnumerableExtensions\WrappedSelectIterator.cs" />
+    <Compile Include="Linq\Buffer.cs" />
+    <Compile Include="Linq\DynamicQueryable.cs" />
+    <Compile Include="Linq\EnumerableEx+Hierarchy.cs" />
+    <Compile Include="Linq\EnumerableEx+Indexing.cs" />
+    <Compile Include="Linq\EnumerableEx+Tightest.cs" />
+    <Compile Include="Linq\EnumerableEx.cs" />
+    <Compile Include="Linq\EnumerableEx+Match.cs" />
+    <Compile Include="Linq\Expressions\ExpressionEx.cs" />
+    <Compile Include="Linq\Expressions\LambdaExpressionExtensions.cs" />
+    <Compile Include="Linq\HierarchyNode.cs" />
+    <Compile Include="Linq\HierarchyNode2.cs" />
+    <Compile Include="Linq\QueryableEx+Hierarchy.cs" />
+    <Compile Include="Linq\QueryableEx.cs" />
+    <Compile Include="Local.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Local.resx</DependentUpon>
+    </Compile>
+    <Compile Include="MathEx.cs" />
+    <Compile Include="Patterns\Schema+Culture\CultureSchemaBase.cs" />
+    <Compile Include="Patterns\Schema+Html\HtmlDecoderBase.cs" />
+    <Compile Include="Patterns\Schema+Html\HtmlFormatterBase.cs" />
+    <Compile Include="Patterns\Schema+Html\HtmlSchemaBase.cs" />
+    <Compile Include="Patterns\Schema+Uri\IUriPartScanner.cs" />
+    <Compile Include="Patterns\Schema+Uri\UriContextBase.cs" />
+    <Compile Include="Patterns\Schema+Uri\UriPart.cs" />
+    <Compile Include="Patterns\Schema+Uri\UriPartBase.cs" />
+    <Compile Include="Patterns\Schema+Uri\UriSchemaBase.cs" />
+    <Compile Include="Patterns\Schema+Uri\UriVirtual.cs" />
+    <Compile Include="Patterns\Schema+Uri\UriVirtualSchemaBase.cs" />
+    <Compile Include="Patterns\Versioning\VersionManagerBase.cs" />
+    <Compile Include="Patterns\Versioning\VersionType.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Range.cs" />
+    <Compile Include="Reflection\AssemblyExtensions.cs" />
+    <Compile Include="Reflection\IMemberAccessor.cs" />
+    <Compile Include="Reflection\IMemberGetter.cs" />
+    <Compile Include="Reflection\IMemberResolver.cs" />
+    <Compile Include="Reflection\Internal\DelegateFactory.cs" />
+    <Compile Include="Reflection\Internal\FieldAccessor.cs" />
+    <Compile Include="Reflection\Internal\FieldGetter.cs" />
+    <Compile Include="Reflection\Internal\LateBoundCtor.cs" />
+    <Compile Include="Reflection\Internal\LateBoundFieldGet.cs" />
+    <Compile Include="Reflection\Internal\LateBoundFieldSet.cs" />
+    <Compile Include="Reflection\Internal\LateBoundMethod.cs" />
+    <Compile Include="Reflection\Internal\LateBoundPropertyGet.cs" />
+    <Compile Include="Reflection\Internal\LateBoundPropertySet.cs" />
+    <Compile Include="Reflection\Internal\LateBoundValueTypeFieldSet.cs" />
+    <Compile Include="Reflection\Internal\LateBoundValueTypePropertySet.cs" />
+    <Compile Include="Reflection\Internal\MemberGetter.cs" />
+    <Compile Include="Reflection\Internal\MethodGetter.cs" />
+    <Compile Include="Reflection\Internal\PropertyAccessor.cs" />
+    <Compile Include="Reflection\Internal\PropertyGetter.cs" />
+    <Compile Include="Reflection\Internal\TypePair.cs" />
+    <Compile Include="Reflection\Internal\ValueTypeFieldAccessor.cs" />
+    <Compile Include="Reflection\Internal\ValueTypePropertyAccessor.cs" />
+    <Compile Include="Reflection\IValueResolver.cs" />
+    <Compile Include="Reflection\MemberInfoExtensions.cs" />
+    <Compile Include="Reflection\MethodInfoExtensions.cs" />
+    <Compile Include="Reflection\PrivateReflectionDynamicObject.cs" />
+    <Compile Include="Reflection\ReflectionExtensions.cs" />
+    <Compile Include="Reflection\zResolutionContext.cs" />
+    <Compile Include="Reflection\zResolutionResult.cs" />
+    <Compile Include="_Unsorted_\Runtime\CompilerServices\CompilerServicesExtensions.cs" />
+    <Compile Include="_Unsorted_\Security\Cryptography\X509Certificates\SecurityEx.cs" />
+    <Compile Include="Security\SecurityEx.cs" />
+    <Compile Include="StringEx+ExtractString.cs" />
+    <Compile Include="StringEx.cs" />
+    <Compile Include="CoreExtensions+String.cs" />
+    <Compile Include="Text\StringSpanExtensions.cs" />
+    <Compile Include="Text\Html\HtmlStringReader.cs" />
+    <Compile Include="Text\StringSearcher.cs" />
+    <Compile Include="Text\StringSpan.cs" />
+    <Compile Include="Threading\Async\AsyncResultWrapper.cs" />
+    <Compile Include="Threading\Async\AsyncVoid.cs" />
+    <Compile Include="Threading\Async\BeginInvokeDelegate.cs" />
+    <Compile Include="Threading\Async\EndInvokeDelegate.cs" />
+    <Compile Include="Threading\Async\EndInvokeDelegate2.cs" />
+    <Compile Include="Threading\Async\SimpleAsyncResult.cs" />
+    <Compile Include="Threading\FrugalThreadPool.cs" />
+    <Compile Include="Threading\ReaderWriterLockExtensions.cs" />
+    <Compile Include="Threading\SingleEntryGate.cs" />
+    <Compile Include="TriBool.cs" />
+    <Compile Include="TryFunc.cs" />
+    <Compile Include="TypeCodeValue.cs" />
+    <Compile Include="TypeEx.cs" />
+    <Compile Include="CoreExtensions+Uri.cs" />
+    <Compile Include="WeakReference.cs" />
+    <Compile Include="Xml\XmlExtensions.cs" />
+    <Compile Include="Xml\XmlNodeEx.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\nuspecs\BclEx-Extend.nuspec">
+      <Link>BclEx-Extend.nuspec</Link>
+    </None>
+    <None Include="BclEx.4.snk" />
+    <None Include="BclEx.snk" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Local.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Local.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

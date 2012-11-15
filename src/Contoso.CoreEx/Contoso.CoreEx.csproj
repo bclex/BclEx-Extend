@@ -1,0 +1,181 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{CFDE3F25-3C93-4F5B-AAC5-38BB1F5320EF}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Contoso</RootNamespace>
+    <AssemblyName>Contoso.CoreEx</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <SignAssembly>true</SignAssembly>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;EXPERIMENTAL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug.4|AnyCPU'">
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug.4\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;CLR4;EXPERIMENTAL</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <AssemblyOriginatorKeyFile>BclEx.4.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Release\Contoso.CoreEx.XML</DocumentationFile>
+    <AssemblyOriginatorKeyFile>BclEx.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release.4|AnyCPU'">
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release.4\</OutputPath>
+    <DefineConstants>TRACE;CLR4</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <DocumentationFile>bin\Release.4\Contoso.CoreEx.XML</DocumentationFile>
+    <AssemblyOriginatorKeyFile>BclEx.4.snk</AssemblyOriginatorKeyFile>
+  </PropertyGroup>
+  <ItemGroup Condition="'$(TargetFrameworkVersion)' == 'v3.5'">
+    <Reference Include="System.Abstract, Version=1.0.0.0, Culture=neutral, PublicKeyToken=725aceb8081535f0, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\BclEx-Abstract.1.0.0\lib\net35\System.Abstract.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup Condition="'$(TargetFrameworkVersion)' == 'v4.0'">
+    <Reference Include="System.Abstract, Version=1.0.0.0, Culture=neutral, PublicKeyToken=725aceb8081535f0, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\packages\BclEx-Abstract.1.0.0\lib\net40\System.Abstract.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.XML" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="+ToFile\MappingExpression.cs" />
+    <Compile Include="+ToFile\PropertyMap.cs" />
+    <Compile Include="+ToFile\Reference_\Test.cs" />
+    <Compile Include="+ToFile\TypeMap.cs" />
+    <Compile Include="Collections\ForwardBlockedCollection.cs" />
+    <Compile Include="Collections\MultiColumnLayout.cs" />
+    <Compile Include="Compression\ISetDecoderProperties.cs" />
+    <Compile Include="Compression\DataErrorException.cs" />
+    <Compile Include="Compression\IWriteCoderProperties.cs" />
+    <Compile Include="Compression\InvalidParamException.cs" />
+    <Compile Include="Compression\ICodeProgress.cs" />
+    <Compile Include="Compression\ICoder.cs" />
+    <Compile Include="Compression\ISetCoderProperties.cs" />
+    <Compile Include="Compression\CoderPropID.cs" />
+    <Compile Include="Compression\CRC.cs" />
+    <Compile Include="Compression\Lzma\Base.cs" />
+    <Compile Include="Compression\Lzma\Encoder+LiteralEncoder.cs" />
+    <Compile Include="Compression\Lzma\Encoder+LenEncoder.cs" />
+    <Compile Include="Compression\Lzma\Encoder+LenPriceTableEncoder.cs" />
+    <Compile Include="Compression\Lzma\Decoder+LenDecoder.cs" />
+    <Compile Include="Compression\Lzma\Decoder+LiteralDecoder.cs" />
+    <Compile Include="Compression\Lzma\Decoder.cs" />
+    <Compile Include="Compression\Lzma\Encoder.cs" />
+    <Compile Include="Compression\LZ\BinTree.cs" />
+    <Compile Include="Compression\LZ\IInWindowStream.cs" />
+    <Compile Include="Compression\LZ\IMatchFinder.cs" />
+    <Compile Include="Compression\LZ\InWindow.cs" />
+    <Compile Include="Compression\LZ\OutWindow.cs" />
+    <Compile Include="Compression\RangeCoder\BitDecoder.cs" />
+    <Compile Include="Compression\RangeCoder\BitEncoder.cs" />
+    <Compile Include="Compression\RangeCoder\BitTreeDecoder.cs" />
+    <Compile Include="Compression\RangeCoder\BitTreeEncoder.cs" />
+    <Compile Include="Compression\RangeCoder\Decoder.cs" />
+    <Compile Include="Compression\RangeCoder\Encoder.cs" />
+    <Compile Include="Net\FtpFile.cs" />
+    <Compile Include="Net\FtpClient.cs" />
+    <Compile Include="Net\IFileTransferClient.cs" />
+    <Compile Include="Net\SecureFileTransferClient.cs" />
+    <Compile Include="Net\ShortMessageServiceCarrierID.cs" />
+    <Compile Include="Net\ShortMessageServiceMessage.cs" />
+    <Compile Include="Net\ShortMessageServiceClient.cs" />
+    <Compile Include="Patterns\UI\Forms\ISmartFormContract.cs" />
+    <Compile Include="Patterns\UI\Forms\SmartForm.cs" />
+    <Compile Include="Patterns\UI\Forms\SmartFormContracts\EmailSmartFormBodyBuilder.cs" />
+    <Compile Include="Patterns\UI\Forms\SmartFormContracts\EmailSmartFormContract.cs" />
+    <Compile Include="Patterns\UI\Forms\SmartFormContracts\SmsSmartFormContract.cs" />
+    <Compile Include="Patterns\UI\Forms\SmartFormElements\ElementBase.cs" />
+    <Compile Include="Patterns\UI\Forms\SmartFormElements\ElementCollection.cs" />
+    <Compile Include="Patterns\UI\Forms\SmartFormElements\ErrorElement.cs" />
+    <Compile Include="Patterns\UI\Forms\SmartFormElements\LabelElement.cs" />
+    <Compile Include="Patterns\UI\Forms\SmartFormElements\TextBox2Element.cs" />
+    <Compile Include="Patterns\UI\Forms\SmartFormElements\TextBoxElement.cs" />
+    <Compile Include="Patterns\UI\Forms\SmartFormElements\UnitElement.cs" />
+    <Compile Include="Patterns\UI\Forms\SmartFormMeta.cs" />
+    <Compile Include="Patterns\UI\Forms\SmartFormMetaXmlReader.cs" />
+    <Compile Include="Patterns\UI\Forms\SmartFormMetaXmlWriter.cs" />
+    <Compile Include="Primitives\CodecEnum.cs" />
+    <Compile Include="Primitives\Codecs\CsvCodec.cs" />
+    <Compile Include="Primitives\Codecs\ICodec.cs" />
+    <Compile Include="Primitives\Codecs\QuotedPrintableCodec.cs" />
+    <Compile Include="Primitives\Codecs\RtfCodec.cs" />
+    <Compile Include="Primitives\Codecs\SHA1DigestCodec.cs" />
+    <Compile Include="Primitives\Codecs\XmlCodec.cs" />
+    <Compile Include="Primitives\TextPacks\ITextPack.cs" />
+    <Compile Include="Primitives\TextPacks\SimpleTextPack.cs" />
+    <Compile Include="Primitives\TextPacks\XmlTextPack.cs" />
+    <Compile Include="Primitives\TextProcessEnum.cs" />
+    <Compile Include="Primitives\TextProcesses\TagTextProcess.cs" />
+    <Compile Include="Primitives\TextProcesses\TextProcessBase.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\PrettyGoodPrivacyInterop.cs" />
+    <Compile Include="Security\PrettyGoodPrivacySettings.cs" />
+    <Compile Include="Security\SecureCopyException.cs" />
+    <Compile Include="Security\SecureCopyInterop.cs" />
+    <Compile Include="Security\SecureCopySettings.cs" />
+    <Compile Include="Security\SecureCopySettingsOptions.cs" />
+    <Compile Include="Text\Html\BinaryMhtmlPart.cs" />
+    <Compile Include="Text\Html\HtmlStringReader.cs" />
+    <Compile Include="Text\Html\MhtmlBuilder.cs" />
+    <Compile Include="Text\Html\MhtmlPartBase.cs" />
+    <Compile Include="Text\Html\TextMhtmlPart.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="BclEx.4.snk" />
+    <None Include="BclEx.snk" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\System.CoreEx\System.CoreEx.csproj">
+      <Project>{BC3540FC-4C95-448C-9A91-B1F9F597FA51}</Project>
+      <Name>System.CoreEx</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

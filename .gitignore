@@ -1,0 +1,12 @@
+[Dd]ebug/
+[Dd]ebug.4/
+[Rr]elease/
+[Rr]elease.4/
+build/
+[Bb]in/
+[Oo]bj/
+packages/
+*.suo
+*.user
+_ReSharper.*/
+*resharper.user

@@ -1,0 +1,51 @@
+<?xml version="1.0"?>
+<package >
+  <metadata>
+    <id>BclEx-Extend</id>
+    <version>1.0.0</version>
+    <title>BclEx-Extend</title>
+    <authors>Contoso</authors>
+    <owners>Contoso</owners>
+    <licenseUrl>http://www.opensource.org/licenses/mit-license.php</licenseUrl>
+    <projectUrl>http://docs.bclex.org/bclex-extend/</projectUrl>
+    <iconUrl>http://docs.bclex.org/bclex-extend.ico</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This package contains system extensions to the core BCL.</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2010</copyright>
+    <tags>bclex</tags>
+    <language>en-US</language>
+    <dependencies>
+      <group>
+        <dependency id="BclEx-Abstract" version="1.0.0" />
+      </group>
+    </dependencies>
+    <references>
+      <reference file="System.CoreEx.dll" />
+    </references>
+  </metadata>
+  <files>
+    <file src="build\3.5\Contoso.CoreEx.dll" target="lib\net35" />
+    <file src="build\3.5\Contoso.CoreEx.xml" target="lib\net35" />
+    <file src="build\3.5\System.CoreEx.dll" target="lib\net35" />
+    <file src="build\3.5\System.CoreEx.xml" target="lib\net35" />
+    <file src="build\3.5\System.DirectoryServicesEx.dll" target="lib\net35" />
+    <file src="build\3.5\System.DirectoryServicesEx.xml" target="lib\net35" />
+    <file src="build\3.5\System.Text.Lalr.dll" target="lib\net35" />
+    <file src="build\3.5\System.Text.Lalr.xml" target="lib\net35" />
+    <file src="build\4.0\Contoso.CoreEx.dll" target="lib\net40" />
+    <file src="build\4.0\Contoso.CoreEx.xml" target="lib\net40" />
+    <file src="build\4.0\System.CoreEx.dll" target="lib\net40" />
+    <file src="build\4.0\System.CoreEx.xml" target="lib\net40" />
+    <file src="build\4.0\System.DirectoryServicesEx.dll" target="lib\net40" />
+    <file src="build\4.0\System.DirectoryServicesEx.xml" target="lib\net40" />
+    <file src="build\4.0\System.Text.Lalr.dll" target="lib\net40" />
+    <file src="build\4.0\System.Text.Lalr.xml" target="lib\net40" />
+    <file src="build\4.0\Contoso.VisualStudio.dll" target="tools" />
+    <file src="src\Contoso.CoreEx\**\*.cs" target="src\Contoso.CoreEx" />
+    <file src="src\Contoso.VisualStudio\**\*.cs" target="src\Contoso.VisualStudio" />
+    <file src="src\System.CoreEx\**\*.cs" target="src\System.CoreEx" />
+    <file src="src\System.DirectoryServicesEx\**\*.cs" target="src\System.DirectoryServicesEx" />
+    <file src="src\System.Text.Lalr\**\*.cs" target="src\System.Text.Lalr" />
+  </files>
+</package>

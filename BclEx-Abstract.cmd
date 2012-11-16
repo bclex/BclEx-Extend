@@ -1,7 +1,7 @@
 @echo off
 echo Refreshing packages:
 pushd ..\BclEx-Abstract
-::PowerShell -Command ".\psake.ps1"
+PowerShell -Command ".\psake.ps1"
 popd
 
 ::

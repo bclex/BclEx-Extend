@@ -67,7 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkVersion)' == 'v4.0'">
-    <Reference Include="System.Abstract, Version=1.0.0.0, Culture=neutral, PublicKeyToken=725aceb8081535f0, processorArchitecture=MSIL">
+    <Reference Include="System.Abstract, Version=1.0.0.0, Culture=neutral, PublicKeyToken=28bb8282d82eb63f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\BclEx-Abstract.1.0.0\lib\net40\System.Abstract.dll</HintPath>
     </Reference>
@@ -101,8 +101,6 @@
     <Compile Include="Collections\DictionaryIndexer.cs" />
     <Compile Include="Collections\DisposeableDictionaryIndexer.cs" />
     <Compile Include="Collections\Generic\WeakKeyedDictionary.cs" />
-    <Compile Include="Configuration\ConfigurationElementCollectionEx.cs" />
-    <Compile Include="Configuration\AssemblyNameConverter.cs" />
     <Compile Include="Data\DataReaderExtensions.cs" />
     <Compile Include="Data\DataRowExtensions.cs" />
     <Compile Include="Data\SqlClient\SqlConvert.cs" />
@@ -141,22 +139,15 @@
     <Compile Include="Math3D+Matrix.cs" />
     <Compile Include="Plane3.cs" />
     <Compile Include="_Unsorted_\Collections\IIndexerValue.cs" />
-    <Compile Include="Collections\IIndexer.cs" />
-    <Compile Include="Collections\IIndexer2.cs" />
     <Compile Include="Collections\ExtentSet.cs" />
     <Compile Include="Collections\Generic\DictionaryExtensions.cs" />
     <Compile Include="Collections\Generic\IPagedMetadata.cs" />
     <Compile Include="Collections\Generic\KeyEqualityComparer.cs" />
     <Compile Include="Collections\Generic\PagedList.cs" />
     <Compile Include="_Unsorted_\Collections\ICollectionKey.cs" />
-    <Compile Include="Collections\IValue.cs" />
     <Compile Include="Collections\SortDirection.cs" />
-    <Compile Include="Configuration\ConfigurationElementEx.cs" />
     <Compile Include="Configuration\ConfigurationElementSynHelper.cs" />
     <Compile Include="Configuration\ConfigurationElementSyn.cs" />
-    <Compile Include="Configuration\ConfigurationManagerEx.cs" />
-    <Compile Include="Configuration\ConfigurationSectionEx.cs" />
-    <Compile Include="Configuration\ConfigurationElementCollectionEx2.cs" />
     <Compile Include="ConvertEx.cs" />
     <Compile Include="CoreExtensions.cs" />
     <Compile Include="DateTimeEx.cs" />

@@ -67,7 +67,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup Condition="'$(TargetFrameworkVersion)' == 'v4.0'">
-    <Reference Include="System.Abstract, Version=1.0.0.0, Culture=neutral, PublicKeyToken=725aceb8081535f0, processorArchitecture=MSIL">
+    <Reference Include="System.Abstract, Version=1.0.0.0, Culture=neutral, PublicKeyToken=28bb8282d82eb63f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\BclEx-Abstract.1.0.0\lib\net40\System.Abstract.dll</HintPath>
     </Reference>

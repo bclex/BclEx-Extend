@@ -32,7 +32,6 @@ namespace System.Configuration
     public class ConfigurationElementSyn<TSyn>
         where TSyn : ConfigurationElement
     {
-
         /// <summary>
         /// Initializes a new instance of the <see cref="ConfigurationElementSyn&lt;TSyn&gt;"/> class.
         /// </summary>

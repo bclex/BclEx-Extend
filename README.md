@@ -1,4 +1,4 @@
-BclEx-Abstract
+BclEx-Extend
 ==============
 
-.Net Abstraction library for complex systems, with adapter libraries for common implementations.
+Extends the BCL with helper libraries.

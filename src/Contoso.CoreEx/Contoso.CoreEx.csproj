@@ -135,7 +135,6 @@
     <Compile Include="Patterns\UI\Forms\SmartFormMetaXmlWriter.cs" />
     <Compile Include="Primitives\CodecEnum.cs" />
     <Compile Include="Primitives\Codecs\CsvCodec.cs" />
-    <Compile Include="Primitives\Codecs\ICodec.cs" />
     <Compile Include="Primitives\Codecs\QuotedPrintableCodec.cs" />
     <Compile Include="Primitives\Codecs\RtfCodec.cs" />
     <Compile Include="Primitives\Codecs\SHA1DigestCodec.cs" />

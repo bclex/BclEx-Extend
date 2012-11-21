@@ -29,7 +29,7 @@ namespace Contoso.Primitives.Codecs
     /// <summary>
     /// Provides standardized encode/decode functionality to/from a CSV format.
     /// </summary>
-    public class CsvCodec : ICodec
+    public class CsvCodec : ICodec<string>
     {
         /// <summary>
         /// EncodeNullValue
@@ -99,20 +99,22 @@ namespace Contoso.Primitives.Codecs
         /// <summary>
         /// Abstract member whose implementation by the derived class decodes a string into another string.
         /// </summary>
+        /// <param name="tag">The tag.</param>
         /// <param name="text">String to decode.</param>
         /// <returns>
         /// Returns results of decoding <paramref name="text"/> object instance.
         /// </returns>
-        string ICodec.Decode(string text) { return Decode(text); }
+        string ICodec<string>.Decode(object tag, string text) { return Decode(text); }
 
         /// <summary>
         /// Abstract member whose implementation by the derived class encodes a string into another string.
         /// </summary>
+        /// <param name="tag">The tag.</param>
         /// <param name="text">String to decode.</param>
         /// <returns>
         /// Returns results of decoding <paramref name="text"/> object instance.
         /// </returns>
-        string ICodec.Encode(string text) { return Encode(text); }
+        string ICodec<string>.Encode(object tag, string text) { return Encode(text); }
 
         #endregion
     }

@@ -34,9 +34,11 @@ namespace System.Security
     /// <summary>
     /// SecurityEx
     /// </summary>
-    public static class SecurityEx
+    public static partial class SecurityEx
     {
-        //private static readonly byte[] _genericIv = ConvertEx.FromBase16String("C9DCF37AED8574A1441FD82DB743765C");
+        private static readonly byte[] _createAlgorithmKey = new byte[] { 31, 131, 70, 37, 95, 96, 21, 23, 10, 218, 221, 34, 246, 159, 199, 247 };
+        private static readonly byte[] _createAlgorithmIV = new byte[] { 213, 78, 176, 8, 186, 232, 219, 77, 218, 120, 170, 114, 219, 155, 26, 47 };
+        private static readonly int _createAlgorithmSaltSize = 3;
 
         /// <summary>
         /// Impersonates the windows user.
@@ -123,8 +125,32 @@ namespace System.Security
             }
         }
 
+        /// <summary>
+        /// Creates the algorithm.
+        /// </summary>
+        /// <returns></returns>
+        public static SymmetricAlgorithm CreateAlgorithm()
+        {
+            var algorithm = SymmetricAlgorithm.Create();
+            algorithm.Key = _createAlgorithmKey;
+            algorithm.IV = _createAlgorithmIV;
+            return algorithm;
+        }
+
         #region Encrypt
 
+        /// <summary>
+        /// Symmetrics the encrypt.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
+        public static string SymmetricEncrypt(string data) { using (var algorithm = CreateAlgorithm()) return Convert.ToBase64String(SymmetricEncrypt(algorithm, Encoding.UTF8.GetBytes(data), _createAlgorithmSaltSize)); }
+        /// <summary>
+        /// Symmetrics the encrypt.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
+        public static byte[] SymmetricEncrypt(byte[] data) { using (var algorithm = CreateAlgorithm()) return SymmetricEncrypt(algorithm, data, _createAlgorithmSaltSize); }
         /// <summary>
         /// Symmetrics the encrypt.
         /// </summary>
@@ -196,7 +222,7 @@ namespace System.Security
         /// <param name="key">The key.</param>
         /// <param name="iv">The iv.</param>
         /// <returns></returns>
-        public static string SymmetricEncrypt(string data, byte[] key, byte[] iv) { using (var algorithm = SymmetricAlgorithm.Create()) return Convert.ToBase64String(SymmetricEncrypt(algorithm, Encoding.UTF8.GetBytes(data), key, iv)); }
+        public static string SymmetricEncrypt(string data, byte[] key, byte[] iv) { using (var algorithm = CreateAlgorithm()) return Convert.ToBase64String(SymmetricEncrypt(algorithm, Encoding.UTF8.GetBytes(data), key, iv)); }
         /// <summary>
         /// Symmetrics the encrypt.
         /// </summary>
@@ -213,7 +239,7 @@ namespace System.Security
         /// <param name="key">The key.</param>
         /// <param name="iv">The iv.</param>
         /// <returns></returns>
-        public static byte[] SymmetricEncrypt(byte[] data, byte[] key, byte[] iv) { using (var algorithm = SymmetricAlgorithm.Create()) return SymmetricEncrypt(algorithm, data, key, iv); }
+        public static byte[] SymmetricEncrypt(byte[] data, byte[] key, byte[] iv) { using (var algorithm = CreateAlgorithm()) return SymmetricEncrypt(algorithm, data, key, iv); }
         /// <summary>
         /// Symmetrics the encrypt.
         /// </summary>
@@ -243,7 +269,7 @@ namespace System.Security
         /// <param name="key">The key.</param>
         /// <param name="iv">The iv.</param>
         /// <returns></returns>
-        public static string SymmetricEncrypt(string data, int saltSize, byte[] key, byte[] iv) { using (var algorithm = SymmetricAlgorithm.Create()) return Convert.ToBase64String(SymmetricEncrypt(algorithm, Encoding.UTF8.GetBytes(data), saltSize, key, iv)); }
+        public static string SymmetricEncrypt(string data, int saltSize, byte[] key, byte[] iv) { using (var algorithm = CreateAlgorithm()) return Convert.ToBase64String(SymmetricEncrypt(algorithm, Encoding.UTF8.GetBytes(data), saltSize, key, iv)); }
         /// <summary>
         /// Symmetrics the encrypt.
         /// </summary>
@@ -262,7 +288,7 @@ namespace System.Security
         /// <param name="key">The key.</param>
         /// <param name="iv">The iv.</param>
         /// <returns></returns>
-        public static byte[] SymmetricEncrypt(byte[] data, int saltSize, byte[] key, byte[] iv) { using (var algorithm = SymmetricAlgorithm.Create()) return SymmetricEncrypt(algorithm, data, saltSize, key, iv); }
+        public static byte[] SymmetricEncrypt(byte[] data, int saltSize, byte[] key, byte[] iv) { using (var algorithm = CreateAlgorithm()) return SymmetricEncrypt(algorithm, data, saltSize, key, iv); }
         /// <summary>
         /// Symmetrics the encrypt.
         /// </summary>
@@ -339,6 +365,18 @@ namespace System.Security
         /// <summary>
         /// Symmetrics the decrypt.
         /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
+        public static string SymmetricDecrypt(string data) { using (var algorithm = CreateAlgorithm()) return Encoding.UTF8.GetString(SymmetricDecrypt(algorithm, Convert.FromBase64String(data), _createAlgorithmSaltSize)); }
+        /// <summary>
+        /// Symmetrics the decrypt.
+        /// </summary>
+        /// <param name="data">The data.</param>
+        /// <returns></returns>
+        public static byte[] SymmetricDecrypt(byte[] data) { using (var algorithm = CreateAlgorithm()) return SymmetricDecrypt(algorithm, data, _createAlgorithmSaltSize); }
+        /// <summary>
+        /// Symmetrics the decrypt.
+        /// </summary>
         /// <param name="algorithm">The algorithm.</param>
         /// <param name="data">The data.</param>
         /// <returns></returns>
@@ -391,7 +429,7 @@ namespace System.Security
         /// <param name="key">The key.</param>
         /// <param name="iv">The iv.</param>
         /// <returns></returns>
-        public static string SymmetricDecrypt(string data, byte[] key, byte[] iv) { using (var algorithm = SymmetricAlgorithm.Create()) return Encoding.UTF8.GetString(SymmetricDecrypt(algorithm, Convert.FromBase64String(data), key, iv)); }
+        public static string SymmetricDecrypt(string data, byte[] key, byte[] iv) { using (var algorithm = CreateAlgorithm()) return Encoding.UTF8.GetString(SymmetricDecrypt(algorithm, Convert.FromBase64String(data), key, iv)); }
         /// <summary>
         /// Symmetrics the decrypt.
         /// </summary>
@@ -408,7 +446,7 @@ namespace System.Security
         /// <param name="key">The key.</param>
         /// <param name="iv">The iv.</param>
         /// <returns></returns>
-        public static byte[] SymmetricDecrypt(byte[] data, byte[] key, byte[] iv) { using (var algorithm = SymmetricAlgorithm.Create()) return SymmetricDecrypt(algorithm, data, key, iv); }
+        public static byte[] SymmetricDecrypt(byte[] data, byte[] key, byte[] iv) { using (var algorithm = CreateAlgorithm()) return SymmetricDecrypt(algorithm, data, key, iv); }
         /// <summary>
         /// Symmetrics the decrypt.
         /// </summary>
@@ -438,7 +476,7 @@ namespace System.Security
         /// <param name="key">The key.</param>
         /// <param name="iv">The iv.</param>
         /// <returns></returns>
-        public static string SymmetricDecrypt(string data, int saltSize, byte[] key, byte[] iv) { using (var algorithm = SymmetricAlgorithm.Create()) return Encoding.UTF8.GetString(SymmetricDecrypt(algorithm, Convert.FromBase64String(data), saltSize, key, iv)); }
+        public static string SymmetricDecrypt(string data, int saltSize, byte[] key, byte[] iv) { using (var algorithm = CreateAlgorithm()) return Encoding.UTF8.GetString(SymmetricDecrypt(algorithm, Convert.FromBase64String(data), saltSize, key, iv)); }
         /// <summary>
         /// Symmetrics the decrypt.
         /// </summary>
@@ -457,7 +495,7 @@ namespace System.Security
         /// <param name="key">The key.</param>
         /// <param name="iv">The iv.</param>
         /// <returns></returns>
-        public static byte[] SymmetricDecrypt(byte[] data, int saltSize, byte[] key, byte[] iv) { using (var algorithm = SymmetricAlgorithm.Create()) return SymmetricDecrypt(algorithm, data, saltSize, key, iv); }
+        public static byte[] SymmetricDecrypt(byte[] data, int saltSize, byte[] key, byte[] iv) { using (var algorithm = CreateAlgorithm()) return SymmetricDecrypt(algorithm, data, saltSize, key, iv); }
         /// <summary>
         /// Symmetrics the decrypt.
         /// </summary>
@@ -534,7 +572,7 @@ namespace System.Security
         /// Generates the symmetric key.
         /// </summary>
         /// <returns></returns>
-        public static byte[] GenerateSymmetricKey() { using (var algorithm = SymmetricAlgorithm.Create()) return GenerateSymmetricKey(algorithm); }
+        public static byte[] GenerateSymmetricKey() { using (var algorithm = CreateAlgorithm()) return GenerateSymmetricKey(algorithm); }
         /// <summary>
         /// Generates the symmetric key.
         /// </summary>
@@ -550,7 +588,7 @@ namespace System.Security
         /// Generates the symmetric iv.
         /// </summary>
         /// <returns></returns>
-        public static byte[] GenerateSymmetricIv() { using (var algorithm = SymmetricAlgorithm.Create()) return GenerateSymmetricIv(algorithm); }
+        public static byte[] GenerateSymmetricIv() { using (var algorithm = CreateAlgorithm()) return GenerateSymmetricIv(algorithm); }
         /// <summary>
         /// Generates the symmetric iv.
         /// </summary>

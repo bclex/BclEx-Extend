@@ -138,6 +138,7 @@
     <Compile Include="Math3D.cs" />
     <Compile Include="Math3D+Matrix.cs" />
     <Compile Include="Plane3.cs" />
+    <Compile Include="Security\SecurityEx+Codec.cs" />
     <Compile Include="_Unsorted_\Collections\IIndexerValue.cs" />
     <Compile Include="Collections\ExtentSet.cs" />
     <Compile Include="Collections\Generic\DictionaryExtensions.cs" />

@@ -31,7 +31,7 @@ namespace Contoso.Primitives.Codecs
     /// <summary>
     /// Encodes and decodes the generation of digest values using an instance of <see cref="System.Security.Cryptography.SHA1Managed"/>.
     /// </summary>
-    public class SHA1DigestCodec : ICodec
+    public class SHA1DigestCodec : ICodec<string>
     {
         private static readonly SHA1Managed _digest = new SHA1Managed();
 
@@ -51,20 +51,22 @@ namespace Contoso.Primitives.Codecs
         /// <summary>
         /// Abstract member whose implementation by the derived class decodes a string into another string.
         /// </summary>
+        /// <param name="tag">The tag.</param>
         /// <param name="text">String to decode.</param>
         /// <returns>
         /// Returns results of decoding <paramref name="text"/> object instance.
         /// </returns>
-        string ICodec.Decode(string text) { throw new NotSupportedException(); }
+        string ICodec<string>.Decode(object tag, string text) { throw new NotSupportedException(); }
 
         /// <summary>
         /// Abstract member whose implementation by the derived class encodes a string into another string.
         /// </summary>
+        /// <param name="tag">The tag.</param>
         /// <param name="text">String to decode.</param>
         /// <returns>
         /// Returns results of decoding <paramref name="text"/> object instance.
         /// </returns>
-        string ICodec.Encode(string text) { return Encode(text); }
+        string ICodec<string>.Encode(object tag, string text) { return Encode(text); }
 
         #endregion
     }

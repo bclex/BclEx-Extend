@@ -43,23 +43,22 @@ namespace System.Linq
         {
             if (value == null)
                 throw new ArgumentNullException("value");
-            // ensure url is proper by starting with a slash
-            if ((value.Length == 0) || (value[0] != scope))
+            // ensure array is proper by starting with a scope
+            if (value.Length == 0 || value[0] != scope)
                 throw new ArgumentException(string.Format(Local.InvalidIdA, value), "text");
-            // then remove all leading slashes
-            int firstNonSlashIndex = 0;
-            for (; (firstNonSlashIndex < value.Length) && (value[firstNonSlashIndex] == scope); firstNonSlashIndex++) ;
-            if ((firstNonSlashIndex > 0) && (firstNonSlashIndex < value.Length))
-                value = value.Substring(firstNonSlashIndex);
-            //string matchText = value + scope;
-            // locate tightest virtual path match
+            // then remove all leading scopes
+            int firstNonScopeIndex = 0;
+            for (; firstNonScopeIndex < value.Length && value[firstNonScopeIndex] == scope; firstNonScopeIndex++) ;
+            if (firstNonScopeIndex > 0 && firstNonScopeIndex < value.Length)
+                value = value.Substring(firstNonScopeIndex);
+            // locate tightest match
             tightestValue = default(TSource);
             int tightestValueLength = 0;
             foreach (TSource item in source)
             {
-                string itemValue = item.Value;
+                var itemValue = item.Value;
                 int itemValueLength;
-                if ((value.StartsWith(itemValue + scope)) && ((itemValueLength = itemValue.Length) > tightestValueLength))
+                if (value.StartsWith(itemValue + scope) && (itemValueLength = itemValue.Length) > tightestValueLength)
                 {
                     tightestValue = item;
                     tightestValueLength = itemValueLength;
@@ -82,18 +81,16 @@ namespace System.Linq
         {
             if (values == null)
                 throw new ArgumentNullException("values");
-            // locate tightest virtual path match
+            // locate tightest match
             tightestValue = default(TSource);
-            //T[] tightestValues = null;
             int tightestValuesLength = 0;
             foreach (TSource item in source)
             {
                 T[] itemValues = item.Value;
                 int itemValuesLength;
-                if ((itemValues.Match(values, false)) && ((itemValuesLength = itemValues.Length) > tightestValuesLength))
+                if (itemValues.Match(values, false) && (itemValuesLength = itemValues.Length) > tightestValuesLength)
                 {
                     tightestValue = item;
-                    //tightestValues = itemValues;
                     tightestValuesLength = itemValuesLength;
                 }
             }

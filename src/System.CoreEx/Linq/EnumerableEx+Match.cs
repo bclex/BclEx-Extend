@@ -36,7 +36,21 @@ namespace System.Linq
         /// <param name="right">The right.</param>
         /// <param name="exactMatch">if set to <c>true</c> [exact match].</param>
         /// <returns></returns>
-        public static bool Match<TSource>(this IEnumerable<TSource> left, IEnumerable<TSource> right, bool exactMatch) { return Match(left, right, (leftValue, rightValue) => leftValue.Equals(rightValue), exactMatch); }
+        public static bool Match<TSource>(this IEnumerable<TSource> left, IEnumerable<TSource> right, bool exactMatch)
+        {
+            if (left == null || right == null)
+                return (left == null && right == null);
+            IEnumerator<TSource> leftEnum;
+            IEnumerator<TSource> rightEnum;
+            for (leftEnum = left.GetEnumerator(), rightEnum = right.GetEnumerator(); leftEnum.MoveNext() && rightEnum.MoveNext(); )
+            {
+                var leftValue = leftEnum.Current;
+                var rightValue = rightEnum.Current;
+                if ((leftValue == null && rightValue != null) || (leftValue != null && rightValue == null) || !leftValue.Equals(rightValue))
+                    return false;
+            }
+            return (!exactMatch || leftEnum.MoveNext() == rightEnum.MoveNext());
+        }
         /// <summary>
         /// Matches the specified left.
         /// </summary>
@@ -48,20 +62,20 @@ namespace System.Linq
         /// <returns></returns>
         public static bool Match<TSource>(this IEnumerable<TSource> left, IEnumerable<TSource> right, Func<TSource, TSource, bool> predicate, bool exactMatch)
         {
-            if ((left == null) || (right == null))
-                return ((left == null) && (right == null));
+            if (predicate == null)
+                throw new ArgumentNullException("predicate");
+            if (left == null || right == null)
+                return (left == null && right == null);
             IEnumerator<TSource> leftEnum;
             IEnumerator<TSource> rightEnum;
-            for (leftEnum = left.GetEnumerator(), rightEnum = right.GetEnumerator(); (leftEnum.MoveNext()) && (rightEnum.MoveNext()); )
+            for (leftEnum = left.GetEnumerator(), rightEnum = right.GetEnumerator(); leftEnum.MoveNext() && rightEnum.MoveNext(); )
             {
                 var leftValue = leftEnum.Current;
                 var rightValue = rightEnum.Current;
-                if (((leftValue == null) && (rightValue != null)) ||
-                    ((leftValue != null) && (rightValue == null)) ||
-                    (!predicate(leftValue, rightValue)))
+                if ((leftValue == null && rightValue != null) || (leftValue != null && rightValue == null) || !predicate(leftValue, rightValue))
                     return false;
             }
-            return ((!exactMatch) || (leftEnum.MoveNext() == rightEnum.MoveNext()));
+            return (!exactMatch || leftEnum.MoveNext() == rightEnum.MoveNext());
         }
 
         /// <summary>
@@ -72,7 +86,21 @@ namespace System.Linq
         /// <param name="right">The right.</param>
         /// <param name="exactMatch">if set to <c>true</c> [exact match].</param>
         /// <returns></returns>
-        public static bool Match<TSource>(this TSource[] left, TSource[] right, bool exactMatch) { return Match(left, right, (leftValue, rightValue) => leftValue.Equals(rightValue), exactMatch); }
+        public static bool Match<TSource>(this TSource[] left, TSource[] right, bool exactMatch)
+        {
+            if (left == null || right == null)
+                return (left == null && right == null);
+            if (exactMatch && left.Length != right.Length)
+                return false;
+            for (int index = 0; index < left.Length; index++)
+            {
+                var leftValue = left[index];
+                var rightValue = right[index];
+                if ((leftValue == null && rightValue != null) || (leftValue != null && rightValue == null) || !leftValue.Equals(rightValue))
+                    return false;
+            }
+            return true;
+        }
         /// <summary>
         /// Matches the specified left.
         /// </summary>
@@ -84,17 +112,17 @@ namespace System.Linq
         /// <returns></returns>
         public static bool Match<TSource>(this TSource[] left, TSource[] right, Func<TSource, TSource, bool> predicate, bool exactMatch)
         {
-            if ((left == null) || (right == null))
-                return ((left == null) && (right == null));
-            if ((exactMatch) && (left.Length != right.Length))
+            if (predicate == null)
+                throw new ArgumentNullException("predicate");
+            if (left == null || right == null)
+                return (left == null && right == null);
+            if (exactMatch && left.Length != right.Length)
                 return false;
             for (int index = 0; index < left.Length; index++)
             {
                 var leftValue = left[index];
                 var rightValue = right[index];
-                if (((leftValue == null) && (rightValue != null)) ||
-                    ((leftValue != null) && (rightValue == null)) ||
-                    (!predicate(leftValue, rightValue)))
+                if ((leftValue == null && rightValue != null) || (leftValue != null && rightValue == null) || !predicate(leftValue, rightValue))
                     return false;
             }
             return true;

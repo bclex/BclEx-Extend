@@ -15,6 +15,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.DirectoryServicesEx"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "System.CoreEx.Tests", "src\System.CoreEx.Tests\System.CoreEx.Tests.csproj", "{DA151ABA-2015-40B9-9539-83A78C9CB385}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Practices", "Practices", "{DB046E9C-1ED3-4913-8038-907956A6DE7D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Practices.ConsoleCommand", "src\Practices\Contoso.Practices.ConsoleCommand\Contoso.Practices.ConsoleCommand.csproj", "{D2E7080E-D2DB-4D91-AF52-0A4F92086D23}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug.4|Any CPU = Debug.4|Any CPU
@@ -77,8 +81,19 @@ Global
 		{DA151ABA-2015-40B9-9539-83A78C9CB385}.Release.4|Any CPU.Build.0 = Release|Any CPU
 		{DA151ABA-2015-40B9-9539-83A78C9CB385}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DA151ABA-2015-40B9-9539-83A78C9CB385}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D2E7080E-D2DB-4D91-AF52-0A4F92086D23}.Debug.4|Any CPU.ActiveCfg = Debug.4|Any CPU
+		{D2E7080E-D2DB-4D91-AF52-0A4F92086D23}.Debug.4|Any CPU.Build.0 = Debug.4|Any CPU
+		{D2E7080E-D2DB-4D91-AF52-0A4F92086D23}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D2E7080E-D2DB-4D91-AF52-0A4F92086D23}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D2E7080E-D2DB-4D91-AF52-0A4F92086D23}.Release.4|Any CPU.ActiveCfg = Release.4|Any CPU
+		{D2E7080E-D2DB-4D91-AF52-0A4F92086D23}.Release.4|Any CPU.Build.0 = Release.4|Any CPU
+		{D2E7080E-D2DB-4D91-AF52-0A4F92086D23}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D2E7080E-D2DB-4D91-AF52-0A4F92086D23}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{D2E7080E-D2DB-4D91-AF52-0A4F92086D23} = {DB046E9C-1ED3-4913-8038-907956A6DE7D}
 	EndGlobalSection
 EndGlobal

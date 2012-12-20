@@ -155,7 +155,6 @@
     <Compile Include="CoreExtensions+DateTime.cs" />
     <Compile Include="EnumEx.cs" />
     <Compile Include="EnumNameAttribute.cs" />
-    <Compile Include="EnvironmentEx2.cs" />
     <Compile Include="Globalization\CultureInfoEx.cs" />
     <Compile Include="Globalization\CultureInfoExtensions.cs" />
     <Compile Include="HashCodeCombiner.cs" />

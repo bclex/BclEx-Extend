@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("CommandEx")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("Contoso.Practices.ConsoleCommand")]
+[assembly: AssemblyDescription("This package contains system extensions to the core BCL.")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("CommandEx")]
-[assembly: AssemblyCopyright("Copyright ©  2012")]
+[assembly: AssemblyCompany("Contoso")]
+[assembly: AssemblyProduct("BclEx-Extend")]
+[assembly: AssemblyCopyright("Copyright © Contoso 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

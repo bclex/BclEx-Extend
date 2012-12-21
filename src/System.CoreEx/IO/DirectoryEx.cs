@@ -28,7 +28,7 @@ namespace System.IO
     /// <summary>
     /// DirectoryEx
     /// </summary>
-    public static class DirectoryEx
+    public static partial class DirectoryEx
     {
         /// <summary>
         /// Creates the symbolic link.

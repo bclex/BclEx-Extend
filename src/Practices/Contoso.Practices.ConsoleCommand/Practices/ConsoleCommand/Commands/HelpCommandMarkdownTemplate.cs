@@ -9,6 +9,12 @@ namespace Contoso.Practices.ConsoleCommand.Commands
     [GeneratedCode("RazorGenerator", "1.1.0.0")]
     internal class HelpCommandMarkdownTemplate : HelpCommandMarkdownTemplateBase
     {
+        public struct dynamic1
+        {
+            public string Name;
+            public string Description;
+        }
+
         public override void Execute()
         {
             WriteLiteral("\r\n");
@@ -28,7 +34,7 @@ namespace Contoso.Practices.ConsoleCommand.Commands
                 Write("");
             }
             WriteLiteral("\r\n### Options\r\n<table>\r\n");
-            foreach (dynamic option in Options)
+            foreach (dynamic1 option in Options)
             {
                 WriteLiteral("    <tr>\r\n        <td>");
                 Write(option.Name);
@@ -54,7 +60,7 @@ namespace Contoso.Practices.ConsoleCommand.Commands
 
         public CommandAttribute CommandAttribute { get; set; }
 
-        public IEnumerable<dynamic> Options { get; set; }
+        public IEnumerable<dynamic1> Options { get; set; }
 
         private TextInfo TextInfo
         {

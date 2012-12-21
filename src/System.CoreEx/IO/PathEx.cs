@@ -30,7 +30,7 @@ namespace System.IO
     /// <summary>
     /// PathEx
     /// </summary>
-    public static class PathEx
+    public static partial class PathEx
     {
         /// <summary>
         /// Gets the type of the MIME.

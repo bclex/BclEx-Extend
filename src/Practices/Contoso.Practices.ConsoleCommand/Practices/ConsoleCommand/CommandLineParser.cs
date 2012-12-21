@@ -45,18 +45,9 @@ namespace Contoso.Practices.ConsoleCommand
                 if (property.PropertyType.GetInterface(typeof(ICollection<>), typeof(IDictionary<,>)) != null)
                 {
                     var valueAsString = (value as string);
-                    dynamic obj = property.GetValue(command, null);
+                    object obj = property.GetValue(command, null);
                     foreach (string item in valueAsString.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries))
-                        if (property.PropertyType.GetInterface(typeof(IDictionary<,>)) != null)
-                        {
-                            int index = item.IndexOf("=", StringComparison.OrdinalIgnoreCase);
-                            if (index > -1)
-                                obj.Add(item.Substring(0, index), item.Substring(index + 1));
-                            else
-                                obj.Add(item, item);
-                        }
-                        else
-                            obj.Add(item);
+                        AssignValueToObj(property, obj, item);
                 }
                 else if (property.PropertyType.IsEnum)
                 {
@@ -69,6 +60,40 @@ namespace Contoso.Practices.ConsoleCommand
             catch (CommandLineException) { throw; }
             catch { throw new CommandLineException(Local.InvalidOptionValueError, new object[] { option, value }); }
         }
+
+#if CLR4
+        private static void AssignValueToObj(PropertyInfo property, dynamic obj, string item)
+        {
+            if (property.PropertyType.GetInterface(typeof(IDictionary<,>)) != null)
+            {
+                int index = item.IndexOf("=", StringComparison.OrdinalIgnoreCase);
+                if (index > -1)
+                    obj.Add(item.Substring(0, index), item.Substring(index + 1));
+                else
+                    obj.Add(item, item);
+            }
+            else
+                obj.Add(item);
+        }
+#else
+        private static void AssignValueToObj(PropertyInfo property, object obj, string item)
+        {
+            IDictionary<string, string> objAsDictionary;
+            ICollection<string> objAsCollection;
+            if ((objAsDictionary = (obj as IDictionary<string, string>)) != null)
+            {
+                int index = item.IndexOf("=", StringComparison.OrdinalIgnoreCase);
+                if (index > -1)
+                    objAsDictionary.Add(item.Substring(0, index), item.Substring(index + 1));
+                else
+                    objAsDictionary.Add(item, item);
+            }
+            else if ((objAsCollection = (obj as ICollection<string>)) != null)
+                objAsCollection.Add(item);
+            else
+                throw new InvalidOperationException();
+        }
+#endif
 
         /// <summary>
         /// Extracts the options.
@@ -128,7 +153,7 @@ namespace Contoso.Practices.ConsoleCommand
             match = r.FirstOrDefault(x => value.Equals(getDisplayName(x), StringComparison.OrdinalIgnoreCase) || value.Equals(getAltName(x), StringComparison.OrdinalIgnoreCase));
             if (match != null)
                 return match;
-            throw new CommandLineException(string.Format(CultureInfo.CurrentCulture, Local.AmbiguousCommand, new object[] { value, string.Join(" ", source.Select(x => getDisplayName(x))) }));
+            throw new CommandLineException(string.Format(CultureInfo.CurrentCulture, Local.AmbiguousCommand, new object[] { value, string.Join(" ", source.Select(x => getDisplayName(x)).ToArray()) }));
         }
 
         /// <summary>

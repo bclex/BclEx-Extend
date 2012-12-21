@@ -192,7 +192,7 @@ namespace System
                 return 1;
             var tuple = (other as Tuple<T1>);
             if (tuple == null)
-                throw new ArgumentException(EnvironmentEx2.GetResourceString("ArgumentException_TupleIncorrectType", new object[] { base.GetType().ToString() }), "other");
+                throw new ArgumentException(EnvironmentEx.GetResourceString("ArgumentException_TupleIncorrectType", new object[] { base.GetType().ToString() }), "other");
             return comparer.Compare(this._Item1, tuple._Item1);
         }
 
@@ -307,7 +307,7 @@ namespace System
                 return 1;
             var tuple = (other as Tuple<T1, T2>);
             if (tuple == null)
-                throw new ArgumentException(EnvironmentEx2.GetResourceString("ArgumentException_TupleIncorrectType", new object[] { base.GetType().ToString() }), "other");
+                throw new ArgumentException(EnvironmentEx.GetResourceString("ArgumentException_TupleIncorrectType", new object[] { base.GetType().ToString() }), "other");
             int num = 0;
             num = comparer.Compare(_Item1, tuple._Item1);
             if (num != 0)
@@ -435,7 +435,7 @@ namespace System
                 return 1;
             var tuple = (other as Tuple<T1, T2, T3>);
             if (tuple == null)
-                throw new ArgumentException(EnvironmentEx2.GetResourceString("ArgumentException_TupleIncorrectType", new object[] { base.GetType().ToString() }), "other");
+                throw new ArgumentException(EnvironmentEx.GetResourceString("ArgumentException_TupleIncorrectType", new object[] { base.GetType().ToString() }), "other");
             int num = 0;
             num = comparer.Compare(_Item1, tuple._Item1);
             if (num != 0)
@@ -581,7 +581,7 @@ namespace System
                 return 1;
             var tuple = (other as Tuple<T1, T2, T3, T4>);
             if (tuple == null)
-                throw new ArgumentException(EnvironmentEx2.GetResourceString("ArgumentException_TupleIncorrectType", new object[] { base.GetType().ToString() }), "other");
+                throw new ArgumentException(EnvironmentEx.GetResourceString("ArgumentException_TupleIncorrectType", new object[] { base.GetType().ToString() }), "other");
             int num = 0;
             num = comparer.Compare(_Item1, tuple._Item1);
             if (num != 0)
@@ -745,7 +745,7 @@ namespace System
                 return 1;
             var tuple = (other as Tuple<T1, T2, T3, T4, T5>);
             if (tuple == null)
-                throw new ArgumentException(EnvironmentEx2.GetResourceString("ArgumentException_TupleIncorrectType", new object[] { base.GetType().ToString() }), "other");
+                throw new ArgumentException(EnvironmentEx.GetResourceString("ArgumentException_TupleIncorrectType", new object[] { base.GetType().ToString() }), "other");
             int num = 0;
             num = comparer.Compare(_Item1, tuple._Item1);
             if (num != 0)
@@ -927,7 +927,7 @@ namespace System
                 return 1;
             var tuple = (other as Tuple<T1, T2, T3, T4, T5, T6>);
             if (tuple == null)
-                throw new ArgumentException(EnvironmentEx2.GetResourceString("ArgumentException_TupleIncorrectType", new object[] { base.GetType().ToString() }), "other");
+                throw new ArgumentException(EnvironmentEx.GetResourceString("ArgumentException_TupleIncorrectType", new object[] { base.GetType().ToString() }), "other");
             int num = 0;
             num = comparer.Compare(_Item1, tuple._Item1);
             if (num != 0)
@@ -1127,7 +1127,7 @@ namespace System
                 return 1;
             var tuple = other as Tuple<T1, T2, T3, T4, T5, T6, T7>;
             if (tuple == null)
-                throw new ArgumentException(EnvironmentEx2.GetResourceString("ArgumentException_TupleIncorrectType", new object[] { base.GetType().ToString() }), "other");
+                throw new ArgumentException(EnvironmentEx.GetResourceString("ArgumentException_TupleIncorrectType", new object[] { base.GetType().ToString() }), "other");
             int num = 0;
             num = comparer.Compare(_Item1, tuple._Item1);
             if (num != 0)
@@ -1309,7 +1309,7 @@ namespace System
         public Tuple(T1 item1, T2 item2, T3 item3, T4 item4, T5 item5, T6 item6, T7 item7, TRest rest)
         {
             if (!(rest is ITuple))
-                throw new ArgumentException(EnvironmentEx2.GetResourceString("ArgumentException_TupleLastArgumentNotATuple"));
+                throw new ArgumentException(EnvironmentEx.GetResourceString("ArgumentException_TupleLastArgumentNotATuple"));
             _Item1 = item1;
             _Item2 = item2;
             _Item3 = item3;
@@ -1346,7 +1346,7 @@ namespace System
                 return 1;
             var tuple = (other as Tuple<T1, T2, T3, T4, T5, T6, T7, TRest>);
             if (tuple == null)
-                throw new ArgumentException(EnvironmentEx2.GetResourceString("ArgumentException_TupleIncorrectType", new object[] { base.GetType().ToString() }), "other");
+                throw new ArgumentException(EnvironmentEx.GetResourceString("ArgumentException_TupleIncorrectType", new object[] { base.GetType().ToString() }), "other");
             int num = 0;
             num = comparer.Compare(_Item1, tuple._Item1);
             if (num != 0)

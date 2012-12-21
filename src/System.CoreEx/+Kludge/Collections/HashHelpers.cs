@@ -20,7 +20,7 @@ namespace System.Collections
         internal static int GetPrime(int min)
         {
             if (min < 0)
-                throw new ArgumentException(EnvironmentEx2.GetResourceString("Arg_HTCapacityOverflow"));
+                throw new ArgumentException(EnvironmentEx.GetResourceString("Arg_HTCapacityOverflow"));
             for (int i = 0; i < primes.Length; i++)
             {
                 int num2 = primes[i];

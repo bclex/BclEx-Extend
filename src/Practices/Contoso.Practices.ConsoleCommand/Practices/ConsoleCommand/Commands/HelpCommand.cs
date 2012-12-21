@@ -154,7 +154,7 @@ namespace Contoso.Practices.ConsoleCommand.Commands
                 var template = new HelpCommandMarkdownTemplate
                 {
                     CommandAttribute = command.CommandAttribute,
-                    Options = _commandManager.GetCommandOptions(command).Select(x => new { Name = x.Value.Name, Description = x.Key.Description })
+                    Options = _commandManager.GetCommandOptions(command).Select(x => new HelpCommandMarkdownTemplate.dynamic1 { Name = x.Value.Name, Description = x.Key.Description })
                 };
                 Console.WriteLine(template.TransformText());
             }

@@ -25,6 +25,9 @@
     </references>
   </metadata>
   <files>
+    <file src="lib\Mef\net35\System.ComponentModel.Composition.dll" target="lib\net35" />
+    <file src="lib\Mef\net35\System.ComponentModel.Composition.xml" target="lib\net35" />
+    <file src="build\3.5\Contoso.CoreEx.xml" target="lib\net35" />
     <file src="build\3.5\Contoso.CoreEx.dll" target="lib\net35" />
     <file src="build\3.5\Contoso.CoreEx.xml" target="lib\net35" />
     <file src="build\3.5\System.CoreEx.dll" target="lib\net35" />

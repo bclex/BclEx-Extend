@@ -69,7 +69,7 @@ namespace Contoso.Practices.ConsoleCommand
             command = r.FirstOrDefault(x => commandName.Equals(x.CommandAttribute.CommandName, StringComparison.OrdinalIgnoreCase) || commandName.Equals(x.CommandAttribute.AltName, StringComparison.OrdinalIgnoreCase));
             if (command != null)
                 return command;
-            throw new CommandLineException(string.Format(CultureInfo.CurrentCulture, Local.AmbiguousCommand, new object[] { commandName, string.Join(" ", r.Select(x => x.CommandAttribute.CommandName)) }));
+            throw new CommandLineException(string.Format(CultureInfo.CurrentCulture, Local.AmbiguousCommand, new object[] { commandName, string.Join(" ", r.Select(x => x.CommandAttribute.CommandName).ToArray()) }));
         }
 
         /// <summary>

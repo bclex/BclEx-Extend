@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("System.Text.Lalr")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("System.Text.Lalr")]
-[assembly: AssemblyCopyright("Copyright © Contoso 2012")]
+[assembly: AssemblyCompany("Contoso")]
+[assembly: AssemblyProduct("BclEx-Extend")]
+[assembly: AssemblyCopyright("Copyright © Contoso 2010")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

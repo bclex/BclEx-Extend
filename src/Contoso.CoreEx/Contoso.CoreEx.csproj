@@ -75,6 +75,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.XML" />
+    <Reference Include="System.Data" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="+ToFile\MappingExpression.cs" />
@@ -111,6 +112,33 @@
     <Compile Include="Compression\RangeCoder\BitTreeEncoder.cs" />
     <Compile Include="Compression\RangeCoder\Decoder.cs" />
     <Compile Include="Compression\RangeCoder\Encoder.cs" />
+    <Compile Include="IO\Text.1\CsvEmitContext.cs" />
+    <Compile Include="IO\Text.1\CsvEmitField.cs" />
+    <Compile Include="IO\Text.1\CsvEmitFieldCollection.cs" />
+    <Compile Include="IO\Text.1\CsvEmitFieldFormatter.cs" />
+    <Compile Include="IO\Text.1\CsvEmitFilterMode.cs" />
+    <Compile Include="IO\Text.1\CsvEmitOptions.cs" />
+    <Compile Include="IO\Text.1\CsvEmitter.cs" />
+    <Compile Include="IO\Text\CsvCachedReader+CsvBindingList.cs" />
+    <Compile Include="IO\Text\CsvCachedReader+CsvPropertyDescriptor.cs" />
+    <Compile Include="IO\Text\CsvCachedReader+CsvRecordComparer.cs" />
+    <Compile Include="IO\Text\CsvCachedReader.cs" />
+    <Compile Include="IO\Text\CsvParseErrorAction.cs" />
+    <Compile Include="IO\Text\CsvParseErrorEventArgs.cs" />
+    <Compile Include="IO\Text\CsvReader+DataReaderValidations.cs" />
+    <Compile Include="IO\Text\CsvReader+IDataReader.cs" />
+    <Compile Include="IO\Text\CsvReader+RecordEnumerator.cs" />
+    <Compile Include="IO\Text\CsvReader.cs" />
+    <Compile Include="IO\Text\CsvReaderSettings.cs" />
+    <Compile Include="IO\Text\CsvValueTrimmings.cs" />
+    <Compile Include="IO\Text\MalformedCsvException.cs" />
+    <Compile Include="IO\Text\MissingCsvFieldAction.cs" />
+    <Compile Include="IO\Text\MissingCsvFieldException.cs" />
+    <Compile Include="Local.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Local.resx</DependentUpon>
+    </Compile>
     <Compile Include="Net\FtpFile.cs" />
     <Compile Include="Net\FtpClient.cs" />
     <Compile Include="Net\IFileTransferClient.cs" />
@@ -168,6 +196,12 @@
       <Project>{BC3540FC-4C95-448C-9A91-B1F9F597FA51}</Project>
       <Name>System.CoreEx</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Local.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Local.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

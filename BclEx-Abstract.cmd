@@ -1,11 +1,12 @@
 @echo off
-echo Refreshing packages:
 pushd ..\BclEx-Abstract
+echo Building BclEx-Abstract:
 PowerShell -Command ".\psake.ps1"
 popd
 
 ::
 echo BclEx-Abstract
+mkdir packages\BclEx-Abstract.1.0.0
 pushd packages\BclEx-Abstract.1.0.0
 set SRC=..\..\..\BclEx-Abstract\Release
 xcopy %SRC%\BclEx-Abstract.1.0.0.nupkg . /Y/Q

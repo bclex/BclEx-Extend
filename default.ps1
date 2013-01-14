@@ -29,8 +29,8 @@ task Init -depends Clean {
 }
 
 task Compile -depends Init {
-	msbuild $sln_file /p:"OutDir=$35_build_dir;Configuration=$35_config"
-	msbuild $sln_file /target:Rebuild /p:"OutDir=$40_build_dir;Configuration=$40_config"
+	msbuild $sln_file /p:"OutDir=$35_build_dir;Configuration=$35_config" /m
+	msbuild $sln_file /target:Rebuild /p:"OutDir=$40_build_dir;Configuration=$40_config" /m
 }
 
 task Test -depends Compile -precondition { return $run_tests } {

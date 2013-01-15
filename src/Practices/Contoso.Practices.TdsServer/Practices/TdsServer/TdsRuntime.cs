@@ -31,6 +31,9 @@ using System.Diagnostics;
 
 namespace Contoso.Practices.TdsServer
 {
+    /// <summary>
+    /// TdsRuntime
+    /// </summary>
     public partial class TdsRuntime
     {
         private static TdsRuntime _theRuntime;
@@ -57,6 +60,9 @@ namespace Contoso.Practices.TdsServer
             catch (Exception exception) { InitializationException = exception; }
         }
 
+        /// <summary>
+        /// Closes this instance.
+        /// </summary>
         [SecurityPermission(SecurityAction.Demand, Unrestricted = true)]
         public static void Close()
         {

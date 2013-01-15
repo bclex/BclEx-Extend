@@ -33,6 +33,9 @@ using System.Diagnostics;
 
 namespace Contoso.Practices.TdsServer
 {
+    /// <summary>
+    /// TdsContext
+    /// </summary>
     public partial class TdsContext
     {
         //private DateTime _timeoutStartTime;
@@ -71,6 +74,12 @@ namespace Contoso.Practices.TdsServer
             }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [thread abort on timeout].
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if [thread abort on timeout]; otherwise, <c>false</c>.
+        /// </value>
         public bool ThreadAbortOnTimeout
         {
             get { return Volatile.Read(ref _threadAbortOnTimeout); } //:kludge

@@ -81,15 +81,13 @@
   <ItemGroup>
     <Compile Include="+Kludge\Net\ValidationHelper.cs" />
     <Compile Include="+Kludge\Runtime\TargetedPatchingOptOutAttribute.cs" />
-    <Compile Include="+Kludge\Threading\Volatile.cs" />
-    <Compile Include="Practices\TdsServer\TdsRuntime.cs" />
-    <Compile Include="Practices\TdsServer\TdsContext+Cancellable.cs" />
-    <Compile Include="Practices\TdsServer\TdsRequest.cs" />
+    <None Include="Practices\TdsServer\TdsRuntime.cs" />
+    <None Include="Practices\TdsServer\TdsContext+Cancellable.cs" />
+    <None Include="Practices\TdsServer\TdsRequest.cs" />
     <Compile Include="Net\LazyAsyncResult.cs" />
-    <Compile Include="Net\Util\CancellationTokenHelper.cs" />
-    <Compile Include="Net\Util\CancellationTokenSource.cs" />
+    <None Include="Net\Util\CancellationTokenHelper.cs" />
     <Compile Include="Net\TdsException.cs" />
-    <Compile Include="Practices\TdsServer\TdsContext.cs" />
+    <None Include="Practices\TdsServer\TdsContext.cs" />
     <Compile Include="SR+Contoso.cs" />
     <Compile Include="SR+System.cs" />
     <Compile Include="Local.Designer.cs">
@@ -101,10 +99,10 @@
     <Compile Include="Net\SimpleTdsListenerContext.cs" />
     <Compile Include="+Kludge\Net\Logging.cs" />
     <Compile Include="Net\TdsListener.cs" />
-    <Compile Include="Practices\TdsServer\TdsListenerHost+CancelModuleException.cs" />
-    <Compile Include="Practices\TdsServer\RequestQueue.cs" />
-    <Compile Include="Practices\TdsServer\RequestTimeoutManager.cs" />
-    <Compile Include="Practices\TdsServer\TdsListenerHost.cs" />
+    <None Include="Practices\TdsServer\TdsListenerHost+CancelModuleException.cs" />
+    <None Include="Practices\TdsServer\RequestQueue.cs" />
+    <None Include="Practices\TdsServer\RequestTimeoutManager.cs" />
+    <None Include="Practices\TdsServer\TdsListenerHost.cs" />
     <Compile Include="Net\Util\DoubleLink.cs" />
     <Compile Include="Net\Util\DoubleLinkList.cs" />
     <Compile Include="Net\Util\DoubleLinkListEnumerator.cs" />
@@ -126,7 +124,12 @@
     <None Include="BclEx.4.snk" />
     <None Include="BclEx.snk" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\..\System.CoreEx\System.CoreEx.csproj">
+      <Project>{BC3540FC-4C95-448C-9A91-B1F9F597FA51}</Project>
+      <Name>System.CoreEx</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

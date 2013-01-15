@@ -29,29 +29,62 @@ using System.Runtime.Serialization;
 
 namespace System.Net
 {
+    /// <summary>
+    /// TdsException
+    /// </summary>
     public class TdsException : ExternalException
     {
         private int _tdsCode;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TdsException"/> class.
+        /// </summary>
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public TdsException() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TdsException"/> class.
+        /// </summary>
+        /// <param name="message">The message.</param>
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public TdsException(string message)
             : base(message) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TdsException"/> class.
+        /// </summary>
+        /// <param name="tdsCode">The TDS code.</param>
+        /// <param name="message">The message.</param>
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public TdsException(int tdsCode, string message)
             : base(message)
         {
             _tdsCode = tdsCode;
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TdsException"/> class.
+        /// </summary>
+        /// <param name="info">The object that holds the serialized object data.</param>
+        /// <param name="context">The contextual information about the source or destination.</param>
+        /// <exception cref="T:System.ArgumentNullException">
+        ///   <paramref name="info"/> is null. </exception>
         protected TdsException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             _tdsCode = info.GetInt32("_tdsCode");
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TdsException"/> class.
+        /// </summary>
+        /// <param name="message">The message.</param>
+        /// <param name="innerException">The inner exception.</param>
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public TdsException(string message, Exception innerException)
             : base(message, innerException) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TdsException"/> class.
+        /// </summary>
+        /// <param name="tdsCode">The TDS code.</param>
+        /// <param name="message">The message.</param>
+        /// <param name="innerException">The inner exception.</param>
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public TdsException(int tdsCode, string message, Exception innerException)
             : base(message, innerException)

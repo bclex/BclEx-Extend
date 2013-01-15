@@ -37,6 +37,9 @@ namespace System.Net
         private TcpListener _tcpListener;
         private Thread _listenThread;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="SimpleTelnetServer"/> class.
+        /// </summary>
         public SimpleTelnetServer()
         {
             _tcpListener = new TcpListener(IPAddress.Any, 1433);

@@ -34,6 +34,9 @@ using System.Threading.Tasks;
 
 namespace System.Net
 {
+    /// <summary>
+    /// TdsListener
+    /// </summary>
     public partial class TdsListener
     {
         private bool _active;
@@ -41,6 +44,10 @@ namespace System.Net
         private Socket _serverSocket;
         private IPEndPoint _serverSocketEP;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TdsListener"/> class.
+        /// </summary>
+        /// <param name="localEP">The local EP.</param>
         public TdsListener(IPEndPoint localEP)
         {
             if (Logging.On)
@@ -52,6 +59,11 @@ namespace System.Net
             if (Logging.On)
                 Logging.Exit(Logging.Sockets, this, "TdsListener", (string)null);
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TdsListener"/> class.
+        /// </summary>
+        /// <param name="localaddr">The localaddr.</param>
+        /// <param name="port">The port.</param>
         public TdsListener(IPAddress localaddr, int port)
         {
             if (Logging.On)
@@ -66,6 +78,10 @@ namespace System.Net
                 Logging.Exit(Logging.Sockets, this, "TdsListener", (string)null);
         }
 
+        /// <summary>
+        /// Accepts the TDS context.
+        /// </summary>
+        /// <returns></returns>
         public TdsListenerContext AcceptTdsContext()
         {
             if (Logging.On)
@@ -78,6 +94,12 @@ namespace System.Net
             return retObject;
         }
 
+        /// <summary>
+        /// Begins the accept TDS context.
+        /// </summary>
+        /// <param name="callback">The callback.</param>
+        /// <param name="state">The state.</param>
+        /// <returns></returns>
         [HostProtection(SecurityAction.LinkDemand, ExternalThreading = true)]
         public IAsyncResult BeginAcceptTdsContext(AsyncCallback callback, object state)
         {
@@ -91,6 +113,11 @@ namespace System.Net
             return result;
         }
 
+        /// <summary>
+        /// Ends the accept TDS context.
+        /// </summary>
+        /// <param name="asyncResult">The async result.</param>
+        /// <returns></returns>
         public TdsListenerContext EndAcceptTdsContext(IAsyncResult asyncResult)
         {
             if (Logging.On)
@@ -107,6 +134,10 @@ namespace System.Net
             return new TdsListenerContext(retObject);
         }
 
+        /// <summary>
+        /// Pendings this instance.
+        /// </summary>
+        /// <returns></returns>
         public bool Pending()
         {
             if (!_active)
@@ -114,12 +145,19 @@ namespace System.Net
             return _serverSocket.Poll(0, SelectMode.SelectRead);
         }
 
+        /// <summary>
+        /// Starts this instance.
+        /// </summary>
         [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
         public void Start()
         {
             Start(0x7fffffff);
         }
 
+        /// <summary>
+        /// Starts the specified backlog.
+        /// </summary>
+        /// <param name="backlog">The backlog.</param>
         public void Start(int backlog)
         {
             if (backlog > 0x7fffffff || backlog < 0)
@@ -148,6 +186,9 @@ namespace System.Net
             }
         }
 
+        /// <summary>
+        /// Stops this instance.
+        /// </summary>
         public void Stop()
         {
             if (Logging.On)
@@ -165,12 +206,24 @@ namespace System.Net
                 Logging.Exit(Logging.Sockets, this, "Stop", (string)null);
         }
 
+        /// <summary>
+        /// Gets a value indicating whether this instance is listening.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is listening; otherwise, <c>false</c>.
+        /// </value>
         public bool IsListening
         {
             [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
             get { return _active; }
         }
 
+        /// <summary>
+        /// Gets or sets a value indicating whether [exclusive address use].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [exclusive address use]; otherwise, <c>false</c>.
+        /// </value>
         public bool ExclusiveAddressUse
         {
             get { return _serverSocket.ExclusiveAddressUse; }
@@ -183,6 +236,9 @@ namespace System.Net
             }
         }
 
+        /// <summary>
+        /// Gets the local endpoint.
+        /// </summary>
         public EndPoint LocalEndpoint
         {
             get
@@ -193,6 +249,9 @@ namespace System.Net
             }
         }
 
+        /// <summary>
+        /// Gets the server.
+        /// </summary>
         public Socket Server
         {
             [TargetedPatchingOptOut("Performance critical to inline this type of method across NGen image boundaries")]
@@ -200,12 +259,20 @@ namespace System.Net
         }
 
 #if CLR4
+        /// <summary>
+        /// Accepts the TDS context async.
+        /// </summary>
+        /// <returns></returns>
         [HostProtection(SecurityAction.LinkDemand, ExternalThreading = true)]
         public Task<TdsListenerContext> AcceptTdsContextAsync()
         {
             return Task<TdsListenerContext>.Factory.FromAsync(new Func<AsyncCallback, object, IAsyncResult>(BeginAcceptTdsContext), new Func<IAsyncResult, TdsListenerContext>(EndAcceptTdsContext), null);
         }
 
+        /// <summary>
+        /// Allows the nat traversal.
+        /// </summary>
+        /// <param name="allowed">if set to <c>true</c> [allowed].</param>
         public void AllowNatTraversal(bool allowed)
         {
             if (_active)
@@ -216,6 +283,11 @@ namespace System.Net
                 _serverSocket.SetIPProtectionLevel(IPProtectionLevel.EdgeRestricted);
         }
 
+        /// <summary>
+        /// Creates the specified port.
+        /// </summary>
+        /// <param name="port">The port.</param>
+        /// <returns></returns>
         public static TdsListener Create(int port)
         {
             if (Logging.On)

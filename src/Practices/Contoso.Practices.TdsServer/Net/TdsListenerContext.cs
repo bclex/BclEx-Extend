@@ -31,6 +31,9 @@ using System.Runtime;
 namespace System.Net
 {
     // HttpWorkerRequest
+    /// <summary>
+    /// TdsListenerContext
+    /// </summary>
     public partial class TdsListenerContext
     {
         private DateTime _startTime;
@@ -57,16 +60,30 @@ namespace System.Net
             _startTime = DateTime.UtcNow;
         }
 
+        /// <summary>
+        /// Determines whether [is client connected].
+        /// </summary>
+        /// <returns>
+        ///   <c>true</c> if [is client connected]; otherwise, <c>false</c>.
+        /// </returns>
         public virtual bool IsClientConnected()
         {
             return _clientSocket.IsBound;
         }
 
+        /// <summary>
+        /// Gets the remote address.
+        /// </summary>
+        /// <returns></returns>
         public virtual string GetRemoteAddress()
         {
             return _clientSocket.RemoteEndPoint.ToString();
         }
 
+        /// <summary>
+        /// Gets the local address.
+        /// </summary>
+        /// <returns></returns>
         public virtual string GetLocalAddress()
         {
             return _clientSocket.LocalEndPoint.ToString();

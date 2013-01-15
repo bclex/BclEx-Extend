@@ -33,6 +33,9 @@ using Contoso.Practices.TdsServer;
 namespace Contoso.Practices.TdsServer
 {
     // HttpRuntime/HttpApplication
+    /// <summary>
+    /// TdsListenerHost
+    /// </summary>
     public partial class TdsListenerHost : IDisposable
     {
         private TdsListener _listener;
@@ -43,11 +46,26 @@ namespace Contoso.Practices.TdsServer
         //private static RequestTimeoutManager _timeoutManager;
         //private static int _activeHosts;
 
+        /// <summary>
+        /// State
+        /// </summary>
         public enum State
         {
+            /// <summary>
+            /// Closed
+            /// </summary>
             Closed,
+            /// <summary>
+            /// Closing
+            /// </summary>
             Closing,
+            /// <summary>
+            /// Opening
+            /// </summary>
             Opening,
+            /// <summary>
+            /// Opened
+            /// </summary>
             Opened
         }
 
@@ -55,6 +73,11 @@ namespace Contoso.Practices.TdsServer
         {
             ExecutionTimeout = new TimeSpan(0, 3, 0);
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TdsListenerHost"/> class.
+        /// </summary>
+        /// <param name="workerRequestType">Type of the worker request.</param>
+        /// <param name="localEP">The local EP.</param>
         public TdsListenerHost(Type workerRequestType, IPEndPoint localEP)
         {
             if (workerRequestType != null && !typeof(TdsListenerContext).IsAssignableFrom(workerRequestType))
@@ -62,6 +85,12 @@ namespace Contoso.Practices.TdsServer
             _listener = new TdsListener(localEP);
             _workerRequestType = workerRequestType;
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TdsListenerHost"/> class.
+        /// </summary>
+        /// <param name="workerRequestType">Type of the worker request.</param>
+        /// <param name="localaddr">The localaddr.</param>
+        /// <param name="port">The port.</param>
         public TdsListenerHost(Type workerRequestType, IPAddress localaddr, int port)
         {
             if (workerRequestType != null && !typeof(TdsListenerContext).IsAssignableFrom(workerRequestType))
@@ -70,15 +99,34 @@ namespace Contoso.Practices.TdsServer
             _workerRequestType = workerRequestType;
         }
 
+        /// <summary>
+        /// Gets or sets the execution timeout.
+        /// </summary>
+        /// <value>
+        /// The execution timeout.
+        /// </value>
         public static TimeSpan ExecutionTimeout { get; set; }
+        /// <summary>
+        /// Gets or sets a value indicating whether this instance is debugging enabled.
+        /// </summary>
+        /// <value>
+        /// 	<c>true</c> if this instance is debugging enabled; otherwise, <c>false</c>.
+        /// </value>
         public static bool IsDebuggingEnabled { get; set; }
 
+        /// <summary>
+        /// Performs application-defined tasks associated with freeing, releasing, or resetting unmanaged resources.
+        /// </summary>
         public virtual void Dispose()
         {
             Dispose(true);
             GC.SuppressFinalize(this);
         }
 
+        /// <summary>
+        /// Releases unmanaged and - optionally - managed resources
+        /// </summary>
+        /// <param name="disposing"><c>true</c> to release both managed and unmanaged resources; <c>false</c> to release only unmanaged resources.</param>
         public void Dispose(bool disposing)
         {
             if (_disposed)
@@ -96,11 +144,20 @@ namespace Contoso.Practices.TdsServer
             _disposed = true;
         }
 
+        /// <summary>
+        /// Gets the listener.
+        /// </summary>
         public TdsListener Listener
         {
             get { return _listener; }
         }
 
+        /// <summary>
+        /// Gets the state of the run.
+        /// </summary>
+        /// <value>
+        /// The state of the run.
+        /// </value>
         public State RunState
         {
             get { return (State)Interlocked.Read(ref _runState); }

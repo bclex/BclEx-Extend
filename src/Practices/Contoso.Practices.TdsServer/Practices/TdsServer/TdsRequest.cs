@@ -28,6 +28,9 @@ using System.Runtime;
 
 namespace Contoso.Practices.TdsServer
 {
+    /// <summary>
+    /// TdsRequest
+    /// </summary>
     public class TdsRequest
     {
         private TdsListenerContext _wr;

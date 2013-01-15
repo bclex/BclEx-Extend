@@ -28,6 +28,9 @@ using System.Net;
 
 namespace Contoso.Practices.TdsServer
 {
+    /// <summary>
+    /// TdsContext
+    /// </summary>
     public partial class TdsContext
     {
         private TdsRequest _request;
@@ -35,6 +38,10 @@ namespace Contoso.Practices.TdsServer
         internal readonly object ThreadContextId;
         private TdsListenerContext _wr;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TdsContext"/> class.
+        /// </summary>
+        /// <param name="wr">The wr.</param>
         public TdsContext(TdsListenerContext wr)
         {
             _timeoutStartTimeUtcTicks = -1L;
@@ -45,6 +52,10 @@ namespace Contoso.Practices.TdsServer
             Init(new TdsRequest(wr, this));
 
         }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="TdsContext"/> class.
+        /// </summary>
+        /// <param name="request">The request.</param>
         public TdsContext(TdsRequest request)
         {
             _timeoutStartTimeUtcTicks = -1L;
@@ -61,6 +72,9 @@ namespace Contoso.Practices.TdsServer
             _utcTimestamp = DateTime.UtcNow;
         }
 
+        /// <summary>
+        /// Gets the request.
+        /// </summary>
         public TdsRequest Request
         {
             get { return _request; }

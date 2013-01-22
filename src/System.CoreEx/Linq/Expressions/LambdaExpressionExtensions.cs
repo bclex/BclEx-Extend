@@ -44,7 +44,7 @@ namespace System.Linq.Expressions
         public static MemberInfo FindPropertySlim(this LambdaExpression lambdaExpression)
         {
             var operand = (Expression)lambdaExpression;
-            bool flag = false;
+            var flag = false;
             while (!flag)
             {
                 MemberExpression expression2;
@@ -59,7 +59,7 @@ namespace System.Linq.Expressions
                     if (nodeType == ExpressionType.MemberAccess)
                     {
                         expression2 = (MemberExpression)operand;
-                        if ((expression2.Expression.NodeType != ExpressionType.Parameter) && (expression2.Expression.NodeType != ExpressionType.Convert))
+                        if (expression2.Expression.NodeType != ExpressionType.Parameter && expression2.Expression.NodeType != ExpressionType.Convert)
                             throw new ArgumentException(string.Format("Expression '{0}' must resolve to top-level member.", lambdaExpression), "lambdaExpression");
                         return expression2.Member;
                     }

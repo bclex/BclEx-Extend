@@ -32,7 +32,7 @@ namespace System.ComponentModel.DataAnnotations
     [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = false)]
     public class RequiredNullIfAttribute : ValidationAttribute
     {
-        private static readonly Comparer s_comparer = Comparer.Default;
+        private static readonly Comparer _comparer = Comparer.Default;
 
         private object _nullValue;
 
@@ -55,9 +55,9 @@ namespace System.ComponentModel.DataAnnotations
         /// </returns>
         public override bool IsValid(object value)
         {
-            if ((value == null) || (s_comparer.Compare(_nullValue, value) == 0))
+            if (value == null || _comparer.Compare(_nullValue, value) == 0)
                 return false;
-            string text = (value as string);
+            var text = (value as string);
             return (text != null ? (text.Trim().Length != 0) : true);
         }
     }

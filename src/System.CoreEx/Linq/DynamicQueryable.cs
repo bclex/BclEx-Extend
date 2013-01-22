@@ -40,7 +40,7 @@ namespace System.Linq
                 throw new ArgumentNullException("source");
             if (predicate == null)
                 throw new ArgumentNullException("predicate");
-            LambdaExpression lambda = DynamicExpression.ParseLambda(source.ElementType, typeof(bool), predicate, values);
+            var lambda = DynamicExpression.ParseLambda(source.ElementType, typeof(bool), predicate, values);
             return source.Provider.CreateQuery(
                 Expression.Call(
                     typeof(Queryable), "Where",
@@ -61,7 +61,7 @@ namespace System.Linq
                 throw new ArgumentNullException("source");
             if (selector == null)
                 throw new ArgumentNullException("selector");
-            LambdaExpression lambda = DynamicExpression.ParseLambda(source.ElementType, null, selector, values);
+            var lambda = DynamicExpression.ParseLambda(source.ElementType, null, selector, values);
             return source.Provider.CreateQuery(
                 Expression.Call(
                     typeof(Queryable), "Select",

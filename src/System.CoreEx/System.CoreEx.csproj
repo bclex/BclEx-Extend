@@ -126,6 +126,7 @@
     <None Include="+Kludge\Threading+Cancellation\SparselyPopulatedArrayAddInfo.cs" />
     <Compile Include="+Kludge\Threading\Volatile.cs" />
     <Compile Include="+Kludge\Tuple.cs" />
+    <Compile Include="ComponentModel\DataAnnotations\RequiredIfAttribute.cs" />
     <Compile Include="ComponentModel\DataAnnotations\DataAnnotationsResources.cs" />
     <Compile Include="ComponentModel\DataAnnotations\DataTypeExAttribute.cs" />
     <Compile Include="ComponentModel\DataAnnotations\RequiredNullIfAttribute.cs" />

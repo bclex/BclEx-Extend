@@ -90,6 +90,15 @@ namespace System.Runtime.InteropServices
             public string lpProvider = null;
         }
 
+        /// <summary>
+        /// Tries the map network drive.
+        /// </summary>
+        /// <param name="unc">The unc.</param>
+        /// <param name="drive">The drive.</param>
+        /// <param name="user">The user.</param>
+        /// <param name="password">The password.</param>
+        /// <param name="errorMessage">The error message.</param>
+        /// <returns></returns>
         public static bool TryMapNetworkDrive(string unc, string drive, string user, string password, out string errorMessage)
         {
             var errorCode = WNetAddConnection2(new NETRESOURCE

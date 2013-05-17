@@ -65,6 +65,10 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\BclEx-Abstract.1.0.0\lib\net35\System.Abstract.dll</HintPath>
     </Reference>
+    <Reference Include="System.Abstract.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=725aceb8081535f0, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\BclEx-Abstract.1.0.0\lib\net35\System.Abstract.Core.dll</HintPath>
+    </Reference>
     <Reference Include="System.ComponentModel.Composition">
       <HintPath>..\..\..\lib\Mef\net35\System.ComponentModel.Composition.dll</HintPath>
     </Reference>
@@ -73,6 +77,10 @@
     <Reference Include="System.Abstract, Version=1.0.0.0, Culture=neutral, PublicKeyToken=28bb8282d82eb63f, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\packages\BclEx-Abstract.1.0.0\lib\net40\System.Abstract.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Abstract.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=28bb8282d82eb63f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\packages\BclEx-Abstract.1.0.0\lib\net40\System.Abstract.Core.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.ComponentModel.Composition" />

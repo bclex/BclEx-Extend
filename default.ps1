@@ -74,9 +74,17 @@ task Release -depends Dependency, Compile, Test {
 }
 
 task Package -depends Release {
-	$spec_files = @(Get-ChildItem $packageinfo_dir)
+	$spec_files = @(Get-ChildItem $packageinfo_dir -include *.nuspec -recurse)
 	foreach ($spec in $spec_files)
 	{
 		& $tools_dir\NuGet.exe pack $spec.FullName -o $release_dir -Version $version -Symbols -BasePath $base_dir
+	}
+}
+
+task Push -depends Package {
+	$spec_files = @(Get-ChildItem $release_dir -include *.nupkg -recurse)
+	foreach ($spec in $spec_files)
+	{
+		& $tools_dir\NuGet.exe push $spec.FullName -source "http://nuget.org/"
 	}
 }

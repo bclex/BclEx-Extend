@@ -23,33 +23,33 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Collections;
-using System.Linq;
-namespace System.ComponentModel.DataAnnotations
-{
-    /// <summary>
-    /// RequiredIfAttribute
-    /// </summary>
-    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
-    public class RequiredIfAttribute : ValidationAttribute
-    {
-        private readonly string _condition;
+//using System.Collections;
+//using System.Linq;
+//namespace System.ComponentModel.DataAnnotations
+//{
+//    /// <summary>
+//    /// RequiredIfAttribute
+//    /// </summary>
+//    [AttributeUsage(AttributeTargets.Field | AttributeTargets.Property, AllowMultiple = true)]
+//    public class RequiredIfAttribute : ValidationAttribute
+//    {
+//        private readonly string _condition;
 
-        public RequiredIfAttribute(string condition)
-        {
-            _condition = condition;
-        }
+//        public RequiredIfAttribute(string condition)
+//        {
+//            _condition = condition;
+//        }
 
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
-        {
-            var conditionFunction = CreateExpression(validationContext.ObjectType, _condition);
-            return ((bool)conditionFunction.DynamicInvoke(validationContext.ObjectInstance) && value == null ? new ValidationResult(FormatErrorMessage(null)) : null);
-        }
+//        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+//        {
+//            var conditionFunction = CreateExpression(validationContext.ObjectType, _condition);
+//            return ((bool)conditionFunction.DynamicInvoke(validationContext.ObjectInstance) && value == null ? new ValidationResult(FormatErrorMessage(null)) : null);
+//        }
 
-        private Delegate CreateExpression(Type objectType, string expression)
-        {
-            var lambdaExpression = DynamicExpression.ParseLambda(objectType, typeof(bool), expression);
-            return lambdaExpression.Compile();
-        }
-    }
-}
+//        private Delegate CreateExpression(Type objectType, string expression)
+//        {
+//            var lambdaExpression = DynamicExpression.ParseLambda(objectType, typeof(bool), expression);
+//            return lambdaExpression.Compile();
+//        }
+//    }
+//}

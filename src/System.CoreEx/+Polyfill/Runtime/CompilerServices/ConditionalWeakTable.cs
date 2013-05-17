@@ -395,7 +395,7 @@ namespace System.Runtime.CompilerServices
         private void VerifyIntegrity()
         {
             if (_invalid)
-                throw new InvalidOperationException(EnvironmentEx.GetResourceString("CollectionCorrupted"));
+                throw new InvalidOperationException(SR.GetResourceString("CollectionCorrupted"));
         }
     }
 }

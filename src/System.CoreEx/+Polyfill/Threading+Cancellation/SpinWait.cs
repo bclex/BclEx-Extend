@@ -62,16 +62,16 @@ namespace System.Threading
         {
             var totalMilliseconds = (long)timeout.TotalMilliseconds;
             if (totalMilliseconds < -1L || totalMilliseconds > 0x7fffffffL)
-                throw new ArgumentOutOfRangeException("timeout", timeout, EnvironmentEx.GetResourceString("SpinWait_SpinUntil_TimeoutWrong"));
+                throw new ArgumentOutOfRangeException("timeout", timeout, SR.GetResourceString("SpinWait_SpinUntil_TimeoutWrong"));
             return SpinUntil(condition, (int)timeout.TotalMilliseconds);
         }
 
         public static bool SpinUntil(Func<bool> condition, int millisecondsTimeout)
         {
             if (millisecondsTimeout < -1)
-                throw new ArgumentOutOfRangeException("millisecondsTimeout", millisecondsTimeout, EnvironmentEx.GetResourceString("SpinWait_SpinUntil_TimeoutWrong"));
+                throw new ArgumentOutOfRangeException("millisecondsTimeout", millisecondsTimeout, SR.GetResourceString("SpinWait_SpinUntil_TimeoutWrong"));
             if (condition == null)
-                throw new ArgumentNullException("condition", EnvironmentEx.GetResourceString("SpinWait_SpinUntil_ArgumentNull"));
+                throw new ArgumentNullException("condition", SR.GetResourceString("SpinWait_SpinUntil_ArgumentNull"));
             var time = 0U;
             if (millisecondsTimeout != 0 && millisecondsTimeout != -1)
                 time = TimeoutHelper.GetTime();

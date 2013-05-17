@@ -38,9 +38,9 @@
 //            _Build = -1;
 //            _Revision = -1;
 //            if (major < 0)
-//                throw new ArgumentOutOfRangeException("major", EnvironmentEx.GetResourceString("ArgumentOutOfRange_Version"));
+//                throw new ArgumentOutOfRangeException("major", SR.GetResourceString("ArgumentOutOfRange_Version"));
 //            if (minor < 0)
-//                throw new ArgumentOutOfRangeException("minor", EnvironmentEx.GetResourceString("ArgumentOutOfRange_Version"));
+//                throw new ArgumentOutOfRangeException("minor", SR.GetResourceString("ArgumentOutOfRange_Version"));
 //            _Major = major;
 //            _Minor = minor;
 //        }
@@ -50,11 +50,11 @@
 //            _Build = -1;
 //            _Revision = -1;
 //            if (major < 0)
-//                throw new ArgumentOutOfRangeException("major", EnvironmentEx.GetResourceString("ArgumentOutOfRange_Version"));
+//                throw new ArgumentOutOfRangeException("major", SR.GetResourceString("ArgumentOutOfRange_Version"));
 //            if (minor < 0)
-//                throw new ArgumentOutOfRangeException("minor", EnvironmentEx.GetResourceString("ArgumentOutOfRange_Version"));
+//                throw new ArgumentOutOfRangeException("minor", SR.GetResourceString("ArgumentOutOfRange_Version"));
 //            if (build < 0)
-//                throw new ArgumentOutOfRangeException("build", EnvironmentEx.GetResourceString("ArgumentOutOfRange_Version"));
+//                throw new ArgumentOutOfRangeException("build", SR.GetResourceString("ArgumentOutOfRange_Version"));
 //            _Major = major;
 //            _Minor = minor;
 //            _Build = build;
@@ -65,13 +65,13 @@
 //            _Build = -1;
 //            _Revision = -1;
 //            if (major < 0)
-//                throw new ArgumentOutOfRangeException("major", EnvironmentEx.GetResourceString("ArgumentOutOfRange_Version"));
+//                throw new ArgumentOutOfRangeException("major", SR.GetResourceString("ArgumentOutOfRange_Version"));
 //            if (minor < 0)
-//                throw new ArgumentOutOfRangeException("minor", EnvironmentEx.GetResourceString("ArgumentOutOfRange_Version"));
+//                throw new ArgumentOutOfRangeException("minor", SR.GetResourceString("ArgumentOutOfRange_Version"));
 //            if (build < 0)
-//                throw new ArgumentOutOfRangeException("build", EnvironmentEx.GetResourceString("ArgumentOutOfRange_Version"));
+//                throw new ArgumentOutOfRangeException("build", SR.GetResourceString("ArgumentOutOfRange_Version"));
 //            if (revision < 0)
-//                throw new ArgumentOutOfRangeException("revision", EnvironmentEx.GetResourceString("ArgumentOutOfRange_Version"));
+//                throw new ArgumentOutOfRangeException("revision", SR.GetResourceString("ArgumentOutOfRange_Version"));
 //            _Major = major;
 //            _Minor = minor;
 //            _Build = build;
@@ -94,7 +94,7 @@
 //                return 1;
 //            var version2 = version as Version;
 //            if (version2 == null)
-//                throw new ArgumentException(EnvironmentEx.GetResourceString("Arg_MustBeVersion"));
+//                throw new ArgumentException(SR.GetResourceString("Arg_MustBeVersion"));
 //            if (_Major != version2._Major)
 //            {
 //                if (_Major > version2._Major)
@@ -234,13 +234,13 @@
 //                    return (_Major + "." + _Minor);
 //            }
 //            if (_Build == -1)
-//                throw new ArgumentException(EnvironmentEx.GetResourceString("ArgumentOutOfRange_Bounds_Lower_Upper", new object[] { "0", "2" }), "fieldCount");
+//                throw new ArgumentException(SR.GetResourceString("ArgumentOutOfRange_Bounds_Lower_Upper", new object[] { "0", "2" }), "fieldCount");
 //            if (fieldCount == 3)
 //                return string.Concat(new object[] { _Major, ".", _Minor, ".", _Build });
 //            if (_Revision == -1)
-//                throw new ArgumentException(EnvironmentEx.GetResourceString("ArgumentOutOfRange_Bounds_Lower_Upper", new object[] { "0", "3" }), "fieldCount");
+//                throw new ArgumentException(SR.GetResourceString("ArgumentOutOfRange_Bounds_Lower_Upper", new object[] { "0", "3" }), "fieldCount");
 //            if (fieldCount != 4)
-//                throw new ArgumentException(EnvironmentEx.GetResourceString("ArgumentOutOfRange_Bounds_Lower_Upper", new object[] { "0", "4" }), "fieldCount");
+//                throw new ArgumentException(SR.GetResourceString("ArgumentOutOfRange_Bounds_Lower_Upper", new object[] { "0", "4" }), "fieldCount");
 //            return string.Concat(new object[] { Major, ".", _Minor, ".", _Build, ".", _Revision });
 //        }
 
@@ -382,16 +382,16 @@
 //                    case Version.ParseFailureKind.ArgumentNullException:
 //                        return new ArgumentNullException(_argumentName);
 //                    case Version.ParseFailureKind.ArgumentException:
-//                        return new ArgumentException(EnvironmentEx.GetResourceString("Arg_VersionString"));
+//                        return new ArgumentException(SR.GetResourceString("Arg_VersionString"));
 //                    case Version.ParseFailureKind.ArgumentOutOfRangeException:
-//                        return new ArgumentOutOfRangeException(_exceptionArgument, EnvironmentEx.GetResourceString("ArgumentOutOfRange_Version"));
+//                        return new ArgumentOutOfRangeException(_exceptionArgument, SR.GetResourceString("ArgumentOutOfRange_Version"));
 //                    case Version.ParseFailureKind.FormatException:
 //                        try { int.Parse(_exceptionArgument, CultureInfo.InvariantCulture); }
 //                        catch (FormatException exception) { return exception; }
 //                        catch (OverflowException exception2) { return exception2; }
-//                        return new FormatException(EnvironmentEx.GetResourceString("Format_InvalidString"));
+//                        return new FormatException(SR.GetResourceString("Format_InvalidString"));
 //                }
-//                return new ArgumentException(EnvironmentEx.GetResourceString("Arg_VersionString"));
+//                return new ArgumentException(SR.GetResourceString("Arg_VersionString"));
 //            }
 //        }
 //    }

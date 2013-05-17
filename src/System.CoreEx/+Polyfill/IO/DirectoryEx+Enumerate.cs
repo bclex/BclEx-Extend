@@ -48,7 +48,7 @@ namespace System.IO
             if (searchPattern == null)
                 throw new ArgumentNullException("searchPattern");
             if (searchOption != SearchOption.TopDirectoryOnly && searchOption != SearchOption.AllDirectories)
-                throw new ArgumentOutOfRangeException("searchOption", EnvironmentEx.GetResourceString("ArgumentOutOfRange_Enum"));
+                throw new ArgumentOutOfRangeException("searchOption", SR.GetResourceString("ArgumentOutOfRange_Enum"));
             return InternalEnumerateDirectories(path, searchPattern, searchOption);
         }
 
@@ -93,7 +93,7 @@ namespace System.IO
             if (searchPattern == null)
                 throw new ArgumentNullException("searchPattern");
             if (searchOption != SearchOption.TopDirectoryOnly && searchOption != SearchOption.AllDirectories)
-                throw new ArgumentOutOfRangeException("searchOption", EnvironmentEx.GetResourceString("ArgumentOutOfRange_Enum"));
+                throw new ArgumentOutOfRangeException("searchOption", SR.GetResourceString("ArgumentOutOfRange_Enum"));
             return InternalEnumerateFiles(path, searchPattern, searchOption);
         }
 
@@ -138,7 +138,7 @@ namespace System.IO
             if (searchPattern == null)
                 throw new ArgumentNullException("searchPattern");
             if (searchOption != SearchOption.TopDirectoryOnly && searchOption != SearchOption.AllDirectories)
-                throw new ArgumentOutOfRangeException("searchOption", EnvironmentEx.GetResourceString("ArgumentOutOfRange_Enum"));
+                throw new ArgumentOutOfRangeException("searchOption", SR.GetResourceString("ArgumentOutOfRange_Enum"));
             return InternalEnumerateFileSystemEntries(path, searchPattern, searchOption);
         }
 

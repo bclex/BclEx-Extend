@@ -171,13 +171,13 @@ namespace System.IO
         public override int Read(char[] buffer, int index, int count)
         {
             if (buffer == null)
-                throw new ArgumentNullException("buffer", EnvironmentEx.GetResourceString("ArgumentNull_Buffer"));
+                throw new ArgumentNullException("buffer", "ArgumentNull_Buffer");
             if (index < 0)
-                throw new ArgumentOutOfRangeException("index", EnvironmentEx.GetResourceString("ArgumentOutOfRange_NeedNonNegNum"));
+                throw new ArgumentOutOfRangeException("index", "ArgumentOutOfRange_NeedNonNegNum");
             if (count < 0)
-                throw new ArgumentOutOfRangeException("count", EnvironmentEx.GetResourceString("ArgumentOutOfRange_NeedNonNegNum"));
+                throw new ArgumentOutOfRangeException("count", "ArgumentOutOfRange_NeedNonNegNum");
             if (buffer.Length - index < count)
-                throw new ArgumentException(EnvironmentEx.GetResourceString("Argument_InvalidOffLen"));
+                throw new ArgumentException("Argument_InvalidOffLen");
             if (!_pendingC.HasValue)
                 return R.Read(buffer, index, count);
             var c = _pendingC.Value; _pendingC = null;

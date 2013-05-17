@@ -209,7 +209,7 @@ namespace System.Threading
 
         private void ThrowOperationCanceledException()
         {
-            throw new OperationCanceledException(EnvironmentEx.GetResourceString("OperationCanceled"), this);
+            throw new OperationCanceledException(SR.GetResourceString("OperationCanceled"), this);
         }
 
         private static void ActionToActionObjShunt(object obj)
@@ -220,7 +220,7 @@ namespace System.Threading
 
         private static void ThrowObjectDisposedException()
         {
-            throw new ObjectDisposedException(null, EnvironmentEx.GetResourceString("CancellationToken_SourceDisposed"));
+            throw new ObjectDisposedException(null, SR.GetResourceString("CancellationToken_SourceDisposed"));
         }
 
         private void InitializeDefaultSource()

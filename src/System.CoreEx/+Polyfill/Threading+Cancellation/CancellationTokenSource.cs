@@ -184,7 +184,7 @@ namespace System.Threading
             if (tokens == null)
                 throw new ArgumentNullException("tokens");
             if (tokens.Length == 0)
-                throw new ArgumentException(EnvironmentEx.GetResourceString("CancellationToken_CreateLinkedToken_TokensIsEmpty"));
+                throw new ArgumentException(SR.GetResourceString("CancellationToken_CreateLinkedToken_TokensIsEmpty"));
             var state = new CancellationTokenSource
             {
                 _linkingRegistrations = new CancellationTokenRegistration[tokens.Length]
@@ -351,7 +351,7 @@ namespace System.Threading
 
         private static void ThrowObjectDisposedException()
         {
-            throw new ObjectDisposedException(null, EnvironmentEx.GetResourceString("CancellationTokenSource_Disposed"));
+            throw new ObjectDisposedException(null, SR.GetResourceString("CancellationTokenSource_Disposed"));
         }
 
         private static void TimerCallbackLogic(object obj)

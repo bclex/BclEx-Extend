@@ -16,13 +16,13 @@ namespace System.IO
             if (destination == null)
                 throw new ArgumentNullException("destination");
             if (!source.CanRead && !source.CanWrite)
-                throw new ObjectDisposedException(null, EnvironmentEx.GetResourceString("ObjectDisposed_StreamClosed"));
+                throw new ObjectDisposedException(null, SR.GetResourceString("ObjectDisposed_StreamClosed"));
             if (!destination.CanRead && !destination.CanWrite)
-                throw new ObjectDisposedException("destination", EnvironmentEx.GetResourceString("ObjectDisposed_StreamClosed"));
+                throw new ObjectDisposedException("destination", SR.GetResourceString("ObjectDisposed_StreamClosed"));
             if (!source.CanRead)
-                throw new NotSupportedException(EnvironmentEx.GetResourceString("NotSupported_UnreadableStream"));
+                throw new NotSupportedException(SR.GetResourceString("NotSupported_UnreadableStream"));
             if (!destination.CanWrite)
-                throw new NotSupportedException(EnvironmentEx.GetResourceString("NotSupported_UnwritableStream"));
+                throw new NotSupportedException(SR.GetResourceString("NotSupported_UnwritableStream"));
             InternalCopyTo(source, destination, 0x14000);
         }
 
@@ -37,15 +37,15 @@ namespace System.IO
             if (destination == null)
                 throw new ArgumentNullException("destination");
             if (bufferSize <= 0)
-                throw new ArgumentOutOfRangeException("bufferSize", EnvironmentEx.GetResourceString("ArgumentOutOfRange_NeedPosNum"));
+                throw new ArgumentOutOfRangeException("bufferSize", SR.GetResourceString("ArgumentOutOfRange_NeedPosNum"));
             if (!source.CanRead && !source.CanWrite)
-                throw new ObjectDisposedException(null, EnvironmentEx.GetResourceString("ObjectDisposed_StreamClosed"));
+                throw new ObjectDisposedException(null, SR.GetResourceString("ObjectDisposed_StreamClosed"));
             if (!destination.CanRead && !destination.CanWrite)
-                throw new ObjectDisposedException("destination", EnvironmentEx.GetResourceString("ObjectDisposed_StreamClosed"));
+                throw new ObjectDisposedException("destination", SR.GetResourceString("ObjectDisposed_StreamClosed"));
             if (!source.CanRead)
-                throw new NotSupportedException(EnvironmentEx.GetResourceString("NotSupported_UnreadableStream"));
+                throw new NotSupportedException(SR.GetResourceString("NotSupported_UnreadableStream"));
             if (!destination.CanWrite)
-                throw new NotSupportedException(EnvironmentEx.GetResourceString("NotSupported_UnwritableStream"));
+                throw new NotSupportedException(SR.GetResourceString("NotSupported_UnwritableStream"));
             InternalCopyTo(source, destination, bufferSize);
         }
 

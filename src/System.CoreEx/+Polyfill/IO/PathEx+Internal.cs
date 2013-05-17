@@ -24,9 +24,9 @@ namespace System.IO
             while ((num = searchPattern.IndexOf("..", StringComparison.Ordinal)) != -1)
             {
                 if ((num + 2) == searchPattern.Length)
-                    throw new ArgumentException(EnvironmentEx.GetResourceString("Arg_InvalidSearchPattern"));
+                    throw new ArgumentException(SR.GetResourceString("Arg_InvalidSearchPattern"));
                 if (searchPattern[num + 2] == Path.DirectorySeparatorChar || searchPattern[num + 2] == Path.AltDirectorySeparatorChar)
-                    throw new ArgumentException(EnvironmentEx.GetResourceString("Arg_InvalidSearchPattern"));
+                    throw new ArgumentException(SR.GetResourceString("Arg_InvalidSearchPattern"));
                 searchPattern = searchPattern.Substring(num + 2);
             }
         }

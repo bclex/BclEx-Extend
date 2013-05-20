@@ -82,6 +82,17 @@ namespace System
             where TEnum : struct { return value.ToString(); }
 
         /// <summary>
+        /// Parses the name.
+        /// </summary>
+        /// <typeparam name="TEnum">The type of the enum.</typeparam>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
+        public static string ParseName<TEnum>(string s)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
         /// Tries the name of the parse.
         /// </summary>
         /// <typeparam name="TEnum">The type of the enum.</typeparam>

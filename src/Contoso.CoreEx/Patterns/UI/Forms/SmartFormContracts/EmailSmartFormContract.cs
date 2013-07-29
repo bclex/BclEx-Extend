@@ -76,14 +76,14 @@ namespace Contoso.Patterns.UI.Forms.SmartFormContracts
             // send email
             var emailsSent = 0;
             var usedToEmails = new List<string>();
-            for (int argIndex = 0; argIndex < args.Length; argIndex++)
+            for (var argIndex = 0; argIndex < args.Length; argIndex++)
             {
                 var scopeKey = (args[argIndex] as string);
                 if (scopeKey == null)
                     throw new ArgumentNullException(string.Format("args[{0}]", argIndex));
                 if (scopeKey.Length > 0)
                     scopeKey += "::";
-                foreach (string toEmail2 in smartForm[scopeKey + "toEmail"].Replace(";", ",").Split(','))
+                foreach (var toEmail2 in smartForm[scopeKey + "toEmail"].Replace(";", ",").Split(','))
                 {
                     var toEmail = toEmail2.Trim();
                     if (!string.IsNullOrEmpty(toEmail) && !usedToEmails.Contains(toEmail.ToLowerInvariant()))
@@ -93,7 +93,7 @@ namespace Contoso.Patterns.UI.Forms.SmartFormContracts
                         {
                             // execute
                             var fromName = smartForm.CreateMergedText(scopeKey + "fromName");
-                            var emailMessage = new MailMessage
+                            var mailMessage = new MailMessage
                             {
                                 From = (!string.IsNullOrEmpty(fromName) ? new MailAddress(fromEmail, fromName) : new MailAddress(fromEmail)),
                                 Subject = smartForm.CreateMergedText(scopeKey + "subject"),
@@ -103,26 +103,23 @@ namespace Contoso.Patterns.UI.Forms.SmartFormContracts
                             {
                                 var replyToName = smartForm[scopeKey + "replyToName"];
 #if CLR4
-                                emailMessage.ReplyToList.Add(!string.IsNullOrEmpty(replyToName) ? new MailAddress(replyToEmail, replyToName) : new MailAddress(replyToEmail));
+                                mailMessage.ReplyToList.Add(!string.IsNullOrEmpty(replyToName) ? new MailAddress(replyToEmail, replyToName) : new MailAddress(replyToEmail));
 #else
-                                emailMessage.ReplyTo = (!string.IsNullOrEmpty(replyToName) ? new MailAddress(replyToEmail, replyToName) : new MailAddress(replyToEmail));
+                                mailMessage.ReplyTo = (!string.IsNullOrEmpty(replyToName) ? new MailAddress(replyToEmail, replyToName) : new MailAddress(replyToEmail));
 #endif
                             }
                             var toName = smartForm[scopeKey + "toName"];
-                            emailMessage.To.Add(!string.IsNullOrEmpty(toName) ? new MailAddress(toEmail, toName) : new MailAddress(toEmail));
+                            mailMessage.To.Add(!string.IsNullOrEmpty(toName) ? new MailAddress(toEmail, toName) : new MailAddress(toEmail));
                             var ccEmail = smartForm[scopeKey + "ccEmail"];
                             if (!string.IsNullOrEmpty(ccEmail))
-                                emailMessage.CC.Add(ccEmail.Replace(";", ","));
+                                mailMessage.CC.Add(ccEmail.Replace(";", ","));
                             var bccEmail = smartForm[scopeKey + "bccEmail"];
                             if (!string.IsNullOrEmpty(bccEmail))
-                                emailMessage.Bcc.Add(bccEmail.Replace(";", ","));
-                            var attachments = smartForm[scopeKey + "attachments"];
-                            if (!string.IsNullOrEmpty(attachments))
-                                foreach (string attachment in attachments.Split(';'))
-                                    if (!string.IsNullOrEmpty(attachment) && File.Exists(attachment))
-                                        emailMessage.Attachments.Add(new Attachment(attachment));
-                            _bodyBuilder.Execute(smartForm, emailMessage, scopeKey);
-                            _smtpClient.Send(emailMessage);
+                                mailMessage.Bcc.Add(bccEmail.Replace(";", ","));
+                            if (smartForm.ContainsKey(scopeKey + "attachments"))
+                                HandleAttachments(smartForm, scopeKey + "attachments", mailMessage);
+                            _bodyBuilder.Execute(smartForm, mailMessage, scopeKey);
+                            _smtpClient.Send(mailMessage);
                             emailsSent++;
                         }
                         // prevent resends
@@ -132,6 +129,46 @@ namespace Contoso.Patterns.UI.Forms.SmartFormContracts
                 usedToEmails.Clear();
             }
             return emailsSent;
+        }
+
+        private static void HandleAttachments(SmartForm smartForm, string key, MailMessage mailMessage)
+        {
+            var attachments = smartForm.Get(key);
+            if (attachments == null)
+                return;
+            // String
+            var attachmentsAsString = (attachments as string);
+            if (!string.IsNullOrEmpty(attachmentsAsString))
+            {
+                foreach (var attachment2 in attachmentsAsString.Split(';'))
+                    if (!string.IsNullOrEmpty(attachment2) && File.Exists(attachment2))
+                        mailMessage.Attachments.Add(new Attachment(attachment2));
+                return;
+            }
+            // IEnumerable<string>
+            var attachmentsAsEnumerable = (attachments as IEnumerable<string>);
+            if (attachmentsAsEnumerable != null)
+            {
+                foreach (var attachment2 in attachmentsAsEnumerable)
+                    if (!string.IsNullOrEmpty(attachment2) && File.Exists(attachment2))
+                        mailMessage.Attachments.Add(new Attachment(attachment2));
+                return;
+            }
+            // Attachment
+            var attachment = (attachments as Attachment);
+            if (attachment != null)
+            {
+                mailMessage.Attachments.Add(attachment);
+                return;
+            }
+            // IEnumerable<Attachment>
+            var attachmentsAsEnumerable2 = (attachments as IEnumerable<Attachment>);
+            if (attachmentsAsEnumerable2 != null)
+            {
+                foreach (var attachment2 in attachmentsAsEnumerable2)
+                    mailMessage.Attachments.Add(attachment2);
+                return;
+            }
         }
     }
 }

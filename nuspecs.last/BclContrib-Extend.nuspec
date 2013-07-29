@@ -11,7 +11,7 @@
     <iconUrl>http://docs.bclex.org/bclex-extend.ico</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>This package contains system extensions to the core BCL.</description>
-    <releaseNotes>NOTE: Project has moved to http://docs.bclex.org. with a new package name of BclEx-Abstract.Autofac</releaseNotes>
+    <releaseNotes>NOTE: Project has moved to http://docs.bclex.org. with a new package name of BclEx-Extend</releaseNotes>
     <copyright>Copyright 2010</copyright>
     <tags>bclex</tags>
     <language>en-US</language>

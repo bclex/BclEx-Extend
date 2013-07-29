@@ -32,7 +32,7 @@ namespace Contoso.Patterns.UI.Forms
     /// </summary>
     public class SmartForm
     {
-        private Dictionary<string, string> _values = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+        private Dictionary<string, object> _values = new Dictionary<string, object>(StringComparer.OrdinalIgnoreCase);
         private Dictionary<string, string> _replaceTags = new Dictionary<string, string>();
 
         /// <summary>
@@ -44,15 +44,43 @@ namespace Contoso.Patterns.UI.Forms
             {
                 if (string.IsNullOrEmpty(key))
                     throw new ArgumentNullException("key");
-                string value;
-                return (_values.TryGetValue(key, out value) ? value : string.Empty);
+                object value;
+                return (_values.TryGetValue(key, out value) ? (value != null ? value.ToString() : string.Empty) : string.Empty);
             }
             set
             {
                 if (string.IsNullOrEmpty(key))
-                    throw new ArgumentNullException("key");
-                _values[key] = (value ?? string.Empty);
+                    throw new ArgumentNullException("name");
+                _values[key] = (value != null ? value.ToString() : string.Empty);
             }
+        }
+
+        /// <summary>
+        /// Gets the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">key</exception>
+        public object Get(string key)
+        {
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException("key");
+            object value;
+            return (_values.TryGetValue(key, out value) ? value : string.Empty);
+        }
+
+        /// <summary>
+        /// Sets the specified key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <param name="value">The value.</param>
+        /// <exception cref="System.ArgumentNullException">key</exception>
+        public void Set(string key, object value)
+        {
+
+            if (string.IsNullOrEmpty(key))
+                throw new ArgumentNullException("key");
+            _values[key] = value;
         }
 
         /// <summary>
@@ -78,9 +106,21 @@ namespace Contoso.Patterns.UI.Forms
         public bool HasError { get; set; }
 
         /// <summary>
+        /// Determines whether the specified key contains key.
+        /// </summary>
+        /// <param name="key">The key.</param>
+        /// <returns>
+        ///   <c>true</c> if the specified key contains key; otherwise, <c>false</c>.
+        /// </returns>
+        public bool ContainsKey(string key)
+        {
+            return _values.ContainsKey(key);
+        }
+
+        /// <summary>
         /// Gets the values.
         /// </summary>
-        public Dictionary<string, string> Values
+        public Dictionary<string, object> Values
         {
             get { return _values; }
         }
@@ -110,13 +150,16 @@ namespace Contoso.Patterns.UI.Forms
         {
             if (string.IsNullOrEmpty(key))
                 throw new ArgumentNullException("key");
-            string value;
+            object value;
             if (!_values.TryGetValue(key, out value))
                 return string.Empty;
-            if (!string.IsNullOrEmpty(value))
+            var valueAsString = (value as string);
+            if (valueAsString == null)
+                return string.Empty;
+            if (!string.IsNullOrEmpty(valueAsString))
                 foreach (string replaceTagKey in _replaceTags.Keys)
-                    value = value.Replace("[:" + replaceTagKey + ":]", _replaceTags[replaceTagKey]);
-            return value;
+                    valueAsString = valueAsString.Replace("[:" + replaceTagKey + ":]", _replaceTags[replaceTagKey]);
+            return valueAsString;
         }
     }
 }

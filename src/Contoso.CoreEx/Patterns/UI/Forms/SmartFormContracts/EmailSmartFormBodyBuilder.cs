@@ -83,20 +83,31 @@ namespace Contoso.Patterns.UI.Forms.SmartFormContracts
                 throw new ArgumentNullException("emailMessage");
             if (scopeKey == null)
                 throw new ArgumentNullException("scopeKey");
-            //
+            // htmlBody
             var htmlBody = smartForm.CreateMergedText(scopeKey + "htmlBody");
-            if (htmlBody.Length > 0)
+            if (!string.IsNullOrEmpty(htmlBody))
             {
-                if ((_htmlSchema != null) && (htmlBody.IndexOf("<html>", StringComparison.OrdinalIgnoreCase) == -1))
+                if (_htmlSchema != null && htmlBody.IndexOf("<html>", StringComparison.OrdinalIgnoreCase) == -1)
                     htmlBody = "<html><body>" + _htmlSchema.DecodeHtml(htmlBody, (int)HtmlSchemaBase.DecodeFlags.CrLfToBr) + "</body></html>";
                 emailMessage.IsBodyHtml = true;
                 emailMessage.Body = htmlBody;
+                return;
             }
-            else
+            // textBody
+            var textBody = smartForm.CreateMergedText(scopeKey + "textBody");
             {
                 emailMessage.IsBodyHtml = false;
-                emailMessage.Body = smartForm.CreateMergedText(scopeKey + "textBody");
+                emailMessage.Body = textBody;
             }
+            // mhtmlBody
+            var mhtmlBody = smartForm.CreateMergedText(scopeKey + "mhtmlBody");
+            if (!string.IsNullOrEmpty(mhtmlBody))
+            {
+                emailMessage.IsBodyHtml = true;
+                emailMessage.Body = mhtmlBody;
+                return;
+            }
+            throw new InvalidOperationException("Must have mhtmlBody, htmlBody or textBody defined.");
         }
     }
 }

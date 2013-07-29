@@ -62,24 +62,24 @@ namespace Contoso.Patterns.UI.Forms.SmartFormContracts
         {
             if (smartForm == null)
                 throw new ArgumentNullException("smartForm");
-            if ((args == null) || (args.Length == 0))
+            if (args == null || args.Length == 0)
                 args = _defaultArgs;
             // send email
-            int smsSent = 0;
+            var smsSent = 0;
             var usedPhoneIDs = new List<string>();
-            for (int argIndex = 1; argIndex < args.Length; argIndex++)
+            for (var argIndex = 1; argIndex < args.Length; argIndex++)
             {
-                string scopeKey = (args[argIndex] as string);
+                var scopeKey = (args[argIndex] as string);
                 if (scopeKey == null)
                     throw new ArgumentNullException(string.Format("args[{0}]", argIndex));
                 if (scopeKey.Length > 0)
                     scopeKey += "::";
-                foreach (string phone2 in smartForm[scopeKey + "phone"].Replace(";", ",").Split(','))
+                foreach (var phone2 in smartForm[scopeKey + "phone"].Replace(";", ",").Split(','))
                 {
-                    string phone = phone2.Trim();
+                    var phone = phone2.Trim();
                     if (!string.IsNullOrEmpty(phone) && !usedPhoneIDs.Contains(phone.ToLowerInvariant()))
                     {
-                        string carrierIDAsText = smartForm[scopeKey + "carrierID"];
+                        var carrierIDAsText = smartForm[scopeKey + "carrierID"];
                         ShortMessageServiceCarrierID carrierID;
                         if (!string.IsNullOrEmpty(carrierIDAsText) && EnumEx.TryParse<ShortMessageServiceCarrierID>(carrierIDAsText, out carrierID))
                         {

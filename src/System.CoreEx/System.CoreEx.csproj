@@ -133,6 +133,33 @@
     <None Include="+Polyfill\Threading+Cancellation\SparselyPopulatedArrayAddInfo.cs" />
     <Compile Include="+Polyfill\Threading\Volatile.cs" />
     <Compile Include="+Polyfill\Tuple.cs" />
+    <Compile Include="+Polyfill\Net\Base64Stream.cs" />
+    <Compile Include="+Polyfill\Net\ClosableStream.cs" />
+    <Compile Include="+Polyfill\Net\DelegatedStream.cs" />
+    <Compile Include="+Polyfill\Net\LazyAsyncResult.cs" />
+    <Compile Include="+Polyfill\Net\Mail\BufferBuilder.cs" />
+    <Compile Include="+Polyfill\Net\Mail\MailHeaderID.cs" />
+    <Compile Include="+Polyfill\Net\Mail\MailHeaderInfo.cs" />
+    <Compile Include="+Surface\Net\Mime\Base64WriteStateInfo.cs" />
+    <Compile Include="+Surface\Net\Mime\BaseWriter.cs" />
+    <Compile Include="+Surface\Net\Mime\ContentTransferEncoding.cs" />
+    <Compile Include="+Surface\Net\Mime\EightBitStream.cs" />
+    <Compile Include="+Surface\Net\Mime\EncodedStreamFactory.cs" />
+    <Compile Include="+Surface\Net\Mime\Extensions.cs" />
+    <Compile Include="+Surface\Net\Mime\HeaderCollection.cs" />
+    <Compile Include="+Surface\Net\Mime\IEncodableStream.cs" />
+    <Compile Include="+Surface\Net\Mime\MailBnfHelper.cs" />
+    <Compile Include="+Surface\Net\Mime\MimeBasePart.cs" />
+    <Compile Include="+Surface\Net\Mime\MimeMultiPart.cs" />
+    <Compile Include="+Surface\Net\Mime\MimeMultiPartType.cs" />
+    <Compile Include="+Surface\Net\Mime\MimePart.cs" />
+    <Compile Include="+Surface\Net\Mime\MimeWriter.cs" />
+    <Compile Include="+Surface\Net\Mime\MultiAsyncResult.cs" />
+    <Compile Include="+Surface\Net\Mime\QEncodedStream.cs" />
+    <Compile Include="+Surface\Net\Mime\QuotedPrintableStream.cs" />
+    <Compile Include="+Surface\Net\Mime\SmtpDateTime.cs" />
+    <Compile Include="+Surface\Net\Mime\WriteStateInfoBase.cs" />
+    <Compile Include="+Polyfill\Net\TrackingValidationObjectDictionary.cs" />
     <Compile Include="ComponentModel\DataAnnotations\RequiredIfAttribute.cs" />
     <Compile Include="ComponentModel\DataAnnotations\DataAnnotationsResources.cs" />
     <Compile Include="ComponentModel\DataAnnotations\DataTypeExAttribute.cs" />
@@ -329,6 +356,7 @@
       <LastGenOutput>Local.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

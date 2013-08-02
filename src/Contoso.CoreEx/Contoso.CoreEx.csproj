@@ -150,6 +150,7 @@
     <Compile Include="Net\FtpFile.cs" />
     <Compile Include="Net\FtpClient.cs" />
     <Compile Include="Net\IFileTransferClient.cs" />
+    <Compile Include="Net\Mail\SmtpClientEx.cs" />
     <Compile Include="Net\SecureFileTransferClient.cs" />
     <Compile Include="Net\ShortMessageServiceCarrierID.cs" />
     <Compile Include="Net\ShortMessageServiceMessage.cs" />
@@ -211,6 +212,26 @@
       <LastGenOutput>Local.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <COMReference Include="ADODB">
+      <Guid>{B691E011-1797-432E-907A-4D8C69339129}</Guid>
+      <VersionMajor>6</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
+    <COMReference Include="CDO">
+      <Guid>{CD000000-8B95-11D1-82DB-00C04FB1625D}</Guid>
+      <VersionMajor>1</VersionMajor>
+      <VersionMinor>0</VersionMinor>
+      <Lcid>0</Lcid>
+      <WrapperTool>tlbimp</WrapperTool>
+      <Isolated>False</Isolated>
+      <EmbedInteropTypes>True</EmbedInteropTypes>
+    </COMReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

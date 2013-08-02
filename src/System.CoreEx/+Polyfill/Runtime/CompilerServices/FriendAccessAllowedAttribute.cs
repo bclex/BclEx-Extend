@@ -1,5 +1,5 @@
 ﻿#region Foreign-License
-// .Net40 Kludge
+// .Net40 Polyfill
 #endregion
 namespace System.Runtime.CompilerServices
 {

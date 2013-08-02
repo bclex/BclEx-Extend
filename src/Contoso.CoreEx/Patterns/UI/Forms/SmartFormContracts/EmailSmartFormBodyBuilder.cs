@@ -29,6 +29,7 @@ using System.Net.Mail;
 using System.IO;
 using System.Collections;
 using System.Patterns.Schema;
+using System.Net.Mime;
 namespace Contoso.Patterns.UI.Forms.SmartFormContracts
 {
     /// <summary>
@@ -93,21 +94,22 @@ namespace Contoso.Patterns.UI.Forms.SmartFormContracts
                 emailMessage.Body = htmlBody;
                 return;
             }
+            // mhtmlBody
+            var mhtmlBody = smartForm.CreateMergedText(scopeKey + "mhtmlBody");
+            if (!string.IsNullOrEmpty(mhtmlBody))
+            {
+                emailMessage.Body = mhtmlBody;
+                //var view = AlternateView.CreateAlternateViewFromString(mhtmlBody, new ContentType("text/plain"));
+                //view.TransferEncoding = TransferEncoding.SevenBit;
+                //emailMessage.AlternateViews.Add(view);
+                return;
+            }
             // textBody
             var textBody = smartForm.CreateMergedText(scopeKey + "textBody");
             {
                 emailMessage.IsBodyHtml = false;
                 emailMessage.Body = textBody;
             }
-            // mhtmlBody
-            var mhtmlBody = smartForm.CreateMergedText(scopeKey + "mhtmlBody");
-            if (!string.IsNullOrEmpty(mhtmlBody))
-            {
-                emailMessage.IsBodyHtml = true;
-                emailMessage.Body = mhtmlBody;
-                return;
-            }
-            throw new InvalidOperationException("Must have mhtmlBody, htmlBody or textBody defined.");
         }
     }
 }

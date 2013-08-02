@@ -28,6 +28,7 @@ using System.Collections.Generic;
 using System.Net.Mail;
 using System.IO;
 using System.Collections;
+using Contoso.Net.Mail;
 namespace Contoso.Patterns.UI.Forms.SmartFormContracts
 {
     /// <summary>
@@ -38,19 +39,31 @@ namespace Contoso.Patterns.UI.Forms.SmartFormContracts
     {
         private static object[] _defaultArgs = new object[] { null, string.Empty };
         private IEmailSmartFormBodyBuilder _bodyBuilder;
-        private SmtpClient _smtpClient;
+        private SmtpClientEx _smtpClient;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="SmartForm"/> class.
         /// </summary>
         public EmailSmartFormContract()
-            : this(new EmailSmartFormBodyBuilder(), new SmtpClient()) { }
+            : this(new EmailSmartFormBodyBuilder(), new SmtpClientEx()) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EmailSmartFormContract"/> class.
+        /// </summary>
+        /// <param name="bodyBuilder">The body builder.</param>
+        public EmailSmartFormContract(IEmailSmartFormBodyBuilder bodyBuilder)
+            : this(bodyBuilder, new SmtpClientEx()) { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="EmailSmartFormContract"/> class.
+        /// </summary>
+        /// <param name="smtpClient">The SMTP client.</param>
+        public EmailSmartFormContract(SmtpClientEx smtpClient)
+            : this(new EmailSmartFormBodyBuilder(), smtpClient) { }
         /// <summary>
         /// Initializes a new instance of the <see cref="EmailSmartFormContract"/> class.
         /// </summary>
         /// <param name="bodyBuilder">The body builder.</param>
         /// <param name="smtpClient">The SMTP client.</param>
-        public EmailSmartFormContract(IEmailSmartFormBodyBuilder bodyBuilder, SmtpClient smtpClient)
+        public EmailSmartFormContract(IEmailSmartFormBodyBuilder bodyBuilder, SmtpClientEx smtpClient)
         {
             if (bodyBuilder == null)
                 throw new ArgumentNullException("bodyBuilder");
@@ -119,7 +132,10 @@ namespace Contoso.Patterns.UI.Forms.SmartFormContracts
                             if (smartForm.ContainsKey(scopeKey + "attachments"))
                                 HandleAttachments(smartForm, scopeKey + "attachments", mailMessage);
                             _bodyBuilder.Execute(smartForm, mailMessage, scopeKey);
-                            _smtpClient.Send(mailMessage);
+                            if (!smartForm.ContainsKey(scopeKey + "mhtmlBody"))
+                                _smtpClient.Send(mailMessage);
+                            else
+                                _smtpClient.SendMhtml(mailMessage);
                             emailsSent++;
                         }
                         // prevent resends

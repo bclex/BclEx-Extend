@@ -1,7 +1,6 @@
 #region Foreign-License
-// .Net40 Kludge
+// .Net40 Polyfill
 #endregion
-#if !CLR4
 using System.Globalization;
 namespace System
 {
@@ -19,6 +18,10 @@ namespace System
         {
             return string.Format(CultureInfo.CurrentCulture, key, values);
         }
+
+        internal static string GetString(string key, params object[] values)
+        {
+            return string.Format(CultureInfo.CurrentCulture, key, values);
+        }
     }
 }
-#endif

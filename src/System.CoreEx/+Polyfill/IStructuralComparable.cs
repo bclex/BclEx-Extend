@@ -1,5 +1,5 @@
 #region Foreign-License
-// .Net40 Kludge
+// .Net40 Polyfill
 #endregion
 #if !CLR4
 using System.Collections;

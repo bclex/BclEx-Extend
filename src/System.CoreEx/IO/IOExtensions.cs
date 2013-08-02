@@ -28,6 +28,7 @@ using System.Text;
 using System.Xml;
 using System.Threading;
 using System.Runtime.InteropServices;
+using System.Security.Cryptography;
 namespace System.IO
 {
     /// <summary>
@@ -84,6 +85,37 @@ namespace System.IO
             using (var streamReader = new StreamReader(stream, encoding))
                 return streamReader.ReadToEnd();
         }
+
+        /// <summary>
+        /// To the base64.
+        /// </summary>
+        /// <param name="s">The s.</param>
+        /// <returns></returns>
+        public static string ToBase64(this Stream s)
+        {
+            using (var ms = new MemoryStream())
+            using (var cryptStream = new CryptoStream(ms, new ToBase64Transform(), CryptoStreamMode.Write))
+            using (var sw = new StreamWriter(cryptStream))
+            {
+                sw.Write(s);
+                sw.Flush();
+                return ms.ReadAsTextStream();
+            }
+        }
+
+        ///// <summary>
+        ///// Froms the base64.
+        ///// </summary>
+        ///// <param name="s">The s.</param>
+        ///// <returns></returns>
+        //public static byte[] FromBase64(this string s)
+        //{
+        //    using (var ms = new MemoryStream(s))
+        //    using (var cryptStream = new CryptoStream(ms, new FromBase64Transform(), CryptoStreamMode.Read))
+        //    using (var sr = new StreamReader(cryptStream))
+        //        return sr.ReadToEnd();
+        //}
+
 
 #if EXPERIMENTAL
         /*

@@ -42,7 +42,7 @@ namespace System.Linq
             if (childs.Count() > 0)
             {
                 depth++;
-                if ((depth <= maxDepth) || (maxDepth == 0))
+                if (depth <= maxDepth || maxDepth == 0)
                     foreach (var item in childs)
                         yield return selector(new HierarchyNode<TSource, TResult>
                         {

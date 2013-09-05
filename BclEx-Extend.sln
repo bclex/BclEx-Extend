@@ -1,6 +1,6 @@
 ﻿
-Microsoft Visual Studio Solution File, Format Version 11.00
-# Visual Studio 2010
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.CoreEx", "src\Contoso.CoreEx\Contoso.CoreEx.csproj", "{CFDE3F25-3C93-4F5B-AAC5-38BB1F5320EF}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.VisualStudio", "src\Contoso.VisualStudio\Contoso.VisualStudio.csproj", "{C3CA3022-8F9A-43EE-9D9D-3A5589A21E99}"

@@ -74,10 +74,16 @@ namespace Contoso.Net.Mail
                     // set other values
                     m.MimeFormatted = true;
                     m.Subject = message.Subject;
-                    m.Sender = message.From.ToString();
-                    m.To = message.To.First().ToString();
-                    foreach (var attachment in message.Attachments.Where(x => x != null))
-                        AddAttachement(m, attachment, false);
+                    if (message.From != null) m.Sender = message.From.ToString();
+                    var to = (message.To != null ? string.Join(",", message.To.Select(x => x.ToString()).ToArray()) : null);
+                    if (!string.IsNullOrEmpty(to)) m.To = to;
+                    var bcc = (message.Bcc != null ? string.Join(",", message.Bcc.Select(x => x.ToString()).ToArray()) : null);
+                    if (!string.IsNullOrEmpty(to)) m.BCC = bcc;
+                    var cc = (message.CC != null ? string.Join(",", message.CC.Select(x => x.ToString()).ToArray()) : null);
+                    if (!string.IsNullOrEmpty(to)) m.CC = cc;
+                    if (message.Attachments != null)
+                        foreach (var attachment in message.Attachments.Where(x => x != null))
+                            AddAttachement(m, attachment, false);
                     m.Send();
                 }
                 catch (Exception ex) { throw ex; }

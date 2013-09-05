@@ -59,7 +59,7 @@ namespace Contoso.IO.Text
         /// <value>
         ///   <c>true</c> if this instance is ignore; otherwise, <c>false</c>.
         /// </value>
-        public bool IsIgnore { get; set; }
+        public bool Ignore { get; set; }
         /// <summary>
         /// Gets or sets the custom field formatter.
         /// </summary>

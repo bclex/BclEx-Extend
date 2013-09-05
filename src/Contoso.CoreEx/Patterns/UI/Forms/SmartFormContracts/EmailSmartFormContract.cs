@@ -71,7 +71,16 @@ namespace Contoso.Patterns.UI.Forms.SmartFormContracts
                 throw new ArgumentNullException("smtpClient");
             _bodyBuilder = bodyBuilder;
             _smtpClient = smtpClient;
+            EnsureSent = true;
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [ensure email sent].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [ensure email sent]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnsureSent { get; set; }
 
         /// <summary>
         /// Executes the specified method.
@@ -144,6 +153,8 @@ namespace Contoso.Patterns.UI.Forms.SmartFormContracts
                 }
                 usedToEmails.Clear();
             }
+            if (EnsureSent && emailsSent == 0)
+                throw new InvalidOperationException("EnsureSent");
             return emailsSent;
         }
 

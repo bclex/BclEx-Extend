@@ -49,7 +49,16 @@ namespace Contoso.Patterns.UI.Forms.SmartFormContracts
             if (smsClient == null)
                 throw new ArgumentNullException("smsClient");
             _smsClient = smsClient;
+            EnsureSent = true;
         }
+
+        /// <summary>
+        /// Gets or sets a value indicating whether [ensure sent].
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if [ensure sent]; otherwise, <c>false</c>.
+        /// </value>
+        public bool EnsureSent { get; set; }
 
         /// <summary>
         /// Executes the specified method.
@@ -100,6 +109,8 @@ namespace Contoso.Patterns.UI.Forms.SmartFormContracts
                 }
                 usedPhoneIDs.Clear();
             }
+            if (EnsureSent && smsSent == 0)
+                throw new InvalidOperationException("EnsureSent");
             return smsSent;
         }
     }

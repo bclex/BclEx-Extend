@@ -37,8 +37,6 @@ namespace Contoso.IO.Text
     /// </summary>
     public class CsvEmitter
     {
-        private const int FLUSHCOUNTDOWN = 500;
-
         /// <summary>
         /// FieldAttrib
         /// </summary>
@@ -65,31 +63,31 @@ namespace Contoso.IO.Text
         /// Emits the specified context.
         /// </summary>
         /// <typeparam name="TItem">The type of the item.</typeparam>
-        /// <param name="context">The context.</param>
+        /// <param name="ctx">The context.</param>
         /// <param name="w">The w.</param>
         /// <param name="set">The set.</param>
-        public void Emit<TItem>(CsvEmitContext context, TextWriter w, IEnumerable<TItem> set)
+        public void Emit<TItem>(CsvEmitContext ctx, TextWriter w, IEnumerable<TItem> set)
         {
-            if (context == null)
+            if (ctx == null)
                 throw new ArgumentNullException("context");
             if (w == null)
                 throw new ArgumentNullException("w");
             if (set == null)
                 throw new ArgumentNullException("set");
             var itemProperties = GetItemProperties<TItem>();
-            var shouldEncodeValues = ((context.EmitOptions & CsvEmitOptions.EncodeValues) != 0);
+            var shouldEncodeValues = ((ctx.EmitOptions & CsvEmitOptions.EncodeValues) != 0);
             // header
-            var fields = (context.Fields.Count > 0 ? context.Fields : null);
+            var fields = (ctx.Fields.Count > 0 ? ctx.Fields : null);
             var b = new StringBuilder();
-            if ((context.EmitOptions & CsvEmitOptions.HasHeaderRow) != 0)
+            if ((ctx.EmitOptions & CsvEmitOptions.HasHeaderRow) != 0)
             {
                 foreach (var itemProperty in itemProperties)
                 {
                     // decode value
-                    string name = itemProperty.Name;
+                    var name = itemProperty.Name;
                     CsvEmitField field;
-                    if ((fields != null) && (fields.TryGetValue(name, out field)) && (field != null))
-                        if (field.IsIgnore)
+                    if (fields != null && fields.TryGetValue(name, out field) && field != null)
+                        if (field.Ignore)
                             continue;
                         else if (field.DisplayName != null)
                             name = field.DisplayName;
@@ -100,67 +98,70 @@ namespace Contoso.IO.Text
                 w.Write(b.ToString() + Environment.NewLine);
             }
             // rows
-            int flushCountDown = FLUSHCOUNTDOWN;
-            foreach (var item in set)
+            try
             {
-                b.Length = 0;
-                foreach (var itemProperty in itemProperties)
+                foreach (var group in set.Cast<object>().GroupAt(ctx.FlushAt))
                 {
-                    string valueAsText;
-                    object value = itemProperty.GetValue(item, null);
-                    // decode value
-                    CsvEmitField field;
-                    if ((fields != null) && (fields.TryGetValue(itemProperty.Name, out field)) && (field != null))
+                    var newGroup = (ctx.BeforeFlush == null ? group : ctx.BeforeFlush(group));
+                    if (newGroup == null)
+                        return;
+                    foreach (var item in newGroup)
                     {
-                        if (field.IsIgnore)
-                            continue;
-                        IConvertFormatter convertFormatter;
-                        var fieldFormatter = field.CustomFieldFormatter;
-                        if (fieldFormatter != null)
+                        b.Length = 0;
+                        foreach (var itemProperty in itemProperties)
                         {
-                            // formatter
-                            valueAsText = fieldFormatter(field, item, value);
-                            if (!string.IsNullOrEmpty(valueAsText))
+                            string valueAsText;
+                            var value = itemProperty.GetValue(item, null);
+                            // decode value
+                            CsvEmitField field;
+                            if (fields != null && fields.TryGetValue(itemProperty.Name, out field) && field != null)
                             {
-                                var fieldAttrib = field.Args.Get<FieldAttrib>();
-                                if (fieldAttrib != null)
+                                if (field.Ignore)
+                                    continue;
+                                IConvertFormatter convertFormatter;
+                                var fieldFormatter = field.CustomFieldFormatter;
+                                if (fieldFormatter != null)
                                 {
-                                    if (fieldAttrib.DoNotEncode == true)
+                                    // formatter
+                                    valueAsText = fieldFormatter(field, item, value);
+                                    if (!string.IsNullOrEmpty(valueAsText))
                                     {
-                                        b.Append(valueAsText + ",");
-                                        continue;
+                                        var fieldAttrib = field.Args.Get<FieldAttrib>();
+                                        if (fieldAttrib != null)
+                                        {
+                                            if (fieldAttrib.DoNotEncode == true)
+                                            {
+                                                b.Append(valueAsText + ",");
+                                                continue;
+                                            }
+                                            if (fieldAttrib.AsExcelFunction == true)
+                                                valueAsText = "=" + valueAsText;
+                                        }
                                     }
-                                    if (fieldAttrib.AsExcelFunction == true)
-                                        valueAsText = "=" + valueAsText;
+                                }
+                                else if ((convertFormatter = field.ConvertFormatter) != null)
+                                    // datatype
+                                    valueAsText = convertFormatter.Format(value, field.DefaultValue, field.Args);
+                                else
+                                {
+                                    // default formatter
+                                    valueAsText = (value != null ? value.ToString() : string.Empty);
+                                    if (valueAsText.Length == 0)
+                                        valueAsText = field.DefaultValue;
                                 }
                             }
+                            else
+                                valueAsText = (value != null ? value.ToString() : string.Empty);
+                            // append value
+                            b.Append(TryEncode(shouldEncodeValues, valueAsText) + ",");
                         }
-                        else if ((convertFormatter = field.ConvertFormatter) != null)
-                            // datatype
-                            valueAsText = convertFormatter.Format(value, field.DefaultValue, field.Args);
-                        else
-                        {
-                            // default formatter
-                            valueAsText = (value != null ? value.ToString() : string.Empty);
-                            if (valueAsText.Length == 0)
-                                valueAsText = field.DefaultValue;
-                        }
+                        b.Length--;
+                        w.Write(b.ToString() + Environment.NewLine);
                     }
-                    else
-                        valueAsText = (value != null ? value.ToString() : string.Empty);
-                    // append value
-                    b.Append(TryEncode(shouldEncodeValues, valueAsText) + ",");
-                }
-                b.Length--;
-                w.Write(b.ToString() + Environment.NewLine);
-                // flush
-                if ((--flushCountDown) == 0)
-                {
                     w.Flush();
-                    flushCountDown = FLUSHCOUNTDOWN;
                 }
             }
-            w.Flush();
+            finally { w.Flush(); }
         }
 
         private static PropertyInfo[] GetItemProperties<T>()

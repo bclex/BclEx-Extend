@@ -23,6 +23,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
+using System.Collections.Generic;
+using System;
 namespace Contoso.IO.Text
 {
     /// <summary>
@@ -43,6 +45,7 @@ namespace Contoso.IO.Text
             EmitOptions = CsvEmitOptions.HasHeaderRow | CsvEmitOptions.EncodeValues;
             FilterMode = CsvEmitFilterMode.ExceptionsInFields;
             Fields = new CsvEmitFieldCollection();
+            FlushAt = 500;
         }
 
         /// <summary>
@@ -84,5 +87,19 @@ namespace Contoso.IO.Text
         /// The emit options.
         /// </value>
         public CsvEmitOptions EmitOptions { get; set; }
+        /// <summary>
+        /// Gets or sets the flush at.
+        /// </summary>
+        /// <value>
+        /// The flush at.
+        /// </value>
+        public int FlushAt { get; set; }
+        /// <summary>
+        /// Gets or sets the on flush.
+        /// </summary>
+        /// <value>
+        /// The on flush.
+        /// </value>
+        public Func<IEnumerable<object>, IEnumerable<object>> BeforeFlush { get; set; }
     }
 }

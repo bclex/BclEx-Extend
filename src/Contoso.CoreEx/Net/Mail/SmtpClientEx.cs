@@ -74,7 +74,7 @@ namespace Contoso.Net.Mail
                     // set other values
                     m.MimeFormatted = true;
                     m.Subject = message.Subject;
-                    if (message.From != null) m.Sender = message.From.ToString();
+                    if (message.From != null) m.From = message.From.ToString();
                     var to = (message.To != null ? string.Join(",", message.To.Select(x => x.ToString()).ToArray()) : null);
                     if (!string.IsNullOrEmpty(to)) m.To = to;
                     var bcc = (message.Bcc != null ? string.Join(",", message.Bcc.Select(x => x.ToString()).ToArray()) : null);

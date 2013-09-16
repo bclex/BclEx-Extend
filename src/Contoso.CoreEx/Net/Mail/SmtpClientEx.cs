@@ -2,7 +2,7 @@
 /*
 The MIT License
 
-Copyright (c) 2008 Sky Morey
+Copyright (c) 2008-2013 Sky Morey
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -48,14 +48,14 @@ namespace Contoso.Net.Mail
                 {
                     var m = new CDO.Message();
 
-                    // set message
+                    //+ set message
                     var s = new ADODB.Stream();
                     s.Charset = "ascii";
                     s.Open();
                     s.WriteText(message.Body);
                     m.DataSource.OpenObject(s, "_Stream");
 
-                    // set configuration
+                    //+ set configuration
                     var f = m.Configuration.Fields;
                     switch (DeliveryMethod)
                     {
@@ -71,7 +71,7 @@ namespace Contoso.Net.Mail
                     }
                     f.Update();
 
-                    // set other values
+                    //+ set other values
                     m.MimeFormatted = true;
                     m.Subject = message.Subject;
                     if (message.From != null) m.From = message.From.ToString();
@@ -91,7 +91,7 @@ namespace Contoso.Net.Mail
 
         private void AddAttachement(CDO.Message m, Attachment attachment, bool allowUnicode)
         {
-            // set message
+            //+ set message
             var s = new ADODB.Stream();
             s.Charset = "UTF-8";
             s.Open();
@@ -110,7 +110,7 @@ namespace Contoso.Net.Mail
                     }
             s.Flush();
             s.Position = 0;
-            //
+            //+
             var p = m.Attachments.Add();
             p.ContentMediaType = attachment.ContentType.ToString();
             p.ContentTransferEncoding = "base64";

@@ -38,6 +38,6 @@ namespace System.Linq
         /// <param name="source">The source.</param>
         /// <param name="criteria">The criteria.</param>
         /// <returns></returns>
-        public override IPagedMetadata GetMetadata<TSource>(IQueryable<TSource> source, LinqPagedCriteria criteria) { return new LinqPagedMetadata<TSource>(source, criteria); }
+        public override IPagedMetadata GetMetadata<TSource>(IEnumerable<TSource> source, LinqPagedCriteria criteria) { return new LinqPagedMetadata<TSource>(source, criteria); }
     }
 }

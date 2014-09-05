@@ -37,7 +37,7 @@ namespace System.Collections.Generic
     /// <typeparam name="T"></typeparam>
     public class PagedList<T> : List<T>, IPagedList<T>
     {
-        private readonly IPagedMetadata _metadata;
+        internal readonly IPagedMetadata _metadata;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="PagedList&lt;T&gt;"/> class.

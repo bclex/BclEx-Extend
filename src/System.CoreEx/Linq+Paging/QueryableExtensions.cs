@@ -39,9 +39,9 @@ namespace System.Linq
         /// <typeparam name="TSource">The type of the source.</typeparam>
         /// <param name="source">The source.</param>
         /// <param name="pageIndex">Index of the page.</param>
-        /// <param name="meta">The meta.</param>
+        /// <param name="metadata">The meta.</param>
         /// <returns></returns>
-        public static TSource[] ToPagedArray<TSource>(this IQueryable<TSource> source, int pageIndex, out IPagedMetadata meta) { return ToPagedArray<TSource>(source, new LinqPagedCriteria { PageIndex = pageIndex }, out meta); }
+        public static TSource[] ToPagedArray<TSource>(this IQueryable<TSource> source, int pageIndex, out IPagedMetadata metadata) { return ToPagedArray<TSource>(source, new LinqPagedCriteria { PageIndex = pageIndex }, out metadata); }
         /// <summary>
         /// Toes the paged array.
         /// </summary>
@@ -49,27 +49,27 @@ namespace System.Linq
         /// <param name="source">The source.</param>
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="pageSize">Size of the page.</param>
-        /// <param name="meta">The meta.</param>
+        /// <param name="metadata">The meta.</param>
         /// <returns></returns>
-        public static TSource[] ToPagedArray<TSource>(this IQueryable<TSource> source, int pageIndex, int pageSize, out IPagedMetadata meta) { return ToPagedArray<TSource>(source, new LinqPagedCriteria { PageIndex = pageIndex, PageSize = pageSize }, out meta); }
+        public static TSource[] ToPagedArray<TSource>(this IQueryable<TSource> source, int pageIndex, int pageSize, out IPagedMetadata metadata) { return ToPagedArray<TSource>(source, new LinqPagedCriteria { PageIndex = pageIndex, PageSize = pageSize }, out metadata); }
         /// <summary>
         /// Toes the paged array.
         /// </summary>
         /// <typeparam name="TSource">The type of the source.</typeparam>
         /// <param name="source">The source.</param>
         /// <param name="criteria">The criteria.</param>
-        /// <param name="meta">The meta.</param>
+        /// <param name="metadata">The meta.</param>
         /// <returns></returns>
-        public static TSource[] ToPagedArray<TSource>(this IQueryable<TSource> source, LinqPagedCriteria criteria, out IPagedMetadata meta)
+        public static TSource[] ToPagedArray<TSource>(this IQueryable<TSource> source, LinqPagedCriteria criteria, out IPagedMetadata metadata)
         {
             if (source == null)
                 throw new ArgumentNullException("source");
             if (criteria == null)
                 throw new ArgumentNullException("criteria");
-            meta = LinqPagedMetadataProviders.Current.GetMetadata<TSource>(source, criteria);
-            int pageSize = criteria.PageSize;
-            int index = meta.Index;
-            if (meta.TotalItems > 0)
+            metadata = LinqPagedMetadataProviders.Current.GetMetadata<TSource>(source, criteria);
+            var pageSize = criteria.PageSize;
+            var index = metadata.Index;
+            if (metadata.TotalItems > 0)
                 return new Buffer<TSource>(index == 0 ? source.Take(pageSize) : source.Skip(index * pageSize).Take(pageSize)).ToArray();
             return new TSource[] { };
         }
@@ -104,12 +104,28 @@ namespace System.Linq
                 throw new ArgumentNullException("source");
             if (criteria == null)
                 throw new ArgumentNullException("criteria");
-            var meta = LinqPagedMetadataProviders.Current.GetMetadata<TSource>(source, criteria);
-            int pageSize = criteria.PageSize;
-            int index = meta.Index;
-            if (meta.TotalItems > 0)
-                return new PagedList<TSource>((index == 0 ? source.Take(pageSize) : source.Skip(index * pageSize).Take(pageSize)), meta);
-            return new PagedList<TSource>(meta);
+            var metadata = LinqPagedMetadataProviders.Current.GetMetadata<TSource>(source, criteria);
+            var pageSize = criteria.PageSize;
+            var index = metadata.Index;
+            if (metadata.TotalItems > 0)
+                return new PagedList<TSource>((index == 0 ? source.Take(pageSize) : source.Skip(index * pageSize).Take(pageSize)), metadata);
+            return new PagedList<TSource>(metadata);
+        }
+        /// <summary>
+        /// To the paged list.
+        /// </summary>
+        /// <typeparam name="TSource">The type of the source.</typeparam>
+        /// <typeparam name="TPagedSource">The type of the paged source.</typeparam>
+        /// <param name="source">The source.</param>
+        /// <param name="metadata">The metadata.</param>
+        /// <returns></returns>
+        /// <exception cref="System.ArgumentNullException">metadata;Not from PagedList</exception>
+        public static IPagedList<TSource> ToPagedList<TSource, TPagedSource>(this IQueryable<TSource> source, IEnumerable<TPagedSource> metadata)
+        {
+            var pagedList = (metadata as PagedList<TPagedSource>);
+            if (pagedList == null)
+                throw new ArgumentNullException("metadata", "Not from PagedList<TPagedSource>");
+            return new PagedList<TSource>(source, pagedList._metadata);
         }
     }
 }

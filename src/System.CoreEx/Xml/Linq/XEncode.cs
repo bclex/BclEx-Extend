@@ -23,24 +23,16 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
 #endregion
-using System.Collections.Generic;
-namespace System.Linq
+namespace System.Xml
 {
-    /// <summary>
-    /// EmptyLinqPagedMetadataProvider
-    /// </summary>
-    public class EmptyLinqPagedMetadataProvider : LinqPagedMetadataProvider
-    {
-        /// <summary>
-        /// Gets the metadata.
-        /// </summary>
-        /// <typeparam name="TSource">The type of the source.</typeparam>
-        /// <param name="source">The source.</param>
-        /// <param name="criteria">The criteria.</param>
-        /// <returns></returns>
-        public override IPagedMetadata GetMetadata<TSource>(IEnumerable<TSource> source, LinqPagedCriteria criteria)
-        {
-            throw new NotSupportedException();
-        }
-    }
+    //public class XEncode : XText
+    //{
+    //    public XEncode(string text) : base(text) { }
+    //    public XEncode(XText text) : base(text) { }
+
+    //    public override void WriteTo(System.Xml.XmlWriter writer)
+    //    {
+    //        writer.WriteRaw(HttpUtility.HtmlEncode(Value).Replace("\n", "<br />"));
+    //    }
+    //}
 }

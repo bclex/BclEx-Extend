@@ -41,7 +41,7 @@ namespace System.Linq
         /// <param name="pageIndex">Index of the page.</param>
         /// <param name="metadata">The meta.</param>
         /// <returns></returns>
-        public static TSource[] ToPagedArray<TSource>(this IQueryable<TSource> source, int pageIndex, out IPagedMetadata metadata) { return ToPagedArray<TSource>(source, new LinqPagedCriteria { PageIndex = pageIndex }, out metadata); }
+        public static TSource[] ToPagedArray<TSource>(this IQueryable<TSource> source, int pageIndex, out IPagedMetadata metadata) { return ToPagedArray<TSource>(source, new LinqPagedCriteria { PageIndex = pageIndex, PageSize = 20 }, out metadata); }
         /// <summary>
         /// Toes the paged array.
         /// </summary>
@@ -81,7 +81,7 @@ namespace System.Linq
         /// <param name="source">The source.</param>
         /// <param name="pageIndex">Index of the page.</param>
         /// <returns></returns>
-        public static IPagedList<TSource> ToPagedList<TSource>(this IQueryable<TSource> source, int pageIndex) { return ToPagedList<TSource>(source, new LinqPagedCriteria { PageIndex = pageIndex }); }
+        public static IPagedList<TSource> ToPagedList<TSource>(this IQueryable<TSource> source, int pageIndex) { return ToPagedList<TSource>(source, new LinqPagedCriteria { PageIndex = pageIndex, PageSize = 20 }); }
         /// <summary>
         /// Toes the paged list.
         /// </summary>

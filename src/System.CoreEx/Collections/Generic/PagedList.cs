@@ -42,6 +42,10 @@ namespace System.Collections.Generic
         /// <summary>
         /// Initializes a new instance of the <see cref="PagedList&lt;T&gt;"/> class.
         /// </summary>
+        public PagedList() { }
+        /// <summary>
+        /// Initializes a new instance of the <see cref="PagedList&lt;T&gt;"/> class.
+        /// </summary>
         /// <param name="metadata">The metadata.</param>
         public PagedList(IPagedMetadata metadata)
         {

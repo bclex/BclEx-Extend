@@ -86,6 +86,11 @@
     <Reference Include="System.XML" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="+NumberSpan\Globalization\NumberSpanFormat.cs" />
+    <Compile Include="+NumberSpan\Globalization\NumberSpanParse.cs" />
+    <Compile Include="+NumberSpan\Globalization\NumberSpanStyles.cs" />
+    <Compile Include="+NumberSpan\NumberSpan.cs" />
+    <Compile Include="+NumberSpan\Text\StringBuilderCache.cs" />
     <Compile Include="+Polyfill\Collections\HashHelpers.cs" />
     <Compile Include="+Polyfill\Action.cs" />
     <Compile Include="+Polyfill\SR.cs" />
@@ -154,6 +159,7 @@
     <Compile Include="+Surface\Net\Mime\SmtpDateTime.cs" />
     <Compile Include="+Surface\Net\Mime\WriteStateInfoBase.cs" />
     <Compile Include="+Polyfill\Net\TrackingValidationObjectDictionary.cs" />
+    <Compile Include="Collections\IValue.cs" />
     <Compile Include="ComponentModel\DataAnnotations\RequiredIfAttribute.cs" />
     <Compile Include="ComponentModel\DataAnnotations\DataAnnotationsResources.cs" />
     <Compile Include="ComponentModel\DataAnnotations\DataTypeExAttribute.cs" />

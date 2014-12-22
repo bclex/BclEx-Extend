@@ -39,8 +39,9 @@ namespace System.Reflection
         /// <param name="b">The b.</param>
         /// <param name="baseType">Type of the base.</param>
         /// <param name="baseInterfaces">The base interfaces.</param>
+        /// <param name="serializationSupport">if set to <c>true</c> [serialization support].</param>
         /// <returns></returns>
-        Type CreateProxiedType(ModuleBuilder b, Type baseType, Type[] baseInterfaces);
+        Type CreateProxiedType(ModuleBuilder b, Type baseType, Type[] baseInterfaces, bool serializationSupport);
     }
 
     internal class DynamicProxyTypeEmitter : IDynamicProxyTypeEmitter
@@ -48,11 +49,12 @@ namespace System.Reflection
         #region Class-types
 
         /// <summary>
-        /// 
+        /// ProxyDummy
         /// </summary>
         public class ProxyDummy { }
+
         /// <summary>
-        /// 
+        /// ProxyObjectReference
         /// </summary>
         [Serializable]
         public class ProxyObjectReference : IObjectReference, ISerializable
@@ -62,16 +64,16 @@ namespace System.Reflection
 
             protected ProxyObjectReference(SerializationInfo info, StreamingContext context)
             {
-                string typeName = info.GetString("__baseType");
+                var typeName = info.GetString("__baseType");
                 _baseType = Type.GetType(typeName, true, false);
                 var baseInterfaces = new List<Type>();
-                int count = info.GetInt32("__baseInterfaceCount");
-                for (int index = 0; index < count; index++)
+                var count = info.GetInt32("__baseInterfaceCount");
+                for (var index = 0; index < count; index++)
                 {
-                    string name = string.Format("__baseInterface{0}", index);
+                    var name = string.Format("__baseInterface{0}", index);
                     baseInterfaces.Add(Type.GetType(info.GetString(name), true, false));
                 }
-                var proxyType = new DynamicProxyBuilder().CreateProxiedType(_baseType, baseInterfaces.ToArray());
+                var proxyType = new DynamicProxyBuilder().CreateProxiedType(_baseType, baseInterfaces.ToArray(), true);
                 _proxy = (IDynamicProxy)Activator.CreateInstance(proxyType, new object[] { info, context });
             }
 
@@ -112,13 +114,13 @@ namespace System.Reflection
         private static readonly MethodInfo s_getValueMethod = typeof(SerializationInfo).GetMethod("GetValue", BindingFlags.Public | BindingFlags.Instance, null, new Type[] { typeof(string), typeof(Type) }, null);
         private static readonly MethodInfo s_setTypeMethod = typeof(SerializationInfo).GetMethod("SetType", BindingFlags.Public | BindingFlags.Instance, null, new Type[] { typeof(Type) }, null);
 
-        public Type CreateProxiedType(ModuleBuilder b, Type baseType, Type[] baseInterfaces)
+        public Type CreateProxiedType(ModuleBuilder b, Type baseType, Type[] baseInterfaces, bool serializationSupport)
         {
-            string typeName = string.Format("{0}Proxy", baseType.Name);
+            var typeName = string.Format("{0}Proxy", baseType.Name);
             //
             const TypeAttributes attributes = TypeAttributes.BeforeFieldInit | TypeAttributes.AutoClass | TypeAttributes.Public;
             var interfaces = new List<Type>();
-            if ((baseInterfaces != null) && (baseInterfaces.Length > 0))
+            if (baseInterfaces != null && baseInterfaces.Length > 0)
                 interfaces.AddRange(baseInterfaces);
             var parent = baseType;
             if (baseType.IsInterface)
@@ -128,7 +130,7 @@ namespace System.Reflection
             }
             foreach (var @interface in interfaces.ToArray())
                 BuildInterfacesRecurse(@interface, interfaces);
-            if (!interfaces.Contains(typeof(ISerializable)))
+            if (serializationSupport && !interfaces.Contains(typeof(ISerializable)))
                 interfaces.Add(typeof(ISerializable));
             var typeBuilder = b.DefineType(typeName, attributes, parent, interfaces.ToArray());
             var constructorBuilder = DefineConstructor(typeBuilder);
@@ -141,14 +143,15 @@ namespace System.Reflection
             foreach (var proxy in proxies)
                 if (proxy.DeclaringType != typeof(ISerializable))
                     ProxyMethodEmitter.CreateProxiedMethod(typeBuilder, interceptorField, proxy);
-            AddSerializationSupport(typeBuilder, baseType, baseInterfaces, interceptorField, constructorBuilder);
+            if (serializationSupport)
+                AddSerializationSupport(typeBuilder, baseType, baseInterfaces, interceptorField, constructorBuilder);
             return typeBuilder.CreateType();
         }
 
         private static void BuildInterfacesRecurse(Type type, ICollection<Type> interfaces)
         {
             var childInterfaces = type.GetInterfaces();
-            if ((childInterfaces != null) && (childInterfaces.Length != 0))
+            if (childInterfaces != null && childInterfaces.Length != 0)
                 foreach (var childInterface in childInterfaces)
                     if (!interfaces.Contains(childInterface))
                     {
@@ -160,7 +163,7 @@ namespace System.Reflection
         private static void BuildMethods(IEnumerable<Type> interfaces, IEnumerable<MethodInfo> methods, ICollection<MethodInfo> proxies)
         {
             foreach (var method in methods)
-                if (((!method.IsPrivate) && (!method.IsFinal)) && ((method.IsVirtual) || (method.IsAbstract)))
+                if (!method.IsPrivate && !method.IsFinal && (method.IsVirtual || method.IsAbstract))
                     proxies.Add(method);
             foreach (var @interface in interfaces)
                 foreach (var interfaceMethod in @interface.GetMethods())
@@ -229,13 +232,13 @@ namespace System.Reflection
             w.Emit(OpCodes.Ldstr, "__baseType");
             w.Emit(OpCodes.Ldstr, baseType.AssemblyQualifiedName);
             w.Emit(OpCodes.Callvirt, s_addValueMethod);
-            int length = baseInterfaces.Length;
+            var length = baseInterfaces.Length;
             w.Emit(OpCodes.Ldarg_1);
             w.Emit(OpCodes.Ldstr, "__baseInterfaceCount");
             w.Emit(OpCodes.Ldc_I4, length);
             w.Emit(OpCodes.Box, typeof(int));
             w.Emit(OpCodes.Callvirt, s_addValueMethod);
-            int index = 0;
+            var index = 0;
             foreach (var baseInterface in baseInterfaces)
             {
                 w.Emit(OpCodes.Ldarg_1);

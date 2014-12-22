@@ -36,8 +36,9 @@ namespace System.Reflection
         /// </summary>
         /// <param name="baseType">Type of the base.</param>
         /// <param name="baseInterfaces">The base interfaces.</param>
+        /// <param name="serializationSupport">if set to <c>true</c> [serialization support].</param>
         /// <returns></returns>
-        Type CreateProxiedType(Type baseType, Type[] baseInterfaces);
+        Type CreateProxiedType(Type baseType, Type[] baseInterfaces, bool serializationSupport);
     }
 
     /// <summary>
@@ -69,16 +70,17 @@ namespace System.Reflection
         /// </summary>
         /// <param name="baseType">Type of the base.</param>
         /// <param name="baseInterfaces">The base interfaces.</param>
+        /// <param name="serializationSupport"></param>
         /// <returns></returns>
-        public Type CreateProxiedType(Type baseType, Type[] baseInterfaces)
+        public Type CreateProxiedType(Type baseType, Type[] baseInterfaces, bool serializationSupport)
         {
             var currentDomain = AppDomain.CurrentDomain;
-            string typeName = string.Format("{0}Proxy", baseType.Name);
-            string assemblyName = string.Format("{0}Assembly", typeName);
-            string moduleName = string.Format("{0}Module", typeName);
+            var typeName = string.Format("{0}Proxy", baseType.Name);
+            var assemblyName = string.Format("{0}Assembly", typeName);
+            var moduleName = string.Format("{0}Module", typeName);
             var name = new AssemblyName(assemblyName);
             var b = currentDomain.DefineDynamicAssembly(name, AssemblyBuilderAccess.Run).DefineDynamicModule(moduleName);
-            return ProxyTypeEmitter.CreateProxiedType(b, baseType, baseInterfaces);
+            return ProxyTypeEmitter.CreateProxiedType(b, baseType, baseInterfaces, serializationSupport);
         }
     }
 }

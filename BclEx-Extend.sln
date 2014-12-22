@@ -21,6 +21,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Practices.ConsoleCo
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Contoso.Practices.TdsServer", "src\Practices\Contoso.Practices.TdsServer\Contoso.Practices.TdsServer.csproj", "{039258BC-8008-443B-90F2-2D0FDF66200B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Microsoft.CoreEx", "src\Microsoft.CoreEx\Microsoft.CoreEx.csproj", "{51F3FAE4-D10F-404D-91B8-21B7ACC2A32D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug.4|Any CPU = Debug.4|Any CPU
@@ -99,6 +101,14 @@ Global
 		{039258BC-8008-443B-90F2-2D0FDF66200B}.Release.4|Any CPU.Build.0 = Release.4|Any CPU
 		{039258BC-8008-443B-90F2-2D0FDF66200B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{039258BC-8008-443B-90F2-2D0FDF66200B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{51F3FAE4-D10F-404D-91B8-21B7ACC2A32D}.Debug.4|Any CPU.ActiveCfg = Debug.4|Any CPU
+		{51F3FAE4-D10F-404D-91B8-21B7ACC2A32D}.Debug.4|Any CPU.Build.0 = Debug.4|Any CPU
+		{51F3FAE4-D10F-404D-91B8-21B7ACC2A32D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{51F3FAE4-D10F-404D-91B8-21B7ACC2A32D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{51F3FAE4-D10F-404D-91B8-21B7ACC2A32D}.Release.4|Any CPU.ActiveCfg = Release.4|Any CPU
+		{51F3FAE4-D10F-404D-91B8-21B7ACC2A32D}.Release.4|Any CPU.Build.0 = Release.4|Any CPU
+		{51F3FAE4-D10F-404D-91B8-21B7ACC2A32D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{51F3FAE4-D10F-404D-91B8-21B7ACC2A32D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

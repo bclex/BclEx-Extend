@@ -91,10 +91,10 @@ namespace System.Reflection
             const MethodAttributes attributes = MethodAttributes.HideBySig | MethodAttributes.Virtual | MethodAttributes.Public;
             var methodBuilder = b.DefineMethod(method.Name, attributes, CallingConventions.HasThis, method.ReturnType, parameterTypes.ToArray());
             var genericArguments = method.GetGenericArguments();
-            if ((genericArguments != null) && (genericArguments.Length > 0))
+            if (genericArguments != null && genericArguments.Length > 0)
             {
                 var genericParameters = new List<string>();
-                for (int index = 0; index < genericArguments.Length; index++)
+                for (var index = 0; index < genericArguments.Length; index++)
                     genericParameters.Add(string.Format("T{0}", index));
                 methodBuilder.DefineGenericParameters(genericParameters.ToArray());
             }
@@ -148,10 +148,10 @@ namespace System.Reflection
 
         private static OpCode GetStindInstruction(Type parameterType)
         {
-            if ((parameterType.IsClass) && (!parameterType.Name.EndsWith("&")))
+            if (parameterType.IsClass && !parameterType.Name.EndsWith("&"))
                 return OpCodes.Stind_Ref;
-            string name = parameterType.Name;
-            if ((!s_stindMap.ContainsKey(name)) && (parameterType.IsByRef))
+            var name = parameterType.Name;
+            if (!s_stindMap.ContainsKey(name) && parameterType.IsByRef)
                 return OpCodes.Stind_Ref;
             return s_stindMap[name];
         }
@@ -176,7 +176,7 @@ namespace System.Reflection
 
         private static void PushArguments(ILGenerator w, ParameterInfo[] parameters)
         {
-            int count = (parameters == null ? 0 : parameters.Length);
+            var count = (parameters == null ? 0 : parameters.Length);
             w.Emit(OpCodes.Ldc_I4, count);
             w.Emit(OpCodes.Newarr, typeof(object));
             w.Emit(OpCodes.Stloc_S, 0);
@@ -184,7 +184,7 @@ namespace System.Reflection
                 w.Emit(OpCodes.Ldloc_S, 0);
             else
             {
-                int index = 0;
+                var index = 0;
                 foreach (var parameter in parameters)
                 {
                     var parameterType = parameter.ParameterType;
@@ -198,8 +198,8 @@ namespace System.Reflection
                     else
                     {
                         w.Emit(OpCodes.Ldarg, index + 1);
-                        bool isGenericParameter = parameterType.IsGenericParameter;
-                        if ((parameterType.IsValueType) || (isGenericParameter))
+                        var isGenericParameter = parameterType.IsGenericParameter;
+                        if (parameterType.IsValueType || isGenericParameter)
                             w.Emit(OpCodes.Box, parameterType);
                         w.Emit(OpCodes.Stelem_Ref);
                     }
@@ -235,11 +235,11 @@ namespace System.Reflection
         private static void PushGenericArguments(ILGenerator w, MethodInfo method)
         {
             var genericArguments = method.GetGenericArguments();
-            int count = (genericArguments == null ? 0 : genericArguments.Length);
+            var count = (genericArguments == null ? 0 : genericArguments.Length);
             w.Emit(OpCodes.Ldc_I4, count);
             w.Emit(OpCodes.Newarr, typeof(Type));
             if (count != 0)
-                for (int index = 0; index < count; index++)
+                for (var index = 0; index < count; index++)
                 {
                     var cls = genericArguments[index];
                     w.Emit(OpCodes.Dup);

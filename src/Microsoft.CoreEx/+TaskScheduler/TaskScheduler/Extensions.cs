@@ -106,17 +106,28 @@ namespace Microsoft.Win32.TaskScheduler
         static IEnumerable<DateTime> CreateTiggerIterator(IEnumerable<DateTime> source, RepetitionPattern repetition, DateTime endDate, DateTime date)
         {
             var e = source.GetEnumerator();
-            e.MoveNext();
-            var d = e.Current;
+            var hasD = e.MoveNext();
+            if (!hasD) yield break;
+            var nextD = e.Current;
+            var days = 30;
+            //
+            DateTime lastD;
             do
             {
-                e.MoveNext();
-                d = e.Current;
-                var lastD = d;
-                yield return lastD;
-                foreach (var r in CreateRepetitionterator(repetition, (d < endDate ? d : endDate), lastD))
-                    yield return r;
-            } while (d < endDate);
+                lastD = nextD;
+                hasD = e.MoveNext();
+                nextD = (hasD ? e.Current : nextD.AddDays(days));
+                if (hasD)
+                {
+                    yield return lastD;
+                    foreach (var r in CreateRepetitionterator(repetition, (nextD < endDate ? nextD : endDate), lastD))
+                        yield return r;
+                    days = (nextD - lastD).Days;
+                }
+            } while (hasD);
+            yield return lastD;
+            foreach (var r in CreateRepetitionterator(repetition, (nextD < endDate ? nextD : endDate), lastD))
+                yield return r;
         }
 
         static IEnumerable<DateTime> CreateRepetitionterator(RepetitionPattern source, DateTime endDate, DateTime date)
@@ -140,97 +151,102 @@ namespace Microsoft.Win32.TaskScheduler
             if (source.DaysInterval < 1 || source.DaysInterval > 999)
                 throw new ArgumentNullException("source");
             if (source.RandomDelay != TimeSpan.Zero) date = AddRandomDelay(date, source.RandomDelay); //: RandomDelay
+            var endDate = source.EndBoundary;
             //
-            var offset = ((date - source.StartBoundary).Days % source.DaysInterval);
+            var offset = (source.DaysInterval == 1 ? 0 : (date - source.StartBoundary).Days % source.DaysInterval);
             var d = (offset == 0 ? date : date.AddDays(-offset)); // realign to start-boundry granulatity
             do
             {
-                if (d >= date)
+                if (d >= date && d < endDate)
                     yield return d;
                 d = d.AddDays(source.DaysInterval); //: DaysInterval
-            } while (d < source.EndBoundary);
+            } while (d < endDate);
         }
 
         static IEnumerable<DateTime> CreateTiggerIterator(WeeklyTrigger source, DateTime date)
         {
+            if (source.WeeksInterval < 1 || source.WeeksInterval > 999)
+                throw new ArgumentNullException("source");
             if (source.RandomDelay != TimeSpan.Zero) date = AddRandomDelay(date, source.RandomDelay); //: RandomDelay
+            var endDate = source.EndBoundary;
             //
-            var offset = ((date - source.StartBoundary).Days % (source.WeeksInterval * 7));
+            var offset = (source.WeeksInterval == 1 ? 0 : (date - source.StartBoundary).Days % (source.WeeksInterval * 7));
             var d = (offset == 0 ? date : date.AddDays(-offset)); // realign to start-boundry granulatity
             var dow = source.DaysOfWeek; //: DaysOfWeek
             do
             {
-                for (DaysOfTheWeek i = (DaysOfTheWeek)(1 << (int)d.DayOfWeek); i <= DaysOfTheWeek.Saturday; i = (DaysOfTheWeek)(1 << (int)i), d = d.AddDays(1))
-                    if ((dow & i) != 0 && d >= date)
+                for (var i = (DaysOfTheWeek)(1 << (int)d.DayOfWeek); i <= DaysOfTheWeek.Saturday; i = (DaysOfTheWeek)((int)i << 1), d = d.AddDays(1))
+                    if ((dow & i) != 0 && d >= date && d < endDate)
                         yield return d;
-            } while (d < source.EndBoundary);
+                if (source.WeeksInterval != 1) d = d.AddDays(7 * (source.WeeksInterval - 1)); //: WeeksInterval
+            } while (d < endDate);
         }
 
         static IEnumerable<DateTime> CreateTiggerIterator(MonthlyTrigger source, DateTime date)
         {
             if (source.RandomDelay != TimeSpan.Zero) date = AddRandomDelay(date, source.RandomDelay); //: RandomDelay
+            var endDate = source.EndBoundary;
+            //
             var d = date.AddDays(1 - date.Day); // move to month
             var moy = source.MonthsOfYear; //: MonthsOfYear
             do
             {
-                for (MonthsOfTheYear i = (MonthsOfTheYear)(1 << d.Month - 1); i <= MonthsOfTheYear.December;
-                    i = (MonthsOfTheYear)(1 << (int)i), d = d.AddMonths(1))
-                    if ((moy & i) != 0 && d >= date)
+                for (var i = (MonthsOfTheYear)(1 << d.Month - 1); i <= MonthsOfTheYear.December; i = (MonthsOfTheYear)((int)i << 1), d = d.AddMonths(1))
+                    if ((moy & i) != 0 && d >= date && d < endDate)
                     {
                         var d2 = d;
                         var lastD = d.AddDays(1 - d.Day).AddMonths(1).AddDays(-1); // find last day of week;
                         foreach (var dom in source.DaysOfMonth.OrderBy(x => x)) //: DaysOfMonth
-                            if ((d2 = d.AddDays(dom)) >= date && d2.Month == d.Month)
+                            if ((d2 = d.AddDays(dom - 1)).Month == d.Month && d2 >= date && d2 < endDate)
                             {
                                 if (d2 == lastD)
-                                    lastD = DateTime.MaxValue;
+                                    lastD = DateTime.MinValue;
                                 yield return d2;
                             }
                         if (source.RunOnLastDayOfMonth) //: RunOnLastDayOfMonth
-                            if (lastD != DateTime.MaxValue && lastD >= date)
+                            if (lastD != DateTime.MinValue && lastD >= date && lastD < endDate)
                                 yield return lastD;
                     }
-            } while (d < source.EndBoundary);
+            } while (d < endDate);
         }
 
         static IEnumerable<DateTime> CreateTiggerIterator(MonthlyDOWTrigger source, DateTime date)
         {
             if (source.RandomDelay != TimeSpan.Zero) date = AddRandomDelay(date, source.RandomDelay); //: RandomDelay
+            var endDate = source.EndBoundary;
+            //
             var d = date.AddDays(1 - date.Day); // move to month
             var moy = source.MonthsOfYear; //: MonthsOfYear
             var wom = source.WeeksOfMonth; //: WeeksOfMonth
             var dow = source.DaysOfWeek; //: DaysOfWeek
             do
             {
-                for (MonthsOfTheYear i = (MonthsOfTheYear)(1 << d.Month - 1); i <= MonthsOfTheYear.December; i = (MonthsOfTheYear)(1 << (int)i), d = d.AddMonths(1))
+                for (var i = (MonthsOfTheYear)(1 << d.Month - 1); i <= MonthsOfTheYear.December; i = (MonthsOfTheYear)((int)i << 1), d = d.AddMonths(1))
                     if ((moy & i) != 0)
                     {
                         var d2 = d.AddDays(-(int)d.DayOfWeek); // move to first day of week - sunday
                         var lastD = d2.AddDays(5 * 7); // find last week of month;
                         if (lastD.Month != d.Month)
                             lastD = lastD.AddDays(-7);
-                        for (WhichWeek i2 = WhichWeek.FirstWeek; i2 <= WhichWeek.LastWeek; i2 = (WhichWeek)(1 << (int)i2), d2 = d2.AddDays(7))
+                        for (var i2 = WhichWeek.FirstWeek; i2 <= WhichWeek.LastWeek; i2 = (WhichWeek)((int)i2 << 1), d2 = d2.AddDays(7))
                         {
                             if ((wom & i2) != 0 && d2 <= lastD)
                             {
                                 if (d2 == lastD)
-                                    lastD = DateTime.MaxValue;
+                                    lastD = DateTime.MinValue;
                                 var d3 = d2;
-                                for (DaysOfTheWeek i3 = (DaysOfTheWeek)(1 << (int)d.DayOfWeek); i3 <= DaysOfTheWeek.Saturday; i3 = (DaysOfTheWeek)(1 << (int)i3), d3 = d3.AddDays(1))
-                                    if ((dow & i3) != 0 && d3 >= date && d3.Month == d.Month)
+                                for (var i3 = (DaysOfTheWeek)(1 << (int)d.DayOfWeek); i3 <= DaysOfTheWeek.Saturday; i3 = (DaysOfTheWeek)((int)i3 << 1), d3 = d3.AddDays(1))
+                                    if ((dow & i3) != 0 && d3.Month == d.Month && d3 >= date && d3 < endDate)
                                         yield return d3;
                             }
                         }
                         if (source.RunOnLastWeekOfMonth) //: RunOnLastWeekOfMonth
-                            if (lastD != DateTime.MaxValue && lastD >= date)
-                            {
-                                var d3 = lastD;
-                                for (DaysOfTheWeek i3 = (DaysOfTheWeek)(1 << (int)d.DayOfWeek); i3 <= DaysOfTheWeek.Saturday; i3 = (DaysOfTheWeek)(1 << (int)i3), d3 = d3.AddDays(1))
-                                    if ((dow & i3) != 0 && d3 >= date && d3.Month == d.Month)
-                                        yield return d3;
-                            }
+                            if (lastD != DateTime.MinValue && lastD >= date && lastD < endDate)
+                                for (var i3 = (DaysOfTheWeek)(1 << (int)d.DayOfWeek); i3 <= DaysOfTheWeek.Saturday; i3 = (DaysOfTheWeek)((int)i3 << 1), lastD = lastD.AddDays(1))
+                                    if ((dow & i3) != 0 && lastD.Month == d.Month && lastD >= date && lastD < endDate)
+                                        yield return lastD;
                     }
-            } while (d < source.EndBoundary);
+            } while (d < endDate);
         }
 
         #endregion

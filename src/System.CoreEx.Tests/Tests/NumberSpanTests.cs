@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-namespace Tests
+namespace System.Tests
 {
     public class NumberSpanTests
     {
@@ -43,7 +43,7 @@ namespace Tests
             Debug.Assert("3 of 3" == span2.ToString());
 
             var span3 = new NumberSpan(4);
-            Debug.Assert("4" == span2.ToString());
+            Debug.Assert("4" == span3.ToString());
         }
 
         public void RunAllTests()

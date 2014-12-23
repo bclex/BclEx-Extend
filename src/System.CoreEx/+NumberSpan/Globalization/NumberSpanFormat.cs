@@ -284,13 +284,12 @@ namespace System.Globalization
         {
             StringBuilder sb = StringBuilderCache.Acquire(0x10);
             int num = (int)(value._ticks / 0xc92a69c000L);
-            long num2 = value._ticks % 0xc92a69c000L;
+            int num2 = (int)(value._ticks % 0xc92a69c000L);
             if (value._ticks < 0L)
             {
                 num = -num;
                 num2 = -num2;
             }
-            int n = (int)num2;
             FormatLiterals formatLiterals;
             if (isInvariant)
                 formatLiterals = (value._ticks < 0L ? NegativeInvariantFormatLiterals : PositiveInvariantFormatLiterals);
@@ -300,12 +299,12 @@ namespace System.Globalization
                 formatLiterals.Init(format, pattern == Pattern.Full);
             }
             sb.Append(formatLiterals.Start);
+            sb.Append(IntToString(num2, formatLiterals._cc));
             if (pattern == Pattern.Full || num != 0)
             {
-                sb.Append(IntToString(num, formatLiterals._cc));
                 sb.Append(formatLiterals.OfSep);
+                sb.Append(IntToString(num, formatLiterals._tt));
             }
-            sb.Append(IntToString(n, formatLiterals._tt));
             sb.Append(formatLiterals.End);
             return StringBuilderCache.GetStringAndRelease(sb);
         }

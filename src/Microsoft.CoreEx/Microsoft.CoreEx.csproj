@@ -83,7 +83,7 @@
   <ItemGroup>
     <Compile Include="+TaskScheduler\TaskScheduler\CalendarTrigger.cs" />
     <Compile Include="+TaskScheduler\TaskScheduler\Extensions.cs" />
-    <Compile Include="+TaskScheduler\TaskScheduler\LocalTriggerCollection.cs" />
+    <Compile Include="+TaskScheduler\TaskScheduler\TriggerCollectionEx.cs" />
     <Compile Include="+TaskScheduler\Xml\Serialization\XmlSerializationHelper.cs" />
     <Compile Include="Local.Designer.cs">
       <AutoGen>True</AutoGen>

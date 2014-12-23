@@ -42,6 +42,17 @@ namespace System
         }
 
         /// <summary>
+        /// Adds the specified ticks.
+        /// </summary>
+        /// <param name="ticks">The ticks.</param>
+        /// <returns></returns>
+        public NumberSpan Add(int ticks)
+        {
+            long num = _ticks + ticks;
+            return new NumberSpan(num);
+        }
+
+        /// <summary>
         /// Adds the specified ts.
         /// </summary>
         /// <param name="ts">The ts.</param>
@@ -148,9 +159,34 @@ namespace System
         /// <returns>
         /// The result of the operator.
         /// </returns>
+        public static NumberSpan operator +(NumberSpan t1, int t2)
+        {
+            return t1.Add(t2);
+        }
+
+        /// <summary>
+        /// Implements the operator +.
+        /// </summary>
+        /// <param name="t1">The t1.</param>
+        /// <param name="t2">The t2.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
         public static NumberSpan operator +(NumberSpan t1, NumberSpan t2)
         {
             return t1.Add(t2);
+        }
+
+        /// <summary>
+        /// Implements the operator ++.
+        /// </summary>
+        /// <param name="t1">The t1.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static NumberSpan operator ++(NumberSpan t1)
+        {
+            return t1.Add(1);
         }
 
         /// <summary>
@@ -239,9 +275,34 @@ namespace System
         /// <returns>
         /// The result of the operator.
         /// </returns>
+        public static NumberSpan operator -(NumberSpan t1, int t2)
+        {
+            return t1.Subtract(t2);
+        }
+
+        /// <summary>
+        /// Implements the operator -.
+        /// </summary>
+        /// <param name="t1">The t1.</param>
+        /// <param name="t2">The t2.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
         public static NumberSpan operator -(NumberSpan t1, NumberSpan t2)
         {
             return t1.Subtract(t2);
+        }
+
+        /// <summary>
+        /// Implements the operator --.
+        /// </summary>
+        /// <param name="t1">The t1.</param>
+        /// <returns>
+        /// The result of the operator.
+        /// </returns>
+        public static NumberSpan operator --(NumberSpan t1)
+        {
+            return t1.Subtract(1);
         }
 
         /// <summary>
@@ -339,6 +400,17 @@ namespace System
         {
             NumberSpanParse.ValidateStyles(styles, "styles");
             return NumberSpanParse.ParseExactMultiple(input, formats, formatProvider, styles);
+        }
+
+        /// <summary>
+        /// Subtracts the specified ticks.
+        /// </summary>
+        /// <param name="ticks">The ticks.</param>
+        /// <returns></returns>
+        public NumberSpan Subtract(int ticks)
+        {
+            long num = _ticks - ticks;
+            return new NumberSpan(num);
         }
 
         /// <summary>

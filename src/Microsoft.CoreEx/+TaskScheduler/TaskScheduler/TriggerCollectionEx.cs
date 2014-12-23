@@ -11,14 +11,14 @@ namespace Microsoft.Win32.TaskScheduler
     /// 
     /// </summary>
     [XmlRoot("Triggers", Namespace = "http://schemas.microsoft.com/windows/2004/02/mit/task", IsNullable = false)]
-    public class LocalTriggerCollection : List<Trigger>, IXmlSerializable
+    public class TriggerCollectionEx : List<Trigger>, IXmlSerializable
     {
-        static readonly ICollection<Trigger> Daily = new LocalTriggerCollection { new DailyTrigger(1) { StartBoundary = DateTime.MinValue } };
-        static readonly ICollection<Trigger> Weekly = new LocalTriggerCollection { new WeeklyTrigger(DaysOfTheWeek.Sunday, 1) { StartBoundary = DateTime.MinValue } };
-        static readonly ICollection<Trigger> Monthly = new LocalTriggerCollection { new MonthlyTrigger(1, MonthsOfTheYear.AllMonths) { StartBoundary = DateTime.MinValue } };
-        static readonly ICollection<Trigger> LastDayOfMonth = new LocalTriggerCollection { new MonthlyTrigger(1, MonthsOfTheYear.AllMonths) { StartBoundary = DateTime.MinValue, RunOnLastDayOfMonth = true } };
-        static readonly ICollection<Trigger> Quarterly = new LocalTriggerCollection { new MonthlyTrigger(1, MonthsOfTheYear.January | MonthsOfTheYear.April | MonthsOfTheYear.July | MonthsOfTheYear.October) { StartBoundary = DateTime.MinValue } };
-        static readonly ICollection<Trigger> Yearly = new LocalTriggerCollection { new MonthlyTrigger(1, MonthsOfTheYear.January) { StartBoundary = DateTime.MinValue } };
+        static readonly TriggerCollectionEx Daily = new TriggerCollectionEx { new DailyTrigger(1) { StartBoundary = DateTime.MinValue } };
+        static readonly TriggerCollectionEx Weekly = new TriggerCollectionEx { new WeeklyTrigger(DaysOfTheWeek.Sunday, 1) { StartBoundary = DateTime.MinValue } };
+        static readonly TriggerCollectionEx Monthly = new TriggerCollectionEx { new MonthlyTrigger(1, MonthsOfTheYear.AllMonths) { StartBoundary = DateTime.MinValue } };
+        static readonly TriggerCollectionEx LastDayOfMonth = new TriggerCollectionEx { new MonthlyTrigger(1, MonthsOfTheYear.AllMonths) { StartBoundary = DateTime.MinValue, RunOnLastDayOfMonth = true } };
+        static readonly TriggerCollectionEx Quarterly = new TriggerCollectionEx { new MonthlyTrigger(1, MonthsOfTheYear.January | MonthsOfTheYear.April | MonthsOfTheYear.July | MonthsOfTheYear.October) { StartBoundary = DateTime.MinValue } };
+        static readonly TriggerCollectionEx Yearly = new TriggerCollectionEx { new MonthlyTrigger(1, MonthsOfTheYear.January) { StartBoundary = DateTime.MinValue } };
 
         /// <summary>
         /// Parses the specified s.
@@ -26,7 +26,7 @@ namespace Microsoft.Win32.TaskScheduler
         /// <param name="s">The s.</param>
         /// <returns></returns>
         /// <exception cref="System.ArgumentOutOfRangeException">s</exception>
-        public static ICollection<Trigger> Parse(string s)
+        public static TriggerCollectionEx Parse(string s)
         {
             if (string.IsNullOrEmpty(s)) return null;
             else if (string.Equals("daily", s, StringComparison.OrdinalIgnoreCase)) return Daily;
@@ -37,7 +37,7 @@ namespace Microsoft.Win32.TaskScheduler
             else if (string.Equals("yearly", s, StringComparison.OrdinalIgnoreCase)) return Yearly;
             else if (s[0] == '<')
             {
-                var triggers = new LocalTriggerCollection();
+                var triggers = new TriggerCollectionEx();
                 using (var reader = new StringReader(s))
                 using (var reader2 = XmlReader.Create(reader))
                 {

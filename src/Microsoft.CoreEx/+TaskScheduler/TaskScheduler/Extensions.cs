@@ -11,13 +11,26 @@ namespace Microsoft.Win32.TaskScheduler
     public static class Extensions
     {
         /// <summary>
+        /// Selects the dates.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <returns></returns>
+        public static IEnumerable<DateTime> SelectDates(this IEnumerable<Trigger> source) { return SelectDates(source, x => x, DateTime.Today); }
+        /// <summary>
+        /// Selects the dates.
+        /// </summary>
+        /// <param name="source">The source.</param>
+        /// <param name="date">The date.</param>
+        /// <returns></returns>
+        public static IEnumerable<DateTime> SelectDates(this IEnumerable<Trigger> source, DateTime date) { return SelectDates(source, x => x, date); }
+        /// <summary>
         /// Selects the specified source.
         /// </summary>
         /// <typeparam name="TResult">The type of the result.</typeparam>
         /// <param name="source">The source.</param>
         /// <param name="selector">The selector.</param>
         /// <returns></returns>
-        public static IEnumerable<TResult> Select<TResult>(this ICollection<Trigger> source, Func<DateTime, TResult> selector) { return Select(source, selector, DateTime.Today); }
+        public static IEnumerable<TResult> SelectDates<TResult>(this IEnumerable<Trigger> source, Func<DateTime, TResult> selector) { return SelectDates(source, selector, DateTime.Today); }
         /// <summary>
         /// Selects the specified source.
         /// </summary>
@@ -26,21 +39,21 @@ namespace Microsoft.Win32.TaskScheduler
         /// <param name="selector">The selector.</param>
         /// <param name="date">The date.</param>
         /// <returns></returns>
-        public static IEnumerable<TResult> Select<TResult>(this ICollection<Trigger> source, Func<DateTime, TResult> selector, DateTime date)
+        public static IEnumerable<TResult> SelectDates<TResult>(this IEnumerable<Trigger> source, Func<DateTime, TResult> selector, DateTime date)
         {
             return CreateTiggerCollectionIterator(source, selector, date);
         }
 
-        static IEnumerable<TResult> CreateTiggerCollectionIterator<TResult>(ICollection<Trigger> source, Func<DateTime, TResult> selector, DateTime date)
+        static IEnumerable<TResult> CreateTiggerCollectionIterator<TResult>(IEnumerable<Trigger> source, Func<DateTime, TResult> selector, DateTime date)
         {
-            var triggers = source.Select(x => x.Select(y => y, date).GetEnumerator()).ToArray();
+            var triggers = source.Select(x => x.SelectDates(y => y, date).GetEnumerator()).ToArray();
             var d = DateTime.MinValue;
             do
             {
                 var minD = DateTime.MaxValue;
                 foreach (var trigger in triggers)
                     if (trigger.Current <= d)
-                        if (trigger.MoveNext() && minD < trigger.Current)
+                        if (trigger.MoveNext() && minD > trigger.Current)
                             minD = trigger.Current;
                 if (minD == DateTime.MaxValue)
                     yield break; // exit if no advancement made
@@ -56,7 +69,7 @@ namespace Microsoft.Win32.TaskScheduler
         /// <param name="source">The source.</param>
         /// <param name="selector">The selector.</param>
         /// <returns></returns>
-        public static IEnumerable<TResult> Select<TResult>(this Trigger source, Func<DateTime, TResult> selector) { return Select(source, selector, DateTime.Today); }
+        public static IEnumerable<TResult> SelectDates<TResult>(this Trigger source, Func<DateTime, TResult> selector) { return SelectDates(source, selector, DateTime.Today); }
         /// <summary>
         /// Selects the specified source.
         /// </summary>
@@ -65,7 +78,7 @@ namespace Microsoft.Win32.TaskScheduler
         /// <param name="selector">The selector.</param>
         /// <param name="date">The date.</param>
         /// <returns></returns>
-        public static IEnumerable<TResult> Select<TResult>(this Trigger source, Func<DateTime, TResult> selector, DateTime date)
+        public static IEnumerable<TResult> SelectDates<TResult>(this Trigger source, Func<DateTime, TResult> selector, DateTime date)
         {
             return CreateTiggerIterator(source, selector, date);
         }

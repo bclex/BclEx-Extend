@@ -9,7 +9,7 @@
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Contoso</RootNamespace>
-    <AssemblyName>Contoso.VisualStudio</AssemblyName>
+    <AssemblyName>Contoso.VisualStudio.10</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <SignAssembly>true</SignAssembly>
@@ -33,7 +33,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
-    <DocumentationFile>bin\Release.4\Contoso.VisualStudio.XML</DocumentationFile>
+    <DocumentationFile>bin\Release.4\Contoso.VisualStudio.10.xml</DocumentationFile>
     <AssemblyOriginatorKeyFile>BclEx.4.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
@@ -55,37 +55,67 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Bootstraper.cs" />
-    <Compile Include="VisualStudio\Generators\LalrJS.cs" />
-    <Compile Include="VisualStudio\Generators\LalrC.cs" />
-    <Compile Include="VisualStudio\Generators\LalrReprint.cs" />
-    <Compile Include="VisualStudio\Generators\Lalr.cs" />
-    <EmbeddedResource Include="Resource_\Lempar.c" />
-    <Compile Include="VisualStudio\Generators\ExampleMultipleFile.cs" />
-    <Compile Include="VisualStudio\Generators\ExampleSingleFile.cs" />
-    <Compile Include="VisualStudio\BootstraperBase.cs" />
-    <Compile Include="VisualStudio\VsMultipleFileGenerator.cs" />
-    <Compile Include="VisualStudio\VsSingleFileGenerator.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VisualStudio\VsSingleFileGeneratorWithSite.cs" />
-    <Compile Include="VisualStudio\VsMultipleFileGeneratorWithSite.cs" />
-    <Compile Include="VisualStudio\IVsSingleFileGenerator.cs" />
-    <Compile Include="VisualStudio\IVsGeneratorProgress.cs" />
-    <Compile Include="VisualStudio\VsHelper.cs">
-      <SubType>Code</SubType>
+    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\BootstraperBase.cs">
+      <Link>VisualStudio\BootstraperBase.cs</Link>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Resource_\Lempar.js" />
+    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\Generators\ExampleMultipleFile.cs">
+      <Link>VisualStudio\Generators\ExampleMultipleFile.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\Generators\ExampleSingleFile.cs">
+      <Link>VisualStudio\Generators\ExampleSingleFile.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\Generators\Lalr.cs">
+      <Link>VisualStudio\Generators\Lalr.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\Generators\LalrC.cs">
+      <Link>VisualStudio\Generators\LalrC.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\Generators\LalrJS.cs">
+      <Link>VisualStudio\Generators\LalrJS.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\Generators\LalrReprint.cs">
+      <Link>VisualStudio\Generators\LalrReprint.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\IVsGeneratorProgress.cs">
+      <Link>VisualStudio\IVsGeneratorProgress.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\IVsSingleFileGenerator.cs">
+      <Link>VisualStudio\IVsSingleFileGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\VsHelper.cs">
+      <Link>VisualStudio\VsHelper.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\VsMultipleFileGenerator.cs">
+      <Link>VisualStudio\VsMultipleFileGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\VsMultipleFileGeneratorWithSite.cs">
+      <Link>VisualStudio\VsMultipleFileGeneratorWithSite.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\VsSingleFileGenerator.cs">
+      <Link>VisualStudio\VsSingleFileGenerator.cs</Link>
+    </Compile>
+    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\VsSingleFileGeneratorWithSite.cs">
+      <Link>VisualStudio\VsSingleFileGeneratorWithSite.cs</Link>
+    </Compile>
+    <Compile Include="Bootstraper.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BclEx.4.snk" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\System.Text.Lalr\System.Text.Lalr.csproj">
+    <ProjectReference Include="..\..\System.Text.Lalr\System.Text.Lalr.csproj">
       <Project>{A087165D-4FD9-43C2-9CA0-DE609ED43C3A}</Project>
       <Name>System.Text.Lalr</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="..\Contoso.VisualStudio.11\Resource_\Lempar.c">
+      <Link>Resource_\Lempar.c</Link>
+    </EmbeddedResource>
+    <EmbeddedResource Include="..\Contoso.VisualStudio.11\Resource_\Lempar.js">
+      <Link>Resource_\Lempar.js</Link>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

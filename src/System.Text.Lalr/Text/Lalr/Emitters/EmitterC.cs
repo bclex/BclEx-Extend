@@ -548,7 +548,7 @@ namespace System.Text.Lalr.Emitters
         public static void EmitHeader(Context ctx, StreamWriter w)
         {
             var prefix = (ctx.TokenPrefix ?? string.Empty);
-            w.Write("typedef uint8 {0)\n", prefix);
+            w.Write("typedef {0} {1}\n", GetMinimumSizeType(0, ctx.Terminals), prefix);
             for (var i = 1; i < ctx.Terminals; i++)
                 w.Write("#define {0}{1,-30} {2,2}\n", prefix, ctx.Symbols[i].Name, i);
         }

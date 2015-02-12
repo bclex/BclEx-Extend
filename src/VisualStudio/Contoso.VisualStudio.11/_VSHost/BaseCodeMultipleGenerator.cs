@@ -1,43 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
-using EnvDTE;
-using System.Collections;
-using System.ComponentModel;
-using System.Runtime.InteropServices;
-using System.IO;
-using Microsoft.VisualStudio.Shell.Interop;
+﻿using EnvDTE;
 using Microsoft.VisualStudio.Shell;
-using Microsoft.VisualStudio.OLE.Interop;
+using Microsoft.VisualStudio.Shell.Interop;
+using System;
+using System.Collections;
+using System.Collections.Generic;
+using System.IO;
 using IServiceProvider = Microsoft.VisualStudio.OLE.Interop.IServiceProvider;
-using System.CodeDom.Compiler;
-using Microsoft.VisualStudio.Designer.Interfaces;
 
-namespace Contoso.VisualStudio
+namespace Microsoft.VisualStudio.TextTemplating.VSHost
 {
     /// <summary>
-    /// VsMultipleFileGenerator
+    /// BaseCodeMultipleGenerator
     /// </summary>
-    public abstract class VsMultipleFileGenerator : VsSingleFileGenerator, IEnumerable, IVsSingleFileGenerator
+    public abstract class BaseCodeMultipleGenerator : BaseCodeGenerator, IEnumerable
     {
         private List<string> _newFileNames = new List<string>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="VsMultipleFileGenerator"/> class.
+        /// Initializes a new instance of the <see cref="BaseCodeMultipleGenerator"/> class.
         /// </summary>
-        protected VsMultipleFileGenerator() { }
+        protected BaseCodeMultipleGenerator() { }
 
         /// <summary>
         /// Pres the content of the generate.
         /// </summary>
-        /// <param name="inputFilePath">The input file path.</param>
-        /// <param name="inputFileContents">The input file contents.</param>
-        protected override void PreGenerateContent(string inputFilePath, string inputFileContents)
+        /// <param name="inputFileName">The input file path.</param>
+        /// <param name="inputFileContent">The input file contents.</param>
+        protected void PreGenerateContent(IVsProject vsProject, string inputFileName)
         {
             _newFileNames.Clear();
-            var vsProject = VsHelper.ToVsProject(Project);
             int iFound;
             uint itemId;
-            vsProject.IsDocumentInProject(inputFilePath, out iFound, new VSDOCUMENTPRIORITY[1], out itemId);
+            vsProject.IsDocumentInProject(inputFileName, out iFound, new VSDOCUMENTPRIORITY[1], out itemId);
             if (iFound == 0 || itemId == 0)
                 throw new ApplicationException("Unable to retrieve Visual Studio ProjectItem");
             IServiceProvider sp;
@@ -49,17 +43,17 @@ namespace Contoso.VisualStudio
             {
                 try
                 {
-                    var inputFileName = GetFileName(i);
-                    _newFileNames.Add(inputFileName);
-                    var path = Path.Combine(inputFilePath.Substring(0, inputFilePath.LastIndexOf(Path.DirectorySeparatorChar)), inputFileName);
-                    var inputFileContent = string.Empty;
+                    var inputFileName2 = GetFileName(i);
+                    _newFileNames.Add(inputFileName2);
+                    var path = Path.Combine(inputFileName.Substring(0, inputFileName.LastIndexOf(Path.DirectorySeparatorChar)), inputFileName2);
+                    var inputFileContent2 = string.Empty;
                     if (File.Exists(path))
-                        try { inputFileContent = File.ReadAllText(path); }
-                        catch (Exception) { inputFileContent = string.Empty; }
+                        try { inputFileContent2 = File.ReadAllText(path); }
+                        catch (Exception) { inputFileContent2 = string.Empty; }
                     var s = File.Create(path);
                     try
                     {
-                        var data = GenerateChildContent(path, inputFileContent);
+                        var data = GenerateChildCode(path, inputFileContent2);
                         s.Write(data, 0, data.Length);
                         s.Close();
                         item.ProjectItems.AddFromFile(path);
@@ -78,6 +72,21 @@ namespace Contoso.VisualStudio
                 if (!(childItem.Name.EndsWith(GetDefaultExtension()) || _newFileNames.Contains(childItem.Name)))
                     childItem.Delete();
             }
+        }
+
+        /// <summary>
+        /// the method that does the actual work of generating code given the input
+        /// file.
+        /// </summary>
+        /// <param name="inputFileName">input file name</param>
+        /// <param name="inputFileContent">file contents as a string</param>
+        /// <returns>
+        /// the generated code file as a byte-array
+        /// </returns>
+        protected override byte[] GenerateCode(string inputFileName, string inputFileContent)
+        {
+            PreGenerateContent(VsHelper.ToVsProject(), inputFileName);
+            return null;
         }
 
         /// <summary>
@@ -101,11 +110,11 @@ namespace Contoso.VisualStudio
         }
 
         /// <summary>
-        /// Generates the content of the child.
+        /// Generates the code of the child.
         /// </summary>
-        /// <param name="inputFilePath">The input file path.</param>
-        /// <param name="inputFileContents">The input file contents.</param>
+        /// <param name="inputFileName">The input file path.</param>
+        /// <param name="inputFileContent">The input file contents.</param>
         /// <returns></returns>
-        protected abstract byte[] GenerateChildContent(string inputFilePath, string inputFileContents);
+        protected abstract byte[] GenerateChildCode(string inputFileName, string inputFileContent);
     }
 }

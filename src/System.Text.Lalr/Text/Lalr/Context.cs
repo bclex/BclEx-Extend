@@ -129,15 +129,15 @@ namespace System.Text.Lalr
         /// NoShowLinenos
         /// </summary>
         public bool NoShowLinenos;
-        internal Action<int, string, object[]> _errorCallback;
-        internal Action<int, string, object[]> _warningCallback;
+        internal Action<int, string, int, int> _errorCallback;
+        internal Action<int, string, int, int> _warningCallback;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Context"/> class.
         /// </summary>
         /// <param name="errorCallback">The error callback.</param>
         /// <param name="warningCallback">The warning callback.</param>
-        public Context(Action<int, string, object[]> errorCallback, Action<int, string, object[]> warningCallback)
+        public Context(Action<int, string, int, int> errorCallback, Action<int, string, int, int> warningCallback)
         {
             _errorCallback = errorCallback;
             _warningCallback = warningCallback;
@@ -161,7 +161,7 @@ namespace System.Text.Lalr
         /// <param name="lineno">The lineno.</param>
         /// <param name="format">The format.</param>
         /// <param name="args">The args.</param>
-        public void RaiseError(ref int errors, int lineno, string format, params object[] args) { errors++; _errorCallback(lineno, format, args); }
+        public void RaiseError(ref int errors, int lineno, string format, params object[] args) { errors++; _errorCallback(1, string.Format(format, args), lineno, 0); }
 
         /// <summary>
         /// Raises the warning.
@@ -169,7 +169,7 @@ namespace System.Text.Lalr
         /// <param name="lineno">The lineno.</param>
         /// <param name="format">The format.</param>
         /// <param name="args">The args.</param>
-        public void RaiseWarning(int lineno, string format, params object[] args) { _warningCallback(lineno, format, args); }
+        public void RaiseWarning(int lineno, string format, params object[] args) { _warningCallback(1, string.Format(format, args), lineno, 0); }
 
         #region Process
 

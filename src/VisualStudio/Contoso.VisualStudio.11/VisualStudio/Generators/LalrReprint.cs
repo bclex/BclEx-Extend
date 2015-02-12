@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TextTemplating.VSHost;
+using System;
 using System.IO;
 using System.Runtime.InteropServices;
 using System.Text.Lalr;
@@ -17,36 +18,37 @@ namespace Contoso.VisualStudio.Generators
     [ProgId("Contoso.VisualStudio.Generators.LalrReprint.11")]
 #endif
     [ClassInterface(ClassInterfaceType.None)]
-    public class LalrReprint : VsSingleFileGeneratorWithSite
+    public class LalrReprint : BaseCodeGeneratorWithSite
     {
         private Context _ctx;
 
         /// <summary>
-        /// Pres the content of the generate.
+        /// Pres the code of the generate.
         /// </summary>
         /// <param name="inputFilePath">The input file path.</param>
         /// <param name="inputFileContents">The input file contents.</param>
-        protected override void PreGenerateContent(string inputFilePath, string inputFileContents)
+        protected void PreGenerateCode(string inputFilePath, string inputFileContents)
         {
-            _ctx = new Context(Error, Warning);
+            _ctx = new Context((a, b, c, d) => GeneratorErrorCallback(false, a, b, c, d), (a, b, c, d) => GeneratorErrorCallback(true, a, b, c, d));
             Parser.Parse(_ctx, inputFilePath, inputFileContents, null);
             if (_ctx.Errors > 0)
                 return;
             if (_ctx.Rules == 0)
             {
-                Warning(0, "Empty grammar.");
+                GeneratorErrorCallback(false, 1, "Empty grammar.", 0, 0);
                 return;
             }
         }
 
         /// <summary>
-        /// Generates the content.
+        /// Generates the code.
         /// </summary>
         /// <param name="inputFilePath">The input file path.</param>
         /// <param name="inputFileContents">The input file contents.</param>
         /// <returns></returns>
-        protected override byte[] GenerateContent(string inputFilePath, string inputFileContents)
+        protected override byte[] GenerateCode(string inputFilePath, string inputFileContents)
         {
+            PreGenerateCode(inputFilePath, inputFileContents);
             using (var s = new MemoryStream())
             {
                 using (var w = new StreamWriter(s))

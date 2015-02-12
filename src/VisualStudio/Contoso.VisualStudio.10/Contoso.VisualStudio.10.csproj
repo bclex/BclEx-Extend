@@ -37,6 +37,7 @@
     <AssemblyOriginatorKeyFile>BclEx.4.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.VisualStudio.TextTemplating.VSHost.10.0, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.XML" />
@@ -79,31 +80,22 @@
     <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\Generators\LalrReprint.cs">
       <Link>VisualStudio\Generators\LalrReprint.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\IVsGeneratorProgress.cs">
-      <Link>VisualStudio\IVsGeneratorProgress.cs</Link>
+    <Compile Include="..\Contoso.VisualStudio.11\_VSHost\BaseCodeMultipleGenerator.cs">
+      <Link>_VSHost\BaseCodeMultipleGenerator.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\IVsSingleFileGenerator.cs">
-      <Link>VisualStudio\IVsSingleFileGenerator.cs</Link>
+    <Compile Include="..\Contoso.VisualStudio.11\_VSHost\BaseCodeMultipleGeneratorWithSite.cs">
+      <Link>_VSHost\BaseCodeMultipleGeneratorWithSite.cs</Link>
     </Compile>
-    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\VsHelper.cs">
-      <Link>VisualStudio\VsHelper.cs</Link>
-    </Compile>
-    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\VsMultipleFileGenerator.cs">
-      <Link>VisualStudio\VsMultipleFileGenerator.cs</Link>
-    </Compile>
-    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\VsMultipleFileGeneratorWithSite.cs">
-      <Link>VisualStudio\VsMultipleFileGeneratorWithSite.cs</Link>
-    </Compile>
-    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\VsSingleFileGenerator.cs">
-      <Link>VisualStudio\VsSingleFileGenerator.cs</Link>
-    </Compile>
-    <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\VsSingleFileGeneratorWithSite.cs">
-      <Link>VisualStudio\VsSingleFileGeneratorWithSite.cs</Link>
+    <Compile Include="..\Contoso.VisualStudio.11\_VSHost\VsHelper.cs">
+      <Link>_VSHost\VsHelper.cs</Link>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="BclEx.4.snk" />
+    <None Include="Test">
+      <Generator>ExampleSingleFile</Generator>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\System.Text.Lalr\System.Text.Lalr.csproj">
@@ -119,6 +111,7 @@
       <Link>Resource_\Lempar.js</Link>
     </EmbeddedResource>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

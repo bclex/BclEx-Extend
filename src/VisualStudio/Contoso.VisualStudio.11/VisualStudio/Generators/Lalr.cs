@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TextTemplating.VSHost;
+using System;
 using System.CodeDom;
 using System.Collections;
 using System.IO;
@@ -7,6 +8,7 @@ using System.Text;
 using System.Text.Lalr;
 using System.Text.Lalr.Emitters;
 using System.CodeDom.Compiler;
+using Microsoft.VisualStudio.Designer.Interfaces;
 
 namespace Contoso.VisualStudio.Generators
 {
@@ -22,30 +24,29 @@ namespace Contoso.VisualStudio.Generators
     [ProgId("Contoso.VisualStudio.Generators.Lalr.11")]
 #endif
     [ClassInterface(ClassInterfaceType.None)]
-    public class Lalr : VsMultipleFileGeneratorWithSite
+    public class Lalr : BaseCodeMultipleGeneratorWithSite
     {
         private Context _ctx;
 
         /// <summary>
-        /// Pres the content of the generate.
+        /// Pres the code of the generate.
         /// </summary>
         /// <param name="inputFilePath">The input file path.</param>
         /// <param name="inputFileContents">The input file contents.</param>
-        protected override void PreGenerateContent(string inputFilePath, string inputFileContents)
+        protected void PreGenerateCode(string inputFilePath, string inputFileContents)
         {
-            _ctx = new Context(Error, Warning);
+            _ctx = new Context((a, b, c, d) => GeneratorErrorCallback(false, a, b, c, d), (a, b, c, d) => GeneratorErrorCallback(true, a, b, c, d));
             Parser.Parse(_ctx, inputFilePath, inputFileContents, null);
             if (_ctx.Errors > 0)
                 return;
             if (_ctx.Rules == 0)
             {
-                Warning(0, "Empty grammar.");
+                GeneratorErrorCallback(false, 1, "Empty grammar.", 0, 0);
                 return;
             }
             _ctx.Process();
             if (_ctx.Conflicts > 0)
-                Error(0, "{0} parsing conflicts.", _ctx.Conflicts);
-            base.PreGenerateContent(inputFilePath, inputFileContents);
+                GeneratorErrorCallback(true, 1, string.Format("{0} parsing conflicts.", _ctx.Conflicts), 0, 0);
         }
 
         /// <summary>
@@ -54,13 +55,14 @@ namespace Contoso.VisualStudio.Generators
         /// <param name="inputFilePath">The input file path.</param>
         /// <param name="inputFileContents">The input file contents.</param>
         /// <returns></returns>
-        protected override byte[] GenerateContent(string inputFilePath, string inputFileContents)
+        protected override byte[] GenerateCode(string inputFilePath, string inputFileContents)
         {
-            var codeNamespace = new CodeNamespace(DefaultNamespace);
+            PreGenerateCode(inputFilePath, inputFileContents);
+            var codeNamespace = new CodeNamespace(FileNamespace);
             var codeUnit = Emitter.Emit(_ctx, codeNamespace, inputFilePath);
             using (var w = new StringWriter())
             {
-                CodeProvider.GenerateCodeFromCompileUnit(codeUnit, w, new CodeGeneratorOptions
+                GetCodeDomProvider().GenerateCodeFromCompileUnit(codeUnit, w, new CodeGeneratorOptions
                 {
                     BlankLinesBetweenMembers = false,
                 });
@@ -74,7 +76,7 @@ namespace Contoso.VisualStudio.Generators
         /// <param name="inputFilePath">The input file path.</param>
         /// <param name="inputFileContents">The input file contents.</param>
         /// <returns></returns>
-        protected override byte[] GenerateChildContent(string inputFilePath, string inputFileContents)
+        protected override byte[] GenerateChildCode(string inputFilePath, string inputFileContents)
         {
             using (var s = new MemoryStream())
                 switch (Path.GetExtension(inputFilePath))
@@ -87,10 +89,34 @@ namespace Contoso.VisualStudio.Generators
                 }
         }
 
+        public override string GetDefaultExtension()
+        {
+            var fileExtension = GetCodeDomProvider().FileExtension;
+            if (!string.IsNullOrEmpty(fileExtension) && fileExtension[0] != '.')
+                fileExtension = "." + fileExtension;
+            return fileExtension;
+        }
+
         /// <summary>
         /// Gets the enumerator.
         /// </summary>
         /// <returns></returns>
         public override IEnumerator GetEnumerator() { return new[] { "*.out" }.GetEnumerator(); }
+
+        private CodeDomProvider _codeDomProvider;
+        /// <summary>
+        /// Gets the code DOM provider.
+        /// </summary>
+        /// <returns></returns>
+        protected CodeDomProvider GetCodeDomProvider()
+        {
+            if (_codeDomProvider == null)
+            {
+                var service = (IVSMDCodeDomProvider)GetService(new Guid("{73E59688-C7C4-4a85-AF64-A538754784C5}")); //: CodeDomInterfaceGuid
+                if (service != null)
+                    _codeDomProvider = (CodeDomProvider)service.CodeDomProvider;
+            }
+            return _codeDomProvider;
+        }
     }
 }

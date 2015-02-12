@@ -11,9 +11,12 @@ namespace Contoso.VisualStudio.Generators
     [ComVisible(true)]
 #if VS10
     [Guid("10A7B6C6-E3DA-4bfa-A27C-8F1CEFA3DDC9")]
+    [ProgId("Contoso.VisualStudio.Generators.ExampleMultipleFile.10")]
 #elif VS11
     [Guid("11A7B6C6-E3DA-4bfa-A27C-8F1CEFA3DDC9")]
+    [ProgId("Contoso.VisualStudio.Generators.ExampleMultipleFile.11")]
 #endif
+    [ClassInterface(ClassInterfaceType.None)]
     public class ExampleMultipleFile : VsMultipleFileGeneratorWithSite
     {
         /// <summary>

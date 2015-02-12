@@ -12,8 +12,10 @@ namespace Contoso.VisualStudio.Generators
     [ComVisible(true)]
 #if VS10
     [Guid("10A7B6C6-E3DA-4bfa-A27C-8F1CEFA3DDC8")]
+    [ProgId("Contoso.VisualStudio.Generators.ExampleSingleFile.10")]
 #elif VS11
     [Guid("11A7B6C6-E3DA-4bfa-A27C-8F1CEFA3DDC8")]
+    [ProgId("Contoso.VisualStudio.Generators.ExampleSingleFile.11")]
 #endif
     public class ExampleSingleFile : VsSingleFileGeneratorWithSite
     {

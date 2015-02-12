@@ -12,7 +12,11 @@ namespace Contoso.VisualStudio.Generators
     /// LalrC
     /// </summary>
     [ComVisible(true)]
-    [Guid("52A7B6C6-E3DA-4bfa-A27C-8F1CEFA3DDA2")]
+#if VS10
+    [Guid("10A7B6C6-E3DA-4bfa-A27C-8F1CEFA3DDA2")]
+#elif VS11
+    [Guid("11A7B6C6-E3DA-4bfa-A27C-8F1CEFA3DDA2")]
+#endif
     public class LalrC : VsMultipleFileGeneratorWithSite
     {
         private Context _ctx;

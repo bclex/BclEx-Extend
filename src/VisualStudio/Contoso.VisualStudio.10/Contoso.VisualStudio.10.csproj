@@ -19,7 +19,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug.4\</OutputPath>
-    <DefineConstants>DEBUG;TRACE;CLR4</DefineConstants>
+    <DefineConstants>VS10;DEBUG;TRACE;CLR4</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -29,7 +29,7 @@
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release.4\</OutputPath>
-    <DefineConstants>TRACE;CLR4</DefineConstants>
+    <DefineConstants>VS10;TRACE;CLR4</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
@@ -55,6 +55,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="..\Contoso.VisualStudio.11\Bootstraper.cs">
+      <Link>Bootstraper.cs</Link>
+    </Compile>
     <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\BootstraperBase.cs">
       <Link>VisualStudio\BootstraperBase.cs</Link>
     </Compile>
@@ -97,7 +100,6 @@
     <Compile Include="..\Contoso.VisualStudio.11\VisualStudio\VsSingleFileGeneratorWithSite.cs">
       <Link>VisualStudio\VsSingleFileGeneratorWithSite.cs</Link>
     </Compile>
-    <Compile Include="Bootstraper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

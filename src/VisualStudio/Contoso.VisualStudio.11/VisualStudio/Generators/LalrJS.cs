@@ -12,7 +12,11 @@ namespace Contoso.VisualStudio.Generators
     /// LalrJS
     /// </summary>
     [ComVisible(true)]
-    [Guid("52A7B6C6-E3DA-4bfa-A27C-8F1CEFA3DDA3")]
+#if VS10
+    [Guid("10A7B6C6-E3DA-4bfa-A27C-8F1CEFA3DDA3")]
+#elif VS11
+    [Guid("11A7B6C6-E3DA-4bfa-A27C-8F1CEFA3DDA3")]
+#endif
     public class LalrJS : VsMultipleFileGeneratorWithSite
     {
         private Context _ctx;

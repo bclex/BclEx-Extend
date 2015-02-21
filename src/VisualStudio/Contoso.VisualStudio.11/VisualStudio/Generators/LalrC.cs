@@ -58,6 +58,7 @@ namespace Contoso.VisualStudio.Generators
         protected override byte[] GenerateCode(string inputFilePath, string inputFileContents)
         {
             PreGenerateCode(inputFilePath, inputFileContents);
+            base.GenerateCode(inputFilePath, inputFileContents);
             var newFilePath = Path.Combine(Path.GetDirectoryName(inputFilePath), Path.GetFileNameWithoutExtension(inputFilePath) + GetDefaultExtension());
             using (var s = new MemoryStream())
             {
@@ -104,10 +105,7 @@ namespace Contoso.VisualStudio.Generators
         /// <returns></returns>
         public override string GetDefaultExtension()
         {
-            var fileExtension = GetCodeDomProvider().FileExtension;
-            if (!string.IsNullOrEmpty(fileExtension) && fileExtension[0] != '.')
-                fileExtension = "." + fileExtension;
-            return fileExtension;
+            return ".cu";
         }
 
         /// <summary>
@@ -115,21 +113,5 @@ namespace Contoso.VisualStudio.Generators
         /// </summary>
         /// <returns></returns>
         public override IEnumerator GetEnumerator() { return new[] { "*.template", "*.h", "*.out" }.GetEnumerator(); }
-
-        private CodeDomProvider _codeDomProvider;
-        /// <summary>
-        /// Gets the code DOM provider.
-        /// </summary>
-        /// <returns></returns>
-        protected CodeDomProvider GetCodeDomProvider()
-        {
-            if (_codeDomProvider == null)
-            {
-                var service = (IVSMDCodeDomProvider)GetService(new Guid("{73E59688-C7C4-4a85-AF64-A538754784C5}")); //: CodeDomInterfaceGuid
-                if (service != null)
-                    _codeDomProvider = (CodeDomProvider)service.CodeDomProvider;
-            }
-            return _codeDomProvider;
-        }
     }
 }

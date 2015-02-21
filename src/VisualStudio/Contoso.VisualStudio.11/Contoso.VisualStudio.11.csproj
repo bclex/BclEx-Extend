@@ -76,6 +76,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Resource_\Lempar.orig.c" />
     <Content Include="Resource_\Lempar.js" />
   </ItemGroup>
   <ItemGroup>

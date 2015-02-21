@@ -6,7 +6,7 @@ namespace System.Text.Lalr.Emitters
 {
     public partial class EmitterC
     {
-        /* The following routine emits code for the destructor for the symbol sp */
+        // The following routine emits code for the destructor for the symbol sp
         private static void EmitDestructor(StreamWriter w, Symbol symbol, Context ctx, ref int lineno, string filePath)
         {
             string z;
@@ -48,13 +48,13 @@ namespace System.Text.Lalr.Emitters
             return;
         }
 
-        /* Return TRUE (non-zero) if the given symbol has a destructor. */
+        // Return TRUE (non-zero) if the given symbol has a destructor.
         private static bool HasDestructor(Symbol symbol, Context ctx)
         {
             return (symbol.Type == SymbolType.Terminal ? ctx.TokenDestructor != null : ctx.DefaultDestructor != null || symbol.Destructor != null);
         }
 
-        /* zCode is a string that is the action associated with a rule.  Expand the symbols in this string so that the refer to elements of the parser stack. */
+        // zCode is a string that is the action associated with a rule.  Expand the symbols in this string so that the refer to elements of the parser stack.
         private static void TranslateRuleCode(Context ctx, Rule rule)
         {
             var used = new bool[rule.RHSymbols.Length]; /* True for each RHS element which is used */
@@ -81,7 +81,7 @@ namespace System.Text.Lalr.Emitters
                         for (var i = 0; i < rule.RHSymbols.Length; i++)
                             if (rule.RHSymbolsAlias[i] != null && z.Substring(cp, xpLength) == rule.RHSymbolsAlias[i])
                             {
-                                /* If the argument is of the form @X then substituted the token number of X, not the value of X */
+                                // If the argument is of the form @X then substituted the token number of X, not the value of X
                                 if (cp > 0 && z[cp - 1] == '@')
                                 {
                                     b.Length--;
@@ -101,10 +101,10 @@ namespace System.Text.Lalr.Emitters
                 }
                 b.Append(z[cp]);
             }
-            /* Check to make sure the LHS has been used */
+            // Check to make sure the LHS has been used
             if (rule.LHSymbolAlias != null && !lhsused)
                 ctx.RaiseError(ref ctx.Errors, rule.RuleLineno, "Label \"{0}\" for \"{1}({2})\" is never used.", rule.LHSymbolAlias, rule.LHSymbol.Name, rule.LHSymbolAlias);
-            /* Generate destructor code for RHS symbols which are not used in the reduce code */
+            // Generate destructor code for RHS symbols which are not used in the reduce code
             for (var i = 0; i < rule.RHSymbols.Length; i++)
             {
                 if (rule.RHSymbolsAlias[i] != null && !used[i])
@@ -116,7 +116,7 @@ namespace System.Text.Lalr.Emitters
                 rule.Code = (b.ToString() ?? string.Empty);
         }
 
-        /* Generate code which executes when the rule "rp" is reduced.  Write the code to "@out".  Make sure lineno stays up-to-date. */
+        // Generate code which executes when the rule "rp" is reduced.  Write the code to "@out".  Make sure lineno stays up-to-date.
         private static void EmitRuleCode(StreamWriter w, Rule rule, Context ctx, ref int lineno, string filePath)
         {
             /* Generate code to do the reduce action */
@@ -128,11 +128,11 @@ namespace System.Text.Lalr.Emitters
             }
         }
 
-        /* Print the definition of the union used for the parser's data stack. This union contains fields for every possible data type for tokens
-        and nonterminals.  In the process of computing and printing this union, also set the ".dtnum" field of every terminal and nonterminal symbol. */
+        // Print the definition of the union used for the parser's data stack. This union contains fields for every possible data type for tokens
+        // and nonterminals.  In the process of computing and printing this union, also set the ".dtnum" field of every terminal and nonterminal symbol.
         private static void EmitStackUnion(StreamWriter w, Context ctx, ref int lineno, bool makeHeaders)
         {
-            /* Print out the definition of YYTOKENTYPE and YYMINORTYPE */
+            // Print out the definition of YYTOKENTYPE and YYMINORTYPE
             var name = (ctx.Name ?? "Parse");
             if (makeHeaders) { w.WriteLine(ref lineno, "#if INTERFACE"); }
             w.WriteLine(ref lineno, "#define {0}TOKENTYPE {1}", name, (ctx.TokenType ?? "void*"));
@@ -147,7 +147,7 @@ namespace System.Text.Lalr.Emitters
             w.WriteLine(ref lineno, "} YYMINORTYPE;");
         }
 
-        /* Return the name of a C datatype able to represent values between lwr and upr, inclusive. */
+        // Return the name of a C datatype able to represent values between lwr and upr, inclusive.
         private static string GetMinimumSizeType(int lwr, int upr)
         {
             if (lwr >= 0)
@@ -167,7 +167,7 @@ namespace System.Text.Lalr.Emitters
                 return "int";
         }
 
-        /* Write text on "w" that describes the rule "rule". */
+        // Write text on "w" that describes the rule "rule".
         private static void WriteRuleText(StreamWriter w, Rule rule)
         {
             w.Write("{0} ::=", rule.LHSymbol.Name);
@@ -194,7 +194,7 @@ namespace System.Text.Lalr.Emitters
             var lineno = 1;
             Template.Transfer(ctx.Name, r, w, ref lineno);
 
-            /* Generate the include code, if any */
+            // Generate the include code, if any
             Template.Write(w, ctx, ctx.Include, ref lineno, filePath);
             if (makeHeaders)
             {
@@ -204,7 +204,7 @@ namespace System.Text.Lalr.Emitters
             }
             Template.Transfer(ctx.Name, r, w, ref lineno);
 
-            /* Generate #defines for all tokens */
+            // Generate #defines for all tokens
             if (makeHeaders)
             {
                 w.WriteLine(ref lineno, "#if INTERFACE");
@@ -215,7 +215,7 @@ namespace System.Text.Lalr.Emitters
             }
             Template.Transfer(ctx.Name, r, w, ref lineno);
 
-            /* Generate the defines */
+            // Generate the defines
             w.WriteLine(ref lineno, "#define YYCODETYPE {0}", GetMinimumSizeType(0, ctx.Symbols.Length));
             w.WriteLine(ref lineno, "#define YYNOCODE {0}", ctx.Symbols.Length);
             w.WriteLine(ref lineno, "#define YYACTIONTYPE {0}", GetMinimumSizeType(0, ctx.States + ctx.Rules + 5));
@@ -267,7 +267,7 @@ namespace System.Text.Lalr.Emitters
             int minNonTerminalOffset;
             var actionTable = EmitterActionTable.Make(ctx, out maxTokenOffset, out minTokenOffset, out maxNonTerminalOffset, out minNonTerminalOffset);
 
-            /* Output the yy_action table */
+            // Output the yy_action table
             var n = actionTable.Size;
             w.WriteLine(ref lineno, "#define YY_ACTTAB_COUNT ({0})", n);
             w.WriteLine(ref lineno, "static const YYACTIONTYPE yy_action[] = {");
@@ -289,7 +289,7 @@ namespace System.Text.Lalr.Emitters
             }
             w.WriteLine(ref lineno, "};");
 
-            /* Output the yy_lookahead table */
+            // Output the yy_lookahead table
             w.WriteLine(ref lineno, "static const YYCODETYPE yy_lookahead[] = {");
             for (int i = 0, j = 0; i < n; i++)
             {
@@ -309,7 +309,7 @@ namespace System.Text.Lalr.Emitters
             }
             w.WriteLine(ref lineno, "};");
 
-            /* Output the yy_shift_ofst[] table */
+            // Output the yy_shift_ofst[] table
             w.WriteLine(ref lineno, "#define YY_SHIFT_USE_DFLT ({0})", minTokenOffset - 1);
             n = ctx.States;
             while (n > 0 && ctx.Sorted[n - 1].TokenOffset == State.NO_OFFSET) n--;
@@ -334,7 +334,7 @@ namespace System.Text.Lalr.Emitters
             }
             w.WriteLine(ref lineno, "};");
 
-            /* Output the yy_reduce_ofst[] table */
+            // Output the yy_reduce_ofst[] table
             w.WriteLine(ref lineno, "#define YY_REDUCE_USE_DFLT ({0})", minNonTerminalOffset - 1);
             n = ctx.States;
             while (n > 0 && ctx.Sorted[n - 1].NonTerminalOffset == State.NO_OFFSET) n--;
@@ -359,7 +359,7 @@ namespace System.Text.Lalr.Emitters
             }
             w.WriteLine(ref lineno, "};");
 
-            /* Output the default action table */
+            // Output the default action table
             w.WriteLine(ref lineno, "static const YYACTIONTYPE yy_default[] = {");
             n = ctx.States;
             for (int i = 0, j = 0; i < n; i++)
@@ -378,7 +378,7 @@ namespace System.Text.Lalr.Emitters
             w.WriteLine(ref lineno, "};");
             Template.Transfer(ctx.Name, r, w, ref lineno);
 
-            /* Generate the table of fallback tokens. */
+            // Generate the table of fallback tokens.
             if (ctx.HasFallback)
             {
                 var mx = ctx.Terminals - 1;
@@ -394,7 +394,7 @@ namespace System.Text.Lalr.Emitters
             }
             Template.Transfer(ctx.Name, r, w, ref lineno);
 
-            /* Generate a table containing the symbolic name of every symbol */
+            // Generate a table containing the symbolic name of every symbol
             var i_ = 0;
             for (i_ = 0; i_ < ctx.Symbols.Length - 1; i_++)
             {
@@ -404,7 +404,7 @@ namespace System.Text.Lalr.Emitters
             if ((i_ & 3) != 0) { w.WriteLine(ref lineno); }
             Template.Transfer(ctx.Name, r, w, ref lineno);
 
-            /* Generate a table containing a text string that describes every rule in the rule set of the grammar.  This information is used when tracing REDUCE actions. */
+            // Generate a table containing a text string that describes every rule in the rule set of the grammar.  This information is used when tracing REDUCE actions.
             i_ = 0;
             for (var rule = ctx.Rule; rule != null; rule = rule.Next, i_++)
             {
@@ -415,7 +415,7 @@ namespace System.Text.Lalr.Emitters
             }
             Template.Transfer(ctx.Name, r, w, ref lineno);
 
-            /* Generate code which executes every time a symbol is popped from the stack while processing errors or while destroying the parser.  (In other words, generate the %destructor actions) */
+            // Generate code which executes every time a symbol is popped from the stack while processing errors or while destroying the parser.  (In other words, generate the %destructor actions)
             if (ctx.TokenDestructor != null)
             {
                 var once = true;
@@ -463,7 +463,7 @@ namespace System.Text.Lalr.Emitters
                 var symbol = ctx.Symbols[i];
                 if (symbol == null || symbol.Type == SymbolType.Terminal || symbol.Destructor == null) continue;
                 w.WriteLine(ref lineno, "    case {0}: /* {1} */", symbol.ID, symbol.Name);
-                /* Combine duplicate destructors into a single case */
+                // Combine duplicate destructors into a single case
                 for (var j = i + 1; j < ctx.Symbols.Length - 1; j++)
                 {
                     var symbol2 = ctx.Symbols[j];
@@ -478,24 +478,24 @@ namespace System.Text.Lalr.Emitters
             }
             Template.Transfer(ctx.Name, r, w, ref lineno);
 
-            /* Generate code which executes whenever the parser stack overflows */
+            // Generate code which executes whenever the parser stack overflows
             Template.Write(w, ctx, ctx.StackOverflow, ref lineno, filePath);
             Template.Transfer(ctx.Name, r, w, ref lineno);
 
-            /* Generate the table of rule information 
-            ** Note: This code depends on the fact that rules are number sequentually beginning with 0. */
+            // Generate the table of rule information 
+            // Note: This code depends on the fact that rules are number sequentually beginning with 0.
             for (var rule = ctx.Rule; rule != null; rule = rule.Next)
                 w.WriteLine(ref lineno, "  {{ {0}, {1} }},", rule.LHSymbol.ID, rule.RHSymbols.Length);
             Template.Transfer(ctx.Name, r, w, ref lineno);
 
-            /* Generate code which execution during each REDUCE action */
+            // Generate code which execution during each REDUCE action
             for (var rule = ctx.Rule; rule != null; rule = rule.Next)
                 TranslateRuleCode(ctx, rule);
-            /* First output rules other than the default: rule */
+            // First output rules other than the default: rule
             for (var rule = ctx.Rule; rule != null; rule = rule.Next)
             {
                 if (rule.Code == null) continue;
-                if (rule.Code[0] == '\n' && rule.Code.Length == 1) continue; /* Will be default: */
+                if (rule.Code[0] == '\n' && rule.Code.Length == 1) continue; // Will be default:
                 w.Write("      case {0}: /* ", rule.ID);
                 WriteRuleText(w, rule);
                 w.WriteLine(ref lineno, " */");
@@ -511,7 +511,7 @@ namespace System.Text.Lalr.Emitters
                 w.WriteLine(ref lineno, "        break;");
                 rule.Code = null;
             }
-            /* Finally, output the default: rule.  We choose as the default: all empty actions. */
+            // Finally, output the default: rule.  We choose as the default: all empty actions.
             w.WriteLine(ref lineno, "      default:");
             for (var rule = ctx.Rule; rule != null; rule = rule.Next)
             {
@@ -524,19 +524,19 @@ namespace System.Text.Lalr.Emitters
             w.WriteLine(ref lineno, "        break;");
             Template.Transfer(ctx.Name, r, w, ref lineno);
 
-            /* Generate code which executes if a parse fails */
+            // Generate code which executes if a parse fails
             Template.Write(w, ctx, ctx.ParseFailure, ref lineno, filePath);
             Template.Transfer(ctx.Name, r, w, ref lineno);
 
-            /* Generate code which executes when a syntax error occurs */
+            // Generate code which executes when a syntax error occurs
             Template.Write(w, ctx, ctx.SyntaxError, ref lineno, filePath);
             Template.Transfer(ctx.Name, r, w, ref lineno);
 
-            /* Generate code which executes when the parser accepts its input */
+            // Generate code which executes when the parser accepts its input
             Template.Write(w, ctx, ctx.ParseAccept, ref lineno, filePath);
             Template.Transfer(ctx.Name, r, w, ref lineno);
 
-            /* Append any addition code the user desires */
+            // Append any addition code the user desires
             Template.Write(w, ctx, ctx.ExtraCode, ref lineno, filePath);
         }
 

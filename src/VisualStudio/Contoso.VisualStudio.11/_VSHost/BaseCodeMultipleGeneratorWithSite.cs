@@ -26,7 +26,7 @@ namespace Microsoft.VisualStudio.TextTemplating.VSHost
         /// </summary>
         /// <param name="inputFileName">The input file path.</param>
         /// <param name="inputFileContent">The input file contents.</param>
-        protected void PreGenerateContent(IVsProject vsProject, string inputFileName)
+        protected void PreGenerateCode(IVsProject vsProject, string inputFileName)
         {
             _newFileNames.Clear();
             int iFound;
@@ -68,10 +68,8 @@ namespace Microsoft.VisualStudio.TextTemplating.VSHost
                 catch (Exception ex) { throw ex; }
             }
             foreach (ProjectItem childItem in item.ProjectItems)
-            {
                 if (!(childItem.Name.EndsWith(GetDefaultExtension()) || _newFileNames.Contains(childItem.Name)))
                     childItem.Delete();
-            }
         }
 
         /// <summary>
@@ -85,7 +83,7 @@ namespace Microsoft.VisualStudio.TextTemplating.VSHost
         /// </returns>
         protected override byte[] GenerateCode(string inputFileName, string inputFileContent)
         {
-            PreGenerateContent(VsHelper.ToVsProject(), inputFileName);
+            PreGenerateCode(VsHelper.ToVsProject(), inputFileName);
             return null;
         }
 

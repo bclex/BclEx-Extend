@@ -200,9 +200,9 @@ namespace System.Text.Lalr
 
         private void BuildDataTypes()
         {
-            /* Build a hash table of datatypes. The ".dtnum" field of each symbol is filled in with the hash index plus 1.  A ".dtnum" value of 0 is
-            ** used for terminal symbols.  If there is no %default_type defined then 0 is also used as the .dtnum value for nonterminals which do not specify
-            ** a datatype using the %type directive. */
+            // Build a hash table of datatypes. The ".dtnum" field of each symbol is filled in with the hash index plus 1.  A ".dtnum" value of 0 is
+            // used for terminal symbols.  If there is no %default_type defined then 0 is also used as the .dtnum value for nonterminals which do not specify
+            // a datatype using the %type directive.
             var types = new Dictionary<string, int>();
             for (var i = 0; i < Symbols.Length - 1; i++)
             {
@@ -262,7 +262,7 @@ namespace System.Text.Lalr
                 Symbols[i].Lambda = false;
             for (var i = Terminals; i < Symbols.Length - 1; i++)
                 Symbols[i].FirstSet = new HashSet<int>();
-            /* First compute all lambdas */
+            // First compute all lambdas
             bool progress = false;
             do
             {
@@ -285,7 +285,7 @@ namespace System.Text.Lalr
                     }
                 }
             } while (progress);
-            /* Now compute all first sets */
+            // Now compute all first sets
             do
             {
                 progress = false;
@@ -325,7 +325,7 @@ namespace System.Text.Lalr
         private void BuildStates()
         {
             States = 0;
-            /* Find the start symbol */
+            // Find the start symbol
             Symbol symbol;
             if (!string.IsNullOrEmpty(StartSymbol))
             {
@@ -338,20 +338,20 @@ namespace System.Text.Lalr
             }
             else
                 symbol = Rule.LHSymbol;
-            /* Make sure the start symbol doesn't occur on the right-hand side of any rule.  Report an error if it does.  (YACC would generate a new start symbol in this case.) */
+            // Make sure the start symbol doesn't occur on the right-hand side of any rule.  Report an error if it does.  (YACC would generate a new start symbol in this case.)
             for (var rule = Rule; rule != null; rule = rule.Next)
                 for (var i = 0; i < rule.RHSymbols.Length; i++)
                     if (rule.RHSymbols[i] == symbol)
                         /* FIX ME:  Deal with multiterminals */
                         RaiseError(ref Errors, 0, "The start symbol \"{0}\" occurs on the right-hand side of a rule. This will result in a parser which does not work properly.", symbol.Name);
-            /* The basis configuration set for the first state is all rules which have the start symbol as their left-hand side */
+            // The basis configuration set for the first state is all rules which have the start symbol as their left-hand side
             for (var rule = symbol.Rule; rule != null; rule = rule.NextLHSymbol)
             {
                 rule.LHSymbolStart = 1;
                 var newConfig = AllConfigs.AddBasis(rule, 0);
                 newConfig.FwSet.Add(0);
             }
-            /* Compute the first state.  All other states will be computed automatically during the computation of the first one. The returned pointer to the first state is not used. */
+            // Compute the first state.  All other states will be computed automatically during the computation of the first one. The returned pointer to the first state is not used.
             AllStates.GetState(this);
             Sorted = AllStates.ToStateArray();
         }
@@ -363,9 +363,9 @@ namespace System.Text.Lalr
                 var state = Sorted[i];
                 foreach (var config in state.Configs)
                 {
-                    /* Add to every propagate link a pointer back to the state to which the link is attached. */
+                    // Add to every propagate link a pointer back to the state to which the link is attached.
                     config.State = state;
-                    /* Convert all backlinks into forward links.  Only the forward links are used in the follow-set computation. */
+                    // Convert all backlinks into forward links.  Only the forward links are used in the follow-set computation.
                     foreach (var other in config.Basises)
                         other.Forwards.Add(config);
                 }
@@ -402,7 +402,7 @@ namespace System.Text.Lalr
 
         private void BuildActions()
         {
-            /* Add all of the reduce actions. A reduce action is added for each element of the followset of a configuration which has its dot at the extreme right. */
+            // Add all of the reduce actions. A reduce action is added for each element of the followset of a configuration which has its dot at the extreme right.
             for (var i = 0; i < States; i++)
             {
                 var state = Sorted[i];
@@ -410,7 +410,7 @@ namespace System.Text.Lalr
                     if (config.Rule.RHSymbols.Length == config.Dot)
                         for (var j = 0; j < Terminals; j++)
                             if (config.FwSet.Contains(j))
-                                /* Add a reduce action to the state "stp" which will reduce by the rule "cfp->rp" if the lookahead symbol is "lemp->symbols[j]" */
+                                // Add a reduce action to the state "stp" which will reduce by the rule "cfp->rp" if the lookahead symbol is "lemp->symbols[j]"
                                 state.Actions.Add(new Action
                                 {
                                     Type = ActionType.Reduce,
@@ -418,15 +418,15 @@ namespace System.Text.Lalr
                                     Rule = config.Rule,
                                 });
             }
-            /* Add the accepting token */
+            // Add the accepting token
             var symbol2 = ((!string.IsNullOrEmpty(StartSymbol) ? AllSymbols[StartSymbol] : null) ?? Rule.LHSymbol);
-            /* Add to the first state (which is always the starting state of the finite state machine) an action to ACCEPT if the lookahead is the start nonterminal.  */
+            // Add to the first state (which is always the starting state of the finite state machine) an action to ACCEPT if the lookahead is the start nonterminal.
             Sorted[0].Actions.Add(new Action
             {
                 Type = ActionType.Accept,
                 Symbol = symbol2,
             });
-            /* Resolve conflicts */
+            // Resolve conflicts
             for (var i = 0; i < States; i++)
             {
                 var symbol = Sorted[i];
@@ -436,10 +436,10 @@ namespace System.Text.Lalr
                 Action action, action2;
                 for (var actionIndex = 0; actionIndex < symbolActions.Count && (action = symbolActions[actionIndex]) != null; actionIndex++)
                     for (var actionIndex2 = actionIndex + 1; actionIndex2 < symbolActions.Count && (action2 = symbolActions[actionIndex2]) != null && action2.Symbol == action.Symbol; actionIndex2++)
-                        /* The two actions "ap" and "nap" have the same lookahead. Figure out which one should be used */
+                        // The two actions "ap" and "nap" have the same lookahead. Figure out which one should be used
                         Conflicts += Action.ResolveConflict(action, action2, ErrorSymbol);
             }
-            /* Report an error for each rule that can never be reduced. */
+            // Report an error for each rule that can never be reduced.
             for (var rule = Rule; rule != null; rule = rule.Next)
                 rule.CanReduce = false;
             for (var i = 0; i < States; i++)
@@ -487,9 +487,9 @@ namespace System.Text.Lalr
                         bestRule = rule;
                     }
                 }
-                /* Do not make a default if the number of rules to default is not at least 1 or if the wildcard token is a possible lookahead. */
+                // Do not make a default if the number of rules to default is not at least 1 or if the wildcard token is a possible lookahead.
                 if (bestN < 1 || usesWildcard) continue;
-                /* Combine matching REDUCE actions into a single default */
+                // Combine matching REDUCE actions into a single default
                 Action action3 = null;
                 var actionIndex3 = 0;
                 for (; actionIndex3 < stateActions.Count && (action3 = stateActions[actionIndex3]) != null; actionIndex3++)

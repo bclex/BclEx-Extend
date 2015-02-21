@@ -35,7 +35,7 @@ namespace System.Text.Lalr.Emitters
             {
                 if (z[cp] == '$' && z[cp + 1] == '$')
                 {
-                    w.Write("(yypminor.yy{0})", symbol.DataTypeID);
+                    w.Write("(yypminor->yy{0})", symbol.DataTypeID);
                     cp++;
                     continue;
                 }
@@ -110,7 +110,7 @@ namespace System.Text.Lalr.Emitters
                 if (rule.RHSymbolsAlias[i] != null && !used[i])
                     ctx.RaiseError(ref ctx.Errors, rule.RuleLineno, "Label {0} for \"{1}({2})\" is never used.", rule.RHSymbolsAlias[i], rule.RHSymbols[i].Name, rule.RHSymbolsAlias[i]);
                 else if (rule.RHSymbolsAlias[i] == null && HasDestructor(rule.RHSymbols[i], ctx))
-                    b.AppendFormat("  yy_destructor(yypParser,{0},&yymsp[{1}].minor);\n", rule.RHSymbols[i].ID, i - rule.RHSymbols.Length + 1);
+                    b.AppendFormat("    yy_destructor(yyparser, {0}, &yymsp[{1}].minor);\n", rule.RHSymbols[i].ID, i - rule.RHSymbols.Length + 1);
             }
             if (rule.Code != null)
                 rule.Code = (b.ToString() ?? string.Empty);
@@ -135,15 +135,16 @@ namespace System.Text.Lalr.Emitters
             // Print out the definition of YYTOKENTYPE and YYMINORTYPE
             var name = (ctx.Name ?? "Parse");
             if (makeHeaders) { w.WriteLine(ref lineno, "#if INTERFACE"); }
-            w.WriteLine(ref lineno, "#define {0}TOKENTYPE {1}", name, (ctx.TokenType ?? "void*"));
+            w.WriteLine(ref lineno, "#define {0}TOKENTYPE {1}", name, (ctx.TokenType ?? "void *"));
             if (makeHeaders) { w.WriteLine(ref lineno, "#endif"); }
-            w.WriteLine(ref lineno, "typedef union {");
-            w.WriteLine(ref lineno, "  int yyinit;");
-            w.WriteLine(ref lineno, "  {0}TOKENTYPE yy0;", name);
+            w.WriteLine(ref lineno, "typedef union");
+            w.WriteLine(ref lineno, "{");
+            w.WriteLine(ref lineno, "   int yyinit;");
+            w.WriteLine(ref lineno, "   {0}TOKENTYPE yy0;", name);
             foreach (var type in ctx.DataTypes)
-                w.WriteLine(ref lineno, "  {0} yy{1};", type.Key, type.Value);
+                w.WriteLine(ref lineno, "   {0} yy{1};", type.Key, type.Value);
             if (ctx.ErrorSymbol.Uses > 0)
-                w.WriteLine(ref lineno, "  int yy{0};", ctx.ErrorSymbol.DataTypeID);
+                w.WriteLine(ref lineno, "   int yy{0};", ctx.ErrorSymbol.DataTypeID);
             w.WriteLine(ref lineno, "} YYMINORTYPE;");
         }
 
@@ -236,10 +237,13 @@ namespace System.Text.Lalr.Emitters
                 var i = ctx.ExtraArg.Length;
                 while (i >= 1 && char.IsWhiteSpace(ctx.ExtraArg[i - 1])) i--;
                 while (i >= 1 && (char.IsLetterOrDigit(ctx.ExtraArg[i - 1]) || ctx.ExtraArg[i - 1] == '_')) i--;
-                w.WriteLine(ref lineno, "#define {0}ARG_SDECL {1};", name, ctx.ExtraArg);
-                w.WriteLine(ref lineno, "#define {0}ARG_PDECL ,{1}", name, ctx.ExtraArg);
-                w.WriteLine(ref lineno, "#define {0}ARG_FETCH {1} = yypParser.{2}", name, ctx.ExtraArg, ctx.ExtraArg.Substring(i));
-                w.WriteLine(ref lineno, "#define {0}ARG_STORE yypParser.{1} = {2}", name, ctx.ExtraArg.Substring(i), ctx.ExtraArg.Substring(i));
+                var extraArg = ctx.ExtraArg;
+                var extraArg2 = ctx.ExtraArg.Substring(i);
+                //var extraArg3 = char.ToUpperInvariant(extraArg2[0]) + extraArg2.Substring(1);
+                w.WriteLine(ref lineno, "#define {0}ARG_SDECL {1};", name, extraArg);
+                w.WriteLine(ref lineno, "#define {0}ARG_PDECL ,{1}", name, extraArg);
+                w.WriteLine(ref lineno, "#define {0}ARG_FETCH {1} = yyparser->{2}", name, extraArg, extraArg2);
+                w.WriteLine(ref lineno, "#define {0}ARG_STORE yyparser->{1} = {2}", name, extraArg2, extraArg2);
             }
             else
             {
@@ -387,9 +391,9 @@ namespace System.Text.Lalr.Emitters
                 {
                     var symbol = ctx.Symbols[i];
                     if (symbol.Fallback == null)
-                        w.WriteLine(ref lineno, "    0,  /* {0,10} => nothing */", symbol.Name);
+                        w.WriteLine(ref lineno, "    0, // {0,10} => nothing", symbol.Name);
                     else
-                        w.WriteLine(ref lineno, "  {0,3},  /* {1,10} => {2} */", symbol.Fallback.ID, symbol.Name, symbol.Fallback.Name);
+                        w.WriteLine(ref lineno, "  {0,3},   // {1,10} => {2}", symbol.Fallback.ID, symbol.Name, symbol.Fallback.Name);
                 }
             }
             Template.Transfer(ctx.Name, r, w, ref lineno);
@@ -425,10 +429,10 @@ namespace System.Text.Lalr.Emitters
                     if (symbol == null || symbol.Type != SymbolType.Terminal) continue;
                     if (once)
                     {
-                        w.WriteLine(ref lineno, "      /* TERMINAL Destructor */");
+                        w.WriteLine(ref lineno, "      // TERMINAL Destructor");
                         once = false;
                     }
-                    w.WriteLine(ref lineno, "    case {0}: /* {1} */", symbol.ID, symbol.Name);
+                    w.WriteLine(ref lineno, "    case {0}: // {1}", symbol.ID, symbol.Name);
                 }
                 var i2 = 0;
                 for (; i2 < (ctx.Symbols.Length - 1) && (ctx.Symbols[i2].Type != SymbolType.Terminal); i2++) ;
@@ -448,10 +452,10 @@ namespace System.Text.Lalr.Emitters
                     if (symbol == null || symbol.Type == SymbolType.Terminal || symbol.ID <= 0 || symbol.Destructor != null) continue;
                     if (once)
                     {
-                        w.WriteLine(ref lineno, "      /* Default NON-TERMINAL Destructor */");
+                        w.WriteLine(ref lineno, "      // Default NON-TERMINAL Destructor");
                         once = false;
                     }
-                    w.WriteLine(ref lineno, "    case {0}: /* {1} */", symbol.ID, symbol.Name);
+                    w.WriteLine(ref lineno, "    case {0}: // {1}", symbol.ID, symbol.Name);
                     dflt_sp = symbol;
                 }
                 if (dflt_sp != null)
@@ -462,14 +466,14 @@ namespace System.Text.Lalr.Emitters
             {
                 var symbol = ctx.Symbols[i];
                 if (symbol == null || symbol.Type == SymbolType.Terminal || symbol.Destructor == null) continue;
-                w.WriteLine(ref lineno, "    case {0}: /* {1} */", symbol.ID, symbol.Name);
+                w.WriteLine(ref lineno, "    case {0}: // {1}", symbol.ID, symbol.Name);
                 // Combine duplicate destructors into a single case
                 for (var j = i + 1; j < ctx.Symbols.Length - 1; j++)
                 {
                     var symbol2 = ctx.Symbols[j];
                     if (symbol2 != null && symbol2.Type != SymbolType.Terminal && symbol2.Destructor != null && symbol2.DataTypeID == symbol.DataTypeID && symbol.Destructor == symbol2.Destructor)
                     {
-                        w.WriteLine(ref lineno, "    case {0}: /* {1} */", symbol2.ID, symbol2.Name);
+                        w.WriteLine(ref lineno, "    case {0}: // {1}", symbol2.ID, symbol2.Name);
                         symbol2.Destructor = null;
                     }
                 }
@@ -504,7 +508,7 @@ namespace System.Text.Lalr.Emitters
                     {
                         w.Write("      case {0}: /* ", rule2.ID);
                         WriteRuleText(w, rule2);
-                        w.WriteLine(ref lineno, " */ yytestcase(yyruleno=={0});", rule2.ID);
+                        w.WriteLine(ref lineno, " */ yyASSERTCOVERAGE(yyruleno == {0});", rule2.ID);
                         rule2.Code = null;
                     }
                 EmitRuleCode(w, rule, ctx, ref lineno, filePath);
@@ -519,7 +523,7 @@ namespace System.Text.Lalr.Emitters
                 Debug.Assert(rule.Code[0] == '\n' && rule.Code.Length == 1);
                 w.Write("      /* ({0}) ", rule.ID);
                 WriteRuleText(w, rule);
-                w.WriteLine(ref lineno, " */ yytestcase(yyruleno=={0});", rule.ID);
+                w.WriteLine(ref lineno, " */ yyASSERTCOVERAGE(yyruleno == {0});", rule.ID);
             }
             w.WriteLine(ref lineno, "        break;");
             Template.Transfer(ctx.Name, r, w, ref lineno);

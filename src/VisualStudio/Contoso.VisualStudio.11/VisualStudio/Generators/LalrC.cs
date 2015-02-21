@@ -33,7 +33,7 @@ namespace Contoso.VisualStudio.Generators
         /// </summary>
         /// <param name="inputFilePath">The input file path.</param>
         /// <param name="inputFileContents">The input file contents.</param>
-        protected void PreGenerateCode(string inputFilePath, string inputFileContents)
+        protected void PreProcess(string inputFilePath, string inputFileContents)
         {
             _ctx = new Context((a, b, c, d) => GeneratorErrorCallback(false, a, b, c, d), (a, b, c, d) => GeneratorErrorCallback(true, a, b, c, d));
             Parser.Parse(_ctx, inputFilePath, inputFileContents, null);
@@ -57,7 +57,7 @@ namespace Contoso.VisualStudio.Generators
         /// <returns></returns>
         protected override byte[] GenerateCode(string inputFilePath, string inputFileContents)
         {
-            PreGenerateCode(inputFilePath, inputFileContents);
+            PreProcess(inputFilePath, inputFileContents);
             base.GenerateCode(inputFilePath, inputFileContents);
             var newFilePath = Path.Combine(Path.GetDirectoryName(inputFilePath), Path.GetFileNameWithoutExtension(inputFilePath) + GetDefaultExtension());
             using (var s = new MemoryStream())

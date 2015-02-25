@@ -274,7 +274,7 @@ namespace System.Text.Lalr.Emitters
             // Output the yy_action table
             var n = actionTable.Size;
             w.WriteLine(ref lineno, "#define YY_ACTTAB_COUNT ({0})", n);
-            w.WriteLine(ref lineno, "static const YYACTIONTYPE yy_action[] = {");
+            w.WriteLine(ref lineno, "__constant__ static const YYACTIONTYPE yy_action[] = {");
             for (int i = 0, j = 0; i < n; i++)
             {
                 var action = actionTable.GetAction(i);
@@ -294,7 +294,7 @@ namespace System.Text.Lalr.Emitters
             w.WriteLine(ref lineno, "};");
 
             // Output the yy_lookahead table
-            w.WriteLine(ref lineno, "static const YYCODETYPE yy_lookahead[] = {");
+            w.WriteLine(ref lineno, "__constant__ static const YYCODETYPE yy_lookahead[] = {");
             for (int i = 0, j = 0; i < n; i++)
             {
                 var lookahead = actionTable.GetLookahead(i);
@@ -320,7 +320,7 @@ namespace System.Text.Lalr.Emitters
             w.WriteLine(ref lineno, "#define YY_SHIFT_COUNT ({0})", n - 1);
             w.WriteLine(ref lineno, "#define YY_SHIFT_MIN   ({0})", minTokenOffset);
             w.WriteLine(ref lineno, "#define YY_SHIFT_MAX   ({0})", maxTokenOffset);
-            w.WriteLine(ref lineno, "static const {0} yy_shift_ofst[] = {{", GetMinimumSizeType(minTokenOffset - 1, maxTokenOffset));
+            w.WriteLine(ref lineno, "__constant__ static const {0} yy_shift_ofst[] = {{", GetMinimumSizeType(minTokenOffset - 1, maxTokenOffset));
             for (int i = 0, j = 0; i < n; i++)
             {
                 var state = ctx.Sorted[i];
@@ -345,7 +345,7 @@ namespace System.Text.Lalr.Emitters
             w.WriteLine(ref lineno, "#define YY_REDUCE_COUNT ({0})", n - 1);
             w.WriteLine(ref lineno, "#define YY_REDUCE_MIN   ({0})", minNonTerminalOffset);
             w.WriteLine(ref lineno, "#define YY_REDUCE_MAX   ({0})", maxNonTerminalOffset);
-            w.WriteLine(ref lineno, "static const {0} yy_reduce_ofst[] = {{", GetMinimumSizeType(minNonTerminalOffset - 1, maxNonTerminalOffset));
+            w.WriteLine(ref lineno, "__constant__ static const {0} yy_reduce_ofst[] = {{", GetMinimumSizeType(minNonTerminalOffset - 1, maxNonTerminalOffset));
             for (int i = 0, j = 0; i < n; i++)
             {
                 var state = ctx.Sorted[i];
@@ -364,7 +364,7 @@ namespace System.Text.Lalr.Emitters
             w.WriteLine(ref lineno, "};");
 
             // Output the default action table
-            w.WriteLine(ref lineno, "static const YYACTIONTYPE yy_default[] = {");
+            w.WriteLine(ref lineno, "__constant__ static const YYACTIONTYPE yy_default[] = {");
             n = ctx.States;
             for (int i = 0, j = 0; i < n; i++)
             {

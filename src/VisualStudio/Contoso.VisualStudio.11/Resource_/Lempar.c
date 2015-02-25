@@ -139,9 +139,9 @@ __device__ static char *yyTracePrompt = nullptr;
 //
 // Outputs:
 // None.
-extern "C" __device__ void ParseTrace(FILE *TraceFILE, char *tracePrompt)
+extern "C" __device__ void ParseTrace(FILE *traceFILE, char *tracePrompt)
 {
-	yyTraceFILE = TraceFILE;
+	yyTraceFILE = traceFILE;
 	yyTracePrompt = tracePrompt;
 	if (!yyTraceFILE) yyTracePrompt = nullptr;
 	else if (!yyTracePrompt) yyTraceFILE = nullptr;

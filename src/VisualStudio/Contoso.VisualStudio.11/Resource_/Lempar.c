@@ -175,7 +175,7 @@ __device__ static void yyGrowStack(YYPARSER *p)
 		p->yystksz = newSize;
 #ifndef NDEBUG
 		if (yyTraceFILE)
-			fprintf(yyTraceFILE, "%sStack grows to %d entries!\n", yyTracePrompt, p->yystksz);
+			_fprintf(yyTraceFILE, "%sStack grows to %d entries!\n", yyTracePrompt, p->yystksz);
 #endif
 	}
 }
@@ -235,7 +235,7 @@ __device__ static int yy_pop_parser_stack(YYPARSER *parser)
 	if (parser->yyidx < 0) return 0;
 #ifndef NDEBUG
 	if (yyTraceFILE && parser->yyidx >= 0)
-		fprintf(yyTraceFILE, "%sPopping %s\n", yyTracePrompt, yyTokenName[yytos->major]);
+		_fprintf(yyTraceFILE, "%sPopping %s\n", yyTracePrompt, yyTokenName[yytos->major]);
 #endif
 	YYCODETYPE yymajor = yytos->major;
 	yy_destructor(parser, yymajor, &yytos->minor);
@@ -293,7 +293,7 @@ __device__ static int yy_find_shift_action(YYPARSER *parser, YYCODETYPE lookAhea
 			{
 #ifndef NDEBUG
 				if (yyTraceFILE)
-					fprintf(yyTraceFILE, "%sFALLBACK %s => %s\n", yyTracePrompt, yyTokenName[lookAhead], yyTokenName[fallback]);
+					_fprintf(yyTraceFILE, "%sFALLBACK %s => %s\n", yyTracePrompt, yyTokenName[lookAhead], yyTokenName[fallback]);
 #endif
 				return yy_find_shift_action(parser, fallback);
 			}
@@ -312,7 +312,7 @@ __device__ static int yy_find_shift_action(YYPARSER *parser, YYCODETYPE lookAhea
 				{
 #ifndef NDEBUG
 					if (yyTraceFILE)
-						fprintf(yyTraceFILE, "%sWILDCARD %s => %s\n", yyTracePrompt, yyTokenName[lookAhead], yyTokenName[YYWILDCARD]);
+						_fprintf(yyTraceFILE, "%sWILDCARD %s => %s\n", yyTracePrompt, yyTokenName[lookAhead], yyTokenName[YYWILDCARD]);
 #endif
 					return yy_action[j];
 				}
@@ -357,7 +357,7 @@ __device__ static void yyStackOverflow(YYPARSER *yyparser, YYMINORTYPE *yypMinor
 	yyparser->yyidx--;
 #ifndef NDEBUG
 	if (yyTraceFILE)
-		fprintf(yyTraceFILE, "%sStack Overflow!\n", yyTracePrompt);
+		_fprintf(yyTraceFILE, "%sStack Overflow!\n", yyTracePrompt);
 #endif
     while (yyparser->yyidx >= 0) yy_pop_parser_stack(yyparser);
 	// Here code is inserted which will execute if the parser stack every overflows
@@ -398,11 +398,11 @@ __device__ static void yy_shift(YYPARSER *yyparser, int yyNewState, int yyMajor,
 #ifndef NDEBUG
 	if (yyTraceFILE && yyparser->yyidx > 0)
 	{
-		fprintf(yyTraceFILE, "%sShift %d\n", yyTracePrompt, yyNewState);
-		fprintf(yyTraceFILE, "%sStack:", yyTracePrompt);
+		_fprintf(yyTraceFILE, "%sShift %d\n", yyTracePrompt, yyNewState);
+		_fprintf(yyTraceFILE, "%sStack:", yyTracePrompt);
 		for (int i = 1; i <= yyparser->yyidx; i++)
-			fprintf(yyTraceFILE, " %s", yyTokenName[yyparser->yystack[i].major]);
-		fprintf(yyTraceFILE, "\n");
+			_fprintf(yyTraceFILE, " %s", yyTokenName[yyparser->yystack[i].major]);
+		_fprintf(yyTraceFILE, "\n");
 	}
 #endif
 }
@@ -429,7 +429,7 @@ __device__ static void yy_reduce(YYPARSER *yyparser, int yyruleno)
 	YYSTACKENTRY *yymsp = &yyparser->yystack[yyparser->yyidx]; // The top of the parser's stack
 #ifndef NDEBUG
 	if (yyTraceFILE && yyruleno >= 0  && yyruleno < (int)(sizeof(yyRuleName)/sizeof(yyRuleName[0])))
-		fprintf(yyTraceFILE, "%sReduce [%s].\n", yyTracePrompt, yyRuleName[yyruleno]);
+		_fprintf(yyTraceFILE, "%sReduce [%s].\n", yyTracePrompt, yyRuleName[yyruleno]);
 #endif
 
 	// Silence complaints from purify about yygotominor being uninitialized in some cases when it is copied into the stack after the following
@@ -490,7 +490,7 @@ __device__ static void yy_parse_failed(YYPARSER *yyparser)
 	ParseARG_FETCH;
 #ifndef NDEBUG
 	if (yyTraceFILE)
-		fprintf(yyTraceFILE, "%sFail!\n", yyTracePrompt);
+		_fprintf(yyTraceFILE, "%sFail!\n", yyTracePrompt);
 #endif
 	while (yyparser->yyidx >= 0) yy_pop_parser_stack(yyparser);
 	// Here code is inserted which will be executed whenever the parser fails
@@ -514,7 +514,7 @@ __device__ static void yy_accept(YYPARSER *yyparser)
 	ParseARG_FETCH;
 #ifndef NDEBUG
 	if (yyTraceFILE)
-		fprintf(yyTraceFILE, "%sAccept!\n", yyTracePrompt);
+		_fprintf(yyTraceFILE, "%sAccept!\n", yyTracePrompt);
 #endif
 	while (yyparser->yyidx >= 0) yy_pop_parser_stack(yyparser);
 	// Here code is inserted which will be executed whenever the parser accepts
@@ -571,7 +571,7 @@ extern "C" __device__ void Parse(void *yyp, int yymajor, ParseTOKENTYPE yyminor 
 
 #ifndef NDEBUG
 	if (yyTraceFILE)
-		fprintf(yyTraceFILE, "%sInput %s\n", yyTracePrompt, yyTokenName[yymajor]);
+		_fprintf(yyTraceFILE, "%sInput %s\n", yyTracePrompt, yyTokenName[yymajor]);
 #endif
 
 	do
@@ -591,7 +591,7 @@ extern "C" __device__ void Parse(void *yyp, int yymajor, ParseTOKENTYPE yyminor 
 			_assert(yyact == YY_ERROR_ACTION);
 #ifndef NDEBUG
 			if (yyTraceFILE)
-				fprintf(yyTraceFILE, "%sSyntax Error!\n", yyTracePrompt);
+				_fprintf(yyTraceFILE, "%sSyntax Error!\n", yyTracePrompt);
 #endif
 #ifdef YYERRORSYMBOL
 			// A syntax error has occurred. The response to an error depends upon whether or not the grammar defines an error token "ERROR".  
@@ -608,7 +608,7 @@ extern "C" __device__ void Parse(void *yyp, int yymajor, ParseTOKENTYPE yyminor 
 			{
 #ifndef NDEBUG
 				if (yyTraceFILE)
-					fprintf(yyTraceFILE,"%sDiscard input token %s\n", yyTracePrompt,yyTokenName[yymajor]);
+					_fprintf(yyTraceFILE,"%sDiscard input token %s\n", yyTracePrompt,yyTokenName[yymajor]);
 #endif
 				yy_destructor(yyparser, (YYCODETYPE)yymajor,&yyminorunion);
 				yymajor = YYNOCODE;

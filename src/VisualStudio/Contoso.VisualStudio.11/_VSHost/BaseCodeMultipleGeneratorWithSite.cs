@@ -17,15 +17,20 @@ namespace Microsoft.VisualStudio.TextTemplating.VSHost
         private List<string> _newFileNames = new List<string>();
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="BaseCodeMultipleGenerator"/> class.
+        /// Initializes a new instance of the <see cref="BaseCodeMultipleGenerator" /> class.
         /// </summary>
         protected BaseCodeMultipleGeneratorWithSite() { }
 
         /// <summary>
         /// Pres the content of the generate.
         /// </summary>
+        /// <param name="vsProject">The vs project.</param>
         /// <param name="inputFileName">The input file path.</param>
-        /// <param name="inputFileContent">The input file contents.</param>
+        /// <exception cref="System.ApplicationException">
+        /// Unable to retrieve Visual Studio ProjectItem
+        /// or
+        /// Unable to retrieve Visual Studio ProjectItem
+        /// </exception>
         protected void PreGenerateCode(IVsProject vsProject, string inputFileName)
         {
             _newFileNames.Clear();
@@ -108,7 +113,7 @@ namespace Microsoft.VisualStudio.TextTemplating.VSHost
         }
 
         /// <summary>
-        /// Generates the content of the child.
+        /// Generates the code of the child.
         /// </summary>
         /// <param name="inputFileName">The input file path.</param>
         /// <param name="inputFileContent">The input file contents.</param>

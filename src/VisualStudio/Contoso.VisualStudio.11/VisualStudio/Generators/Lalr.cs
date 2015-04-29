@@ -89,6 +89,12 @@ namespace Contoso.VisualStudio.Generators
                 }
         }
 
+        /// <summary>
+        /// gets the default extension for this generator
+        /// </summary>
+        /// <returns>
+        /// string with the default extension for this generator
+        /// </returns>
         public override string GetDefaultExtension()
         {
             var fileExtension = GetCodeDomProvider().FileExtension;

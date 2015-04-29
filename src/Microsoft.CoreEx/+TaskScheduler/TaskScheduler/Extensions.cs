@@ -6,7 +6,7 @@ using System.Collections.Generic;
 namespace Microsoft.Win32.TaskScheduler
 {
     /// <summary>
-    /// 
+    /// Extensions
     /// </summary>
     public static class Extensions
     {

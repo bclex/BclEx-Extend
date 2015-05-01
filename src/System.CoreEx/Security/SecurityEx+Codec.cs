@@ -24,6 +24,7 @@ THE SOFTWARE.
 */
 #endregion
 using System.Configuration;
+using System.Net;
 namespace System.Security
 {
     public partial class SecurityEx
@@ -31,69 +32,96 @@ namespace System.Security
         /// <summary>
         /// StringCodec
         /// </summary>
-        public static readonly ICodec<string> StringCodec = new CodecString();
+        public static readonly ICodec<string, string> StringCodec = new CodecString();
         /// <summary>
         /// BytesCodec
         /// </summary>
-        public static readonly ICodec<byte[]> BytesCodec = new CodecBytes();
+        public static readonly ICodec<byte[], byte[]> BytesCodec = new CodecBytes();
+        /// <summary>
+        /// CredentialCodec
+        /// </summary>
+        public static readonly ICodec<NetworkCredential, string> CredentialCodec = new CodecCredential();
 
-        internal class CodecString : ICodec<string>
+        internal class CodecString : ICodec<string, string>
         {
             #region ICodec
 
             /// <summary>
             /// Decodes the specified tag.
             /// </summary>
-            /// <param name="tag">The tag.</param>
             /// <param name="data">The data.</param>
+            /// <param name="tag">The tag.</param>
             /// <returns></returns>
-            string ICodec<string>.Decode(object tag, string data)
-            {
-                if (tag is CodecConverter<string>.FromCredentials)
-                {
-                    CredentialManagerEx.Credential credential;
-                    if (CredentialManagerEx.Read(data, CredentialManagerEx.CredentialType.GENERIC, out credential) != 0)
-                        throw new InvalidOperationException("Unable to read credential store");
-                    return credential.CredentialBlob;
-                }
-                return SecurityEx.SymmetricDecrypt(data);
-            }
+            /// <exception cref="System.InvalidOperationException">Unable to read credential store</exception>
+            string ICodec<string, string>.Decode(string data, object tag) { return SecurityEx.SymmetricDecrypt(data); }
 
             /// <summary>
             /// Encodes the specified tag.
             /// </summary>
-            /// <param name="tag">The tag.</param>
             /// <param name="data">The data.</param>
+            /// <param name="tag">The tag.</param>
             /// <returns></returns>
-            string ICodec<string>.Encode(object tag, string data)
-            {
-                if (tag is CodecConverter<string>.FromCredentials)
-                    throw new NotSupportedException();
-                return SecurityEx.SymmetricEncrypt(data);
-            }
+            /// <exception cref="System.NotSupportedException"></exception>
+            string ICodec<string, string>.Encode(string data, object tag) { return SecurityEx.SymmetricEncrypt(data); }
 
             #endregion
         }
 
-        internal class CodecBytes : ICodec<byte[]>
+        internal class CodecBytes : ICodec<byte[], byte[]>
         {
             #region ICodec
 
             /// <summary>
             /// Decodes the specified tag.
             /// </summary>
-            /// <param name="tag">The tag.</param>
             /// <param name="data">The data.</param>
+            /// <param name="tag">The tag.</param>
             /// <returns></returns>
-            byte[] ICodec<byte[]>.Decode(object tag, byte[] data) { return SecurityEx.SymmetricDecrypt(data); }
+            byte[] ICodec<byte[], byte[]>.Decode(byte[] data, object tag) { return SecurityEx.SymmetricDecrypt(data); }
 
             /// <summary>
             /// Encodes the specified tag.
             /// </summary>
-            /// <param name="tag">The tag.</param>
             /// <param name="data">The data.</param>
+            /// <param name="tag">The tag.</param>
             /// <returns></returns>
-            byte[] ICodec<byte[]>.Encode(object tag, byte[] data) { return SecurityEx.SymmetricEncrypt(data); }
+            byte[] ICodec<byte[], byte[]>.Encode(byte[] data, object tag) { return SecurityEx.SymmetricEncrypt(data); }
+
+            #endregion
+        }
+
+        internal class CodecCredential : ICodec<NetworkCredential, string>
+        {
+            #region ICodec
+
+            /// <summary>
+            /// Decodes the specified tag.
+            /// </summary>
+            /// <param name="data">The data.</param>
+            /// <param name="tag">The tag.</param>
+            /// <returns></returns>
+            /// <exception cref="System.InvalidOperationException">Unable to read credential store</exception>
+            NetworkCredential ICodec<NetworkCredential, string>.Decode(string data, object tag)
+            {
+                if (string.IsNullOrEmpty(data))
+                    return null;
+                CredentialManagerEx.Credential credential;
+                if (CredentialManagerEx.Read(data, CredentialManagerEx.CredentialType.GENERIC, out credential) != 0)
+                    throw new InvalidOperationException("Unable to read credential store");
+                return new NetworkCredential { UserName = credential.UserName, Password = credential.CredentialBlob };
+            }
+
+            /// <summary>
+            /// Encodes the specified tag.
+            /// </summary>
+            /// <param name="data">The data.</param>
+            /// <param name="tag">The tag.</param>
+            /// <returns></returns>
+            /// <exception cref="System.NotSupportedException"></exception>
+            NetworkCredential ICodec<NetworkCredential, string>.Encode(string data, object tag)
+            {
+                throw new NotSupportedException();
+            }
 
             #endregion
         }

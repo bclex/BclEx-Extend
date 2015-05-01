@@ -29,7 +29,7 @@ namespace Contoso.Primitives.Codecs
     /// <summary>
     /// Provides standardized encode/decode functionality to/from an Rtf format.
     /// </summary>
-    public class RtfCodec : ICodec<string>
+    public class RtfCodec : ICodec<string, string>
     {
         /// <summary>
         /// EncodeNullValue
@@ -65,22 +65,22 @@ namespace Contoso.Primitives.Codecs
         /// <summary>
         /// Abstract member whose implementation by the derived class decodes a string into another string.
         /// </summary>
-        /// <param name="tag">The tag.</param>
         /// <param name="text">String to decode.</param>
+        /// <param name="tag">The tag.</param>
         /// <returns>
         /// Returns results of decoding <paramref name="text"/> object instance.
         /// </returns>
-        string ICodec<string>.Decode(object tag, string text) { return Decode(text); }
+        string ICodec<string, string>.Decode(string text, object tag) { return Decode(text); }
 
         /// <summary>
         /// Abstract member whose implementation by the derived class encodes a string into another string.
         /// </summary>
-        /// <param name="tag">The tag.</param>
         /// <param name="text">String to decode.</param>
+        /// <param name="tag">The tag.</param>
         /// <returns>
         /// Returns results of decoding <paramref name="text"/> object instance.
         /// </returns>
-        string ICodec<string>.Encode(object tag, string text) { return Encode(text); }
+        string ICodec<string, string>.Encode(string text, object tag) { return Encode(text); }
 
         #endregion
     }

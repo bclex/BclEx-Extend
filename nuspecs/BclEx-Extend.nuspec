@@ -44,6 +44,14 @@
     <file src="build\4.0\System.DirectoryServicesEx.xml" target="lib\net40" />
     <file src="build\4.0\System.Text.Lalr.dll" target="lib\net40" />
     <file src="build\4.0\System.Text.Lalr.xml" target="lib\net40" />
+    <file src="build\4.5\Contoso.CoreEx.dll" target="lib\net45" />
+    <file src="build\4.5\Contoso.CoreEx.xml" target="lib\net45" />
+    <file src="build\4.5\System.CoreEx.dll" target="lib\net45" />
+    <file src="build\4.5\System.CoreEx.xml" target="lib\net45" />
+    <file src="build\4.5\System.DirectoryServicesEx.dll" target="lib\net45" />
+    <file src="build\4.5\System.DirectoryServicesEx.xml" target="lib\net45" />
+    <file src="build\4.5\System.Text.Lalr.dll" target="lib\net45" />
+    <file src="build\4.5\System.Text.Lalr.xml" target="lib\net45" />
     <file src="build\4.0\Contoso.VisualStudio.10.dll" target="tools" />
     <file src="build\4.0\Contoso.VisualStudio.11.dll" target="tools" />
     <file src="src\Contoso.CoreEx\**\*.cs" target="src\Contoso.CoreEx" />

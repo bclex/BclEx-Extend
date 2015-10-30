@@ -1,7 +1,7 @@
 @echo off
 pushd ..\BclEx-Abstract
 echo Building BclEx-Abstract:
-PowerShell -Command ".\psake.ps1"
+::PowerShell -Command ".\psake.ps1"
 popd
 
 ::

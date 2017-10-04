@@ -38,6 +38,7 @@ namespace Contoso.Security
         {
             ProcessTimeoutInMilliseconds = 6000;
             ProcessPutTimeoutInMilliseconds = 360000;
+            PuTtyPath = ".";
         }
 
         /// <summary>
